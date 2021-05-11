@@ -1,70 +1,137 @@
-# Getting Started with Create React App
+# FoodCafe
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<br>
+## Description
 
-## Available Scripts
+This project is about creating a nice environment for people to connect around the common interest of food.
 
-In the project directory, you can run:
+<br>
 
-### `yarn start`
+## User Stories
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- 404: As a user/premium user I can see a 404 page if I try to reach a page that does not exist so that I know it's my fault
+- Signup: As a user/premium user I can sign up in the platform so that I can start accessing my profile, talk with other users and share my recipes
+- Login: As a user/premium user I can login to the platform so that I can start accessing my profile, talk with other users and share my recipes
+- Logout: As a user/pPremium user I can logout from the platform so no one else can modify my information
+- Add elements :  As a premium user I can add recipes to the database
+- Delete elements As a premium user I can delete the recipes I created
+- Edit elements : As a premium user I can edit the recipes I created
+- Message : As a user/premium user I can talk to other users with private messages
+- Random element As a user/ premium user I can access a random recipe 
+- Check profile As a user/premium user I can check my profile and modify my account info. I can see my calendar of planning recipes
+- Recipe Details : As a user/premium user I can access the details of each recipe
+- Timeline : As a user/premium user I can see a timeline of other people recipes and search for some
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<br>
 
-### `yarn test`
+## Backlog
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Payment method
+- Style addition
+- Map for recipes all over the world
 
-### `yarn build`
+<br>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Client/Frontend
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## React Router Routes (React app)
+| Path                      | Component                      | Permissions | Behavior                                                     |
+| ------------------------- | --------------------           | ----------- | ------------------------------------------------------------ |
+| `/`                       | Home                    | public `<Route>`            | Home page, signin, signup                                        |
+| `/signup`                 | SignUp                     | public  `<Route>`    | Offer to add recipes to profile and redirect to the timeline once done |
+| `/logout`                 | n/a                            | user/premium only `<PrivateRoute>`  | Navigate to homepage after logout, expire session             |
+| `/yourfeed`         | NavBar, Timeline, FriendsList, Search, FooterBar | user/premium only `<PrivateRoute>`  | Shows user timeline, his friends, and display the search bar                            |
+| `/profile`          | NavBar, Calendar, FriendsList, MyRecipes, FooterBar | user/premium only `<PrivateRoute>`  | Shows the profile                     |
+| `/recipe-details/:id`          | NavBar, RecipeDetails, FooterBar | user/premium only `<PrivateRoute>`  | Shows all details for a recipe
+| `/random-recipe/:id`          |  NavBar, RandomRecipe, FooterBar    | user/premium only  `<PrivateRoute>` | See a random recipe                     |
+| `/messenger`           | NavBar, RecipeDetails, FooterBar      | user/premium only `<PrivateRoute>`  | Open conversation with friends                                     |
+| `/add-a-recipe`           | NavBar, AddForm, FooterBar      | premium only `<PrivateRoute>`  | Create a recipe                                 |
+| `/edit-a-recipe/:id`                | NavBar, EditForm, FooterBar                    | premium only `<PrivateRoute>`  | Edit an element you created                               |
+| `/recipes`                | NavBar, AllRecipes, FooterBar                 | public  `<Route>` | Check all the recipes   and redirect to signin/signup if user wants to access the details                      |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<br>
 
-### `yarn eject`
+## Components
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Home
+- RandomRecipe
+- SignUp
+- NavBar
+- Timeline
+- FriendsList
+- Search
+- FooterBar
+- Calendar
+- MyRecipes
+- RecipeDetails
+- RandomRecipe
+- AddForm
+- EditForm
+- AllRecipes
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<br>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Services
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- External API
+    - API about food
 
-## Learn More
+<br>
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# Server / Backend
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Models
 
-### Code Splitting
+- User Model
+          
+```javascript
+{
+  username: {type: String, required: true, unique: true},
+  email: {type: String, required: true, unique: true},
+  password: {type: String, required: true},
+  usertype: ,
+  picture: String, 
+}
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Recipe Model
 
-### Analyzing the Bundle Size
+```javascript
+{
+  name: {type: String, required: true},
+  ingredients: {type: String, required: true},
+  instructions: {type: String, required: true},
+  youtube: String,
+  picture: String, 
+  description: {type: String, required: true}, 
+  cookingTime: {type: String, required: true},
+  difficulty: String, 
+  createdBy: String, 
+  country: String,
+}
+```
+<br>
+## API Endpoints
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+| HTTP Method | URL                         | Request Body                 | Success status | Error Status | Description                                                  |
+| ----------- | --------------------------- | ---------------------------- | -------------- | ------------ | ------------------------------------------------------------ |
+| GET         | `/auth/profile    `           | Saved session                | 200            | 404          | Check if user is logged in and return profile page           |
+| POST        | `/auth/signup`                | {username, email, password}      | 201            | 404          | Checks if fields not empty (422) and user not exists (409), then create user with encrypted password, and store user in session |
+| POST        | `/auth/login`                 | {username, password}         | 200            | 401          | Checks if fields not empty (422), if user exists (404), and if password matches (404), then stores user in session    |
+| POST        | `/auth/logout`                | (empty)                      | 204            | 400          | Logs out the user                                            |
+| POST        | `/search`                 | {recipe}  |                | 400          | Search for a recipe                                    |
+| POST         | `/add`             |                              |                | 400          | Add a recipe                              |
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+<br>
+## Links
 
-### Advanced Configuration
+### Git
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+[Client repository Link](https://github.com/jnmelio/FoodCafe-client)
 
-### Deployment
+[Server repository Link](https://github.com/jnmelio/FoodCafe-server)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Slides
 
-### `yarn build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
