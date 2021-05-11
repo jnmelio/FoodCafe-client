@@ -119,9 +119,12 @@ This project is about creating a nice environment for people to connect around t
 | POST        | `/auth/signup`                | {username, email, password}      | 201            | 404          | Checks if fields not empty (422) and user not exists (409), then create user with encrypted password, and store user in session |
 | POST        | `/auth/login`                 | {username, password}         | 200            | 401          | Checks if fields not empty (422), if user exists (404), and if password matches (404), then stores user in session    |
 | POST        | `/auth/logout`                | (empty)                      | 204            | 400          | Logs out the user                                            |
-| POST        | `/search`                 | {recipe}  |                | 400          | Search for a recipe                                    |
-| POST         | `/add`             |                              |                | 400          | Add a recipe                              |
-
+| POST        | `/user/search`                 | {name, instructions, ingredients, country, youtube, photo, description, cookingTime, difficulty, createdBy}  |                | 400          | Search for a recipe                                    |
+| POST         | `/recipe/add`             |                              |                | 400          | Add a recipe                              |
+| DELETE        | `/recipe/delete/:id`             |                              |                |         | Delete a recipe                         |
+| PATCH         | `/recipe/edit-recipe`             |                              |                | 400          | Edit a recipe                             |
+| GET        | `/recipe/:id`             |                              |                | 400          | Recipe details                              |
+| GET         | `/recipe/random`             |                              |                | 400          | get a random recipe                              |
 
 <br>
 ## Links
