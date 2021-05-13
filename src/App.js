@@ -7,11 +7,16 @@ import config from "./config";
 import SignUp from "./components/auth/SignUp";
 import SignUpRandom from "./components/SignUpRandom";
 import NavBar from "./components/NavBar";
+import AllRecipes from './components/recipes/AllRecipes';
+import RecipeDetails from "./components/recipes/RecipeDetails";
 
 function App(props) {
   const [error, updateError] = useState(null);
   const [user, updateUser] = useState(null);
   const [redirection, updateRedirection] = useState(null);
+  const [recipes, updateRecipes] = useState([])
+  const [fetching, updateFetching] = useState(true)
+
 
   useEffect(() => {
     axios
@@ -101,6 +106,26 @@ function App(props) {
         updateError(errorObj.response.data);
       });
   };
+    // will run when the recipes are updated
+  // useEffect(() => {
+  //   props.history.push('/recipes')
+  // }, [recipes])
+
+  // loading all the recipes from database
+  useEffect(() => {
+    axios.get(`${config.API_URL}/api/recipe`, { withCredentials: true })
+      .then((response) => {
+        updateRecipes(response.data)
+        updateFetching(false)
+      })
+      .catch(() => {
+        console.log('Fetching failed')
+      })
+  }, [])
+
+  if (fetching) {
+    return <p>Loading . . .</p>
+  }
 
   return (
     <div className="App">
@@ -112,6 +137,13 @@ function App(props) {
             return <SignUpRandom {...routeProps} />;
           }}
         />
+        <Route exact path='/recipes' render={() => { return <AllRecipes recipes={recipes} /> }} />
+        <Route exact path='/recipe-details/:recipeId' render={(routeProps) => {
+          return <RecipeDetails recipes={recipes} {...routeProps} />
+        }} />
+        <Route exact path='/recipe-detail/:id' render={(routeProps) => {
+          return <RecipeDetails recipes={recipes} {...routeProps} />
+        }} />
       </Switch>
     </div>
   );
