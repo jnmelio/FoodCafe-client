@@ -27,8 +27,9 @@ This project is about creating a nice environment for people to connect around t
 ## Backlog
 
 - Payment method
-- Style addition
+- Style additions
 - Map for recipes all over the world
+- Share on other social medias
 
 <br>
 
@@ -87,10 +88,22 @@ This project is about creating a nice environment for people to connect around t
 ```javascript
 {
   username: {type: String, required: true, unique: true},
+  firstName: {type: String, required: true},
+  lastName: {type: String, required: true},
   email: {type: String, required: true, unique: true},
   password: {type: String, required: true},
-  usertype: ,
+  usertype: {
+    type:String, 
+    enum: [
+      "freeUser", 
+      "premiumUser", 
+      "admin"
+    ]
+  },
   picture: String, 
+  recipe: {
+    recipe relationship
+  }
 }
 ```
 
@@ -110,6 +123,22 @@ This project is about creating a nice environment for people to connect around t
   country: String,
 }
 ```
+
+- Post Model 
+
+```javascript
+{
+  username: {type: String, required: true, unique: true},
+  image: String, 
+  date: new Date, 
+  user: {
+    relationship with user Model
+  },
+}
+```
+
+- Chat Model : in preparation
+
 <br>
 ## API Endpoints
 
@@ -127,6 +156,7 @@ This project is about creating a nice environment for people to connect around t
 | GET         | `/recipe/random`             |                              |                | 400          | get a random recipe                              |
 
 <br>
+
 ## Links
 
 ### Git
@@ -134,6 +164,14 @@ This project is about creating a nice environment for people to connect around t
 [Client repository Link](https://github.com/jnmelio/FoodCafe-client)
 
 [Server repository Link](https://github.com/jnmelio/FoodCafe-server)
+
+<br>
+
+### Wireframes
+
+https://whimsical.com/foodcafe-Pa8cesyf5XhBqC6A34bqvM
+
+<br>
 
 ### Slides
 
