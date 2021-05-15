@@ -1,18 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import SignUp from '../components/auth/SignUp'
-import Login from './auth/Login'
+import SignUp from "../components/auth/SignUp";
+import Login from "./auth/Login";
 
+//NAVBAR COMES FROM APP.JS
 function NavBar(props) {
-  const { user, onLogout, onSignUp, error, onLogIn } = props;
+  const { user, onLogout, onSignUp, error, onLogIn, onFacebookResponse } =
+    props;
   return (
     <div>
-      <Link to='/recipes'>Recipes</Link>
-      <Link to='/add-a-recipe'>Add recipe</Link>
+      <Link to="/recipes">Recipes</Link>
+      <Link to="/add-a-recipe">Add recipe</Link>
+      <Link to="/chatroom">Access the chat room</Link>
       {user ? (
         <div>
-        <button onClick={onLogout} >Log out</button>
-        <Link to={"/timeline"}>Timeline</Link>
+          <button onClick={onLogout}>Log out</button>
+          <Link to={"/timeline"}>Timeline</Link>
         </div>
       ) : (
         <div>

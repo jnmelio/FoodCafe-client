@@ -1,56 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import config from "../../config";
 
+
+
+//SIGNUP RANDOM COMES FROM THE ROUTE IN APP.JS
 function SignUpRandom(props) {
-  // const [randomRecipe, updateRandomRecipe] = useState([]);
-  // const [randomUser, updateRandomUser] = useState([]);
-  // const [newFriend, updateNewFriend] = useState([]);
-  // const [friend, updateFriend] = useState(null);
-  // const [recipe, updateRecipe] = useState(null);
-  const { user, onHandleFriend, randomUser, friend, updateUser, onHandleRecipe, recipe, randomRecipe } = props;
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`${config.API_URL}/api/signup`, { withCredentials: true })
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       updateRandomRecipe(response.data.randomRecipe);
-  //       updateRandomUser(response.data.randomUser);
-  //     })
-  //     .catch(() => {});
-  // }, []);
-
-  // const handleAddAFriend = () => {
-  //   axios
-  //     .post(
-  //       `${config.API_URL}/api/addFriend/${randomUser._id}`,
-  //       {},
-  //       { withCredentials: true }
-  //     )
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       updateNewFriend(response.data)
-  //       updateFriend(true);
-  //     })
-  //     .catch(() => {});
-  // };
-
-  // const handleAddARecipe = () => {
-  //   axios
-  //     .post(
-  //       `${config.API_URL}/api/addRecipe/${randomRecipe._id}`,
-  //       {},
-  //       { withCredentials: true }
-  //     )
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       updateRecipe(true);
-  //       updateRandomRecipe(response.data);
-  //     })
-  //     .catch(() => {});
-  // };
+  const {
+    onHandleFriend,
+    randomUser,
+    friend,
+    onHandleRecipe,
+    recipe,
+    randomRecipe,
+  } = props;
 
   return (
     <div>

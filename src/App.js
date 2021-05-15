@@ -1,19 +1,21 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Switch, Route, withRouter, Link } from "react-router-dom";
-// import Login from "./components/auth/Login";
-// import HomePage from "./components/Home";
+import Login from "./components/auth/Login";
+import HomePage from "./components/Home";
 import config from "./config";
-// import SignUp from "./components/auth/SignUp";
-import SignUpRandom from "./components/SignUpRandom";
+import SignUp from "./components/auth/SignUp";
+import SignUpRandom from "./components/auth/SignUpRandom";
 import NavBar from "./components/NavBar";
-import AllRecipes from './components/recipes/AllRecipes';
+import AllRecipes from "./components/recipes/AllRecipes";
 import RecipeDetails from "./components/recipes/RecipeDetails";
 import Timeline from "./components/profile/Timeline";
 import AddForm from "./components/recipes/AddForm";
 import EditForm from "./components/recipes/EditForm";
+import ChatPage from "./components/chat/ChatPage";
 
 function App(props) {
+  //STATES
   const [error, updateError] = useState(null);
   const [user, updateUser] = useState(null);
   const [redirection, updateRedirection] = useState(null);
@@ -24,19 +26,20 @@ function App(props) {
   const [randomRecipe, updateRandomRecipe] = useState([]);
   const [randomUser, updateRandomUser] = useState([]);
   const [ingredients, updateIngredients] = useState([]);
-  const [trueFalse, updateTrueFalse] = useState(null)
+  const [trueFalse, updateTrueFalse] = useState(null);
 
+  //FIRST USEEFFECT
   useEffect(() => {
     axios
       .get(`${config.API_URL}/api/user`, { withCredentials: true })
       .then((response) => {
         updateUser(response.data);
+        updateFetching(false);
       })
-      .catch(() => { });
+      .catch(() => {});
   }, []);
 
-
-
+  //USE EFFECT FOR REDIRECTION
   useEffect(() => {
     if (redirection === "signup") {
       props.history.push("/signup");
@@ -47,6 +50,7 @@ function App(props) {
     }
   }, [props.history, redirection]);
 
+  //LOGIN LOGIC AND AXIOS
   const handleLogIn = (event) => {
     event.preventDefault();
     const { email, password } = event.target;
@@ -67,6 +71,7 @@ function App(props) {
       });
   };
 
+  //SIGNUP LOGIC AND AXIOS
   const handleSignUp = (event) => {
     event.preventDefault();
     console.log(event);
@@ -103,6 +108,7 @@ function App(props) {
       });
   };
 
+  //LOGOUT LOGIC
   const handleLogout = () => {
     axios
       .post(`${config.API_URL}/api/logout`, {}, { withCredentials: true })
@@ -117,16 +123,19 @@ function App(props) {
       });
   };
 
+  // USE EFFECT FOR RANDOM USER AND RECIPE AFTER SIGNUP
   useEffect(() => {
     axios
       .get(`${config.API_URL}/api/signup`, { withCredentials: true })
       .then((response) => {
         updateRandomRecipe(response.data.randomRecipe);
         updateRandomUser(response.data.randomUser);
+        updateFetching(false);
       })
       .catch(() => {});
   }, []);
 
+  //ADD A FRIEND AFTER SIGNUP
   const handleAddAFriend = () => {
     axios
       .post(
@@ -141,6 +150,7 @@ function App(props) {
       })
       .catch(() => {});
   };
+  //ADD A RECIPE AFTER SIGN UP
   const handleAddMyRecipe = () => {
     axios
       .post(
@@ -155,6 +165,7 @@ function App(props) {
       })
       .catch(() => {});
   };
+
   // -----------------------------------------------****************************--------------------------
   // RECIPES HANDLERS
   // will run when the recipes are updated
@@ -162,7 +173,7 @@ function App(props) {
   //   props.history.push('/recipes')
   // },)
 
-  // loading all the recipes from database
+  //LOADING ALL RECIPES FROM DATABASE
   useEffect(() => {
     axios
       .get(`${config.API_URL}/api/recipe`, { withCredentials: true })
@@ -175,57 +186,59 @@ function App(props) {
       });
   }, []);
 
-  // handling new recipe____________
-  let ingredientArr = []
+  //CREATE A RECIPE
+  let ingredientArr = [];
   const handleRadio = (event) => {
     let value = true;
-    if (typeof event.currentTarget.value === 'string') {
-      (event.currentTarget.value === 'true' ? value = true : value = false);
+    if (typeof event.currentTarget.value === "string") {
+      event.currentTarget.value === "true" ? (value = true) : (value = false);
     }
     updateTrueFalse(value);
-  }
+  };
   const handleAddRecipe = (e) => {
-    e.preventDefault()
-    let picture = e.target.imageUrl.files[0]
+    e.preventDefault();
+    let picture = e.target.imageUrl.files[0];
 
-    let formData = new FormData()
-    formData.append('imageUrl', picture)
-    axios.post(`${config.API_URL}/api/upload`, formData)
+    let formData = new FormData();
+    formData.append("imageUrl", picture);
+    axios
+      .post(`${config.API_URL}/api/upload`, formData)
       .then((response) => {
-        console.log(response.data)
-        return axios.post(`${config.API_URL}/api/recipe/add`, {
-          name: e.target.name.value,
-          ingredients,
-          instructions: e.target.instructions.value,
-          youtube: e.target.youtube.value,
-          picture: response.data.picture,
-          description: e.target.description.value,
-          cookingTime: Number(e.target.cookingTime.value),
-          difficulty: e.target.difficulty.value,
-          country: e.target.country.value,
-          category: e.target.category.value,
-          vegetarian: trueFalse,
-          created_by: user._id
-        }, { withCredentials: true })
-
+        console.log(response.data);
+        return axios.post(
+          `${config.API_URL}/api/recipe/add`,
+          {
+            name: e.target.name.value,
+            ingredients,
+            instructions: e.target.instructions.value,
+            youtube: e.target.youtube.value,
+            picture: response.data.picture,
+            description: e.target.description.value,
+            cookingTime: Number(e.target.cookingTime.value),
+            difficulty: e.target.difficulty.value,
+            country: e.target.country.value,
+            category: e.target.category.value,
+            vegetarian: trueFalse,
+            created_by: user._id,
+          },
+          { withCredentials: true }
+        );
       })
 
       .then((result) => {
-        console.log(result.data)
-        updateRecipes([result.data, ...recipes])
-
-      }).catch((err) => {
-        console.log(err)
+        console.log(result.data);
+        updateRecipes([result.data, ...recipes]);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-
-
-  }
+  };
 
   const handleOnChange = (e) => {
-    e.preventDefault()
-    let input = e.target.value
-    ingredientArr.push(input.split(','))
-    updateIngredients(ingredientArr[(ingredientArr.length - 1)])
+    e.preventDefault();
+    let input = e.target.value;
+    ingredientArr.push(input.split(","));
+    updateIngredients(ingredientArr[ingredientArr.length - 1]);
   };
 
   // const handleUpdate = (recipe) => {
@@ -252,6 +265,7 @@ function App(props) {
 
   // -------------------------------------------------**********************------------------------------------
   // -------------------------------------------------**********************------------------------------------
+  //LOADING SCREEN
   if (fetching) {
     return <p>Loading . . .</p>;
   }
@@ -264,8 +278,8 @@ function App(props) {
         error={error}
         onLogIn={handleLogIn}
       />
-            <Link to='/recipes'>Recipes</Link>
-      <Link to='/add-a-recipe'>Add recipe</Link>
+      <Link to="/recipes">Recipes</Link>
+      <Link to="/add-a-recipe">Add recipe</Link>
       <Switch>
         <Route
           path="/signup"
@@ -288,9 +302,15 @@ function App(props) {
         <Route
           path="/timeline"
           render={(routeProps) => {
-            return <Timeline user={user} updateUser={updateUser} recipes={recipes} {...routeProps} 
-              updateRecipe={updateRecipes} 
-            />;
+            return (
+              <Timeline
+                user={user}
+                updateUser={updateUser}
+                recipes={recipes}
+                {...routeProps}
+                updateRecipe={updateRecipes}
+              />
+            );
           }}
         />
         <Route
@@ -311,18 +331,65 @@ function App(props) {
           exact
           path="/recipe-detail/:id"
           render={(routeProps) => {
+            return (
+              <RecipeDetails
+                recipes={recipes}
+                updateUser={updateUser}
+                user={user}
+                {...routeProps}
+              />
+            );
+          }}
+        />
+        <Route
+          exact
+          path="/recipes"
+          render={() => {
+            return <AllRecipes recipes={recipes} />;
+          }}
+        />
+        <Route
+          exact
+          path="/add-a-recipe"
+          render={() => {
+            return (
+              <AddForm
+                onRadio={handleRadio}
+                recipes={recipes}
+                onChange={handleOnChange}
+                onSubmit={handleAddRecipe}
+              />
+            );
+          }}
+        />
+        <Route
+          exact
+          path="/recipe-details/:recipeId"
+          render={(routeProps) => {
             return <RecipeDetails recipes={recipes} {...routeProps} />;
           }}
         />
-                <Route exact path='/recipes' render={() => { return <AllRecipes recipes={recipes} /> }} />
-                <Route exact path='/add-a-recipe' render={() => { return <AddForm onRadio={handleRadio} recipes={recipes} onChange={handleOnChange} onSubmit={handleAddRecipe} /> }} />
-        <Route exact path='/recipe-details/:recipeId' render={(routeProps) => {
-          return <RecipeDetails recipes={recipes} {...routeProps} />
-        }} />
-        <Route exact path='/edit-a-recipe/:id' render={(routeProps) => {
-          return <EditForm recipes={recipes} onRadio={handleRadio} onChange={handleOnChange} {...routeProps} />
-        }} />
-
+        <Route
+          exact
+          path="/edit-a-recipe/:id"
+          render={(routeProps) => {
+            return (
+              <EditForm
+                recipes={recipes}
+                onRadio={handleRadio}
+                onChange={handleOnChange}
+                {...routeProps}
+              />
+            );
+          }}
+        />
+        <Route
+          exact
+          path="/chatroom"
+          render={(routeProps) => {
+            return <ChatPage {...routeProps} />;
+          }}
+        />
       </Switch>
     </div>
   );
