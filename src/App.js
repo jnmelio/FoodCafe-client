@@ -2,20 +2,25 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
 import Login from "./components/auth/Login";
-import HomePage from "./pages/HomePage";
 import config from "./config";
 import SignUp from "./components/auth/SignUp";
-import SignUpRandom from "./components/SignUpRandom";
+import SignUpRandom from "./components/auth/SignUpRandom";
 import NavBar from "./components/NavBar";
-import AllRecipes from './components/recipes/AllRecipes';
+import AllRecipes from "./components/recipes/AllRecipes";
 import RecipeDetails from "./components/recipes/RecipeDetails";
+import Timeline from "./components/profile/Timeline";
 
 function App(props) {
   const [error, updateError] = useState(null);
   const [user, updateUser] = useState(null);
   const [redirection, updateRedirection] = useState(null);
-  const [recipes, updateRecipes] = useState([])
-  const [fetching, updateFetching] = useState(true)
+  const [recipes, updateRecipes] = useState([]);
+  const [fetching, updateFetching] = useState(true);
+  const [friend, updateFriend] = useState(null);
+  const [recipe, updateRecipe] = useState(null);
+  const [randomRecipe, updateRandomRecipe] = useState([]);
+  const [randomUser, updateRandomUser] = useState([]);
+
 
 
   useEffect(() => {
@@ -34,8 +39,10 @@ function App(props) {
   useEffect(() => {
     if (redirection === "signup") {
       props.history.push("/signup");
-    } else if (redirection === '') {
+    } else if (redirection === "") {
       props.history.push("/");
+    } else if (redirection === "timeline") {
+      props.history.push("/timeline");
     }
   }, [redirection]);
 
@@ -52,6 +59,7 @@ function App(props) {
       .then((response) => {
         updateUser(response.data);
         updateError(null);
+        updateRedirection("timeline");
       })
       .catch((errObj) => {
         updateError(errObj.response.data);
@@ -84,6 +92,7 @@ function App(props) {
     axios
       .post(`${config.API_URL}/api/signup`, newUser, { withCredentials: true })
       .then((response) => {
+        updateFriend(false);
         updateUser(response.data);
         updateError(null);
         updateRedirection("signup");
@@ -97,53 +106,133 @@ function App(props) {
     axios
       .post(`${config.API_URL}/api/logout`, {}, { withCredentials: true })
       .then(() => {
-        console.log('log out successfull')
-        updateRedirection('')
+        console.log("log out successfull");
+        updateRedirection("");
         updateUser(null);
       })
       .catch((errorObj) => {
-        console.log('logout nay')
+        console.log("logout nay");
         updateError(errorObj.response.data);
       });
   };
-    // will run when the recipes are updated
+
+  useEffect(() => {
+    axios
+      .get(`${config.API_URL}/api/signup`, { withCredentials: true })
+      .then((response) => {
+        updateRandomRecipe(response.data.randomRecipe);
+        updateRandomUser(response.data.randomUser);
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleAddAFriend = () => {
+    axios
+      .post(
+        `${config.API_URL}/api/addFriend/${randomUser._id}`,
+        {},
+        { withCredentials: true }
+      )
+      .then((response) => {
+        console.log("yay", response.data);
+        updateFriend(true);
+        updateUser(response.data);
+      })
+      .catch(() => {});
+  };
+  const handleAddARecipe = () => {
+    axios
+      .post(
+        `${config.API_URL}/api/addRecipe/${randomRecipe._id}`,
+        {},
+        { withCredentials: true }
+      )
+      .then((response) => {
+        console.log("handle add recipe", response.data);
+        updateRecipe(true);
+        updateUser(response.data);
+      })
+      .catch(() => {});
+  };
+  // will run when the recipes are updated
   // useEffect(() => {
   //   props.history.push('/recipes')
   // }, [recipes])
 
   // loading all the recipes from database
   useEffect(() => {
-    axios.get(`${config.API_URL}/api/recipe`, { withCredentials: true })
+    axios
+      .get(`${config.API_URL}/api/recipe`, { withCredentials: true })
       .then((response) => {
-        updateRecipes(response.data)
-        updateFetching(false)
+        updateRecipes(response.data);
+        updateFetching(false);
       })
       .catch(() => {
-        console.log('Fetching failed')
-      })
-  }, [])
+        console.log("Fetching failed");
+      });
+  }, []);
 
   if (fetching) {
-    return <p>Loading . . .</p>
+    return <p>Loading . . .</p>;
   }
 
   return (
     <div className="App">
-      <NavBar onLogout={handleLogout} user={user} onSignUp={handleSignUp} error={error} onLogIn={handleLogIn}/>
+      <NavBar
+        onLogout={handleLogout}
+        user={user}
+        onSignUp={handleSignUp}
+        error={error}
+        onLogIn={handleLogIn}
+      />
       <Switch>
         <Route
           path="/signup"
           render={(routeProps) => {
-            return <SignUpRandom {...routeProps} />;
+            return (
+              <SignUpRandom
+                user={user}
+                {...routeProps}
+                onHandleFriend={handleAddAFriend}
+                randomUser={randomUser}
+                friend={friend}
+                updateUser={updateUser}
+                onHandleRecipe={handleAddARecipe}
+                recipe={recipe}
+                randomRecipe={randomRecipe}
+              />
+            );
           }}
         />
-        <Route exact path='/recipes' render={() => { return <AllRecipes recipes={recipes} /> }} />
-        <Route exact path='/recipe-details/:recipeId' render={(routeProps) => {
-          return <RecipeDetails recipes={recipes} {...routeProps} />
-        }} />
-        <Route exact path='/recipe-detail/:id' render={(routeProps) => {
-          return <RecipeDetails recipes={recipes} {...routeProps} />
-        }} />
+        <Route
+          path="/timeline"
+          render={(routeProps) => {
+            return <Timeline user={user} updateUser={updateUser} recipes={recipes} {...routeProps} 
+              updateRecipe={updateRecipes} 
+            />;
+          }}
+        />
+        <Route
+          exact
+          path="/recipes"
+          render={() => {
+            return <AllRecipes recipes={recipes} />;
+          }}
+        />
+        <Route
+          exact
+          path="/recipe-details/:recipeId"
+          render={(routeProps) => {
+            return <RecipeDetails recipes={recipes} {...routeProps} />;
+          }}
+        />
+        <Route
+          exact
+          path="/recipe-detail/:id"
+          render={(routeProps) => {
+            return <RecipeDetails recipes={recipes} {...routeProps} />;
+          }}
+        />
       </Switch>
     </div>
   );

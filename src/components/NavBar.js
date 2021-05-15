@@ -8,7 +8,10 @@ function NavBar(props) {
   return (
     <div>
       {user ? (
+        <div>
         <button onClick={onLogout} >Log out</button>
+        <Link to={"/timeline"}>Timeline</Link>
+        </div>
       ) : (
         <div>
         <SignUp onSubmit={onSignUp} />

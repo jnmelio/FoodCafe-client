@@ -54,13 +54,10 @@ function SignUp(props) {
         />
       </div>
       <div className="form-group">
-        <label htmlFor="InputUsertype">Usertype</label>
-        <input
-          type="text"
-          className="form-control"
-          id="InputUsertype"
-          name="usertype"
-        />
+        <label for="freeUser">Simple User</label>
+        <input type="radio" name="usertype" value="freeUser"/>
+        <label for="premiumUser">Premium User</label>
+        <input type="radio" name="usertype" value="premiumUser"/>
       </div>
       <div className="form-group">
         <label htmlFor="inputPicture">Picture</label>
