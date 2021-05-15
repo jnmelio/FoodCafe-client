@@ -141,7 +141,7 @@ function App(props) {
       })
       .catch(() => {});
   };
-  const handleAddARecipe = () => {
+  const handleAddMyRecipe = () => {
     axios
       .post(
         `${config.API_URL}/api/addRecipe/${randomRecipe._id}`,
@@ -200,7 +200,7 @@ function App(props) {
                 randomUser={randomUser}
                 friend={friend}
                 updateUser={updateUser}
-                onHandleRecipe={handleAddARecipe}
+                onHandleRecipe={handleAddMyRecipe}
                 recipe={recipe}
                 randomRecipe={randomRecipe}
               />
