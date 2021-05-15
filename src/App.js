@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Switch, Route, withRouter } from "react-router-dom";
+import { Switch, Route, withRouter, Link } from "react-router-dom";
 import Login from "./components/auth/Login";
 import config from "./config";
 import SignUp from "./components/auth/SignUp";
@@ -9,6 +9,7 @@ import NavBar from "./components/NavBar";
 import AllRecipes from "./components/recipes/AllRecipes";
 import RecipeDetails from "./components/recipes/RecipeDetails";
 import Timeline from "./components/profile/Timeline";
+import AddForm from "./components/recipes/AddForm";
 
 function App(props) {
   const [error, updateError] = useState(null);
@@ -185,6 +186,8 @@ function App(props) {
         error={error}
         onLogIn={handleLogIn}
       />
+            <Link to='/recipes'>Recipes</Link>
+      <Link to='/add-a-recipe'>Add recipe</Link>
       <Switch>
         <Route
           path="/signup"
@@ -233,6 +236,14 @@ function App(props) {
             return <RecipeDetails recipes={recipes} {...routeProps} />;
           }}
         />
+                <Route exact path='/recipes' render={() => { return <AllRecipes recipes={recipes} /> }} />
+        <Route exact path='/add-a-recipe' render={() => { return <AddForm recipes={recipes} /> }} />
+        <Route exact path='/recipe-details/:recipeId' render={(routeProps) => {
+          return <RecipeDetails recipes={recipes} {...routeProps} />
+        }} />
+        <Route exact path='/recipe-detail/:id' render={(routeProps) => {
+          return <RecipeDetails recipes={recipes} {...routeProps} />
+        }} />
       </Switch>
     </div>
   );
