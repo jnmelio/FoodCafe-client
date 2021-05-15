@@ -45,7 +45,10 @@ function RecipeDetails(props) {
 
         <div>
             <Link to={`/recipe-details/${recipeId}`}>Random recipe</Link>
-
+            <Link to={`/edit-a-recipe/${recipe._id}`}>
+                <button>Edit</button>
+            </Link>
+            <button >Delete</button>
             <h4>{recipe.name}</h4>
             <div><img src={recipe.picture} alt={recipe.name}></img></div>
             <div><b>Description:</b> {recipe.description}</div> <br></br>
@@ -65,7 +68,7 @@ function RecipeDetails(props) {
             <div> <b>Created By:</b> {recipe.created_by}</div>
             <div> <b>Country :</b> {recipe.country}</div>
             <div> <b>Category :</b> {recipe.category}</div>
-            <Link to={`/recipe/${recipe._id}/edit`}>
+            <Link to={`/edit-a-recipe/${recipe._id}`}>
                 <button>Edit</button>
             </Link>
             <button >Delete</button>

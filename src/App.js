@@ -1,15 +1,17 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Switch, Route, withRouter, Link } from "react-router-dom";
-import Login from "./components/auth/Login";
+// import Login from "./components/auth/Login";
+// import HomePage from "./components/Home";
 import config from "./config";
-import SignUp from "./components/auth/SignUp";
-import SignUpRandom from "./components/auth/SignUpRandom";
+// import SignUp from "./components/auth/SignUp";
+import SignUpRandom from "./components/SignUpRandom";
 import NavBar from "./components/NavBar";
-import AllRecipes from "./components/recipes/AllRecipes";
+import AllRecipes from './components/recipes/AllRecipes';
 import RecipeDetails from "./components/recipes/RecipeDetails";
 import Timeline from "./components/profile/Timeline";
 import AddForm from "./components/recipes/AddForm";
+import EditForm from "./components/recipes/EditForm";
 
 function App(props) {
   const [error, updateError] = useState(null);
@@ -21,8 +23,8 @@ function App(props) {
   const [recipe, updateRecipe] = useState(null);
   const [randomRecipe, updateRandomRecipe] = useState([]);
   const [randomUser, updateRandomUser] = useState([]);
-
-
+  const [ingredients, updateIngredients] = useState([]);
+  const [trueFalse, updateTrueFalse] = useState(null)
 
   useEffect(() => {
     axios
@@ -30,12 +32,10 @@ function App(props) {
       .then((response) => {
         updateUser(response.data);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
-  // useEffect(() => {
-  //   props.history.push("/profile");
-  // }, [user, error]);
+
 
   useEffect(() => {
     if (redirection === "signup") {
@@ -45,7 +45,7 @@ function App(props) {
     } else if (redirection === "timeline") {
       props.history.push("/timeline");
     }
-  }, [redirection]);
+  }, [props.history, redirection]);
 
   const handleLogIn = (event) => {
     event.preventDefault();
@@ -155,10 +155,12 @@ function App(props) {
       })
       .catch(() => {});
   };
+  // -----------------------------------------------****************************--------------------------
+  // RECIPES HANDLERS
   // will run when the recipes are updated
   // useEffect(() => {
   //   props.history.push('/recipes')
-  // }, [recipes])
+  // },)
 
   // loading all the recipes from database
   useEffect(() => {
@@ -173,10 +175,86 @@ function App(props) {
       });
   }, []);
 
+  // handling new recipe____________
+  let ingredientArr = []
+  const handleRadio = (event) => {
+    let value = true;
+    if (typeof event.currentTarget.value === 'string') {
+      (event.currentTarget.value === 'true' ? value = true : value = false);
+    }
+    updateTrueFalse(value);
+  }
+  const handleAddRecipe = (e) => {
+    e.preventDefault()
+    let picture = e.target.imageUrl.files[0]
+
+    let formData = new FormData()
+    formData.append('imageUrl', picture)
+    axios.post(`${config.API_URL}/api/upload`, formData)
+      .then((response) => {
+        console.log(response.data)
+        return axios.post(`${config.API_URL}/api/recipe/add`, {
+          name: e.target.name.value,
+          ingredients,
+          instructions: e.target.instructions.value,
+          youtube: e.target.youtube.value,
+          picture: response.data.picture,
+          description: e.target.description.value,
+          cookingTime: Number(e.target.cookingTime.value),
+          difficulty: e.target.difficulty.value,
+          country: e.target.country.value,
+          category: e.target.category.value,
+          vegetarian: trueFalse,
+          created_by: user._id
+        }, { withCredentials: true })
+
+      })
+
+      .then((result) => {
+        console.log(result.data)
+        updateRecipes([result.data, ...recipes])
+
+      }).catch((err) => {
+        console.log(err)
+      });
+
+
+  }
+
+  const handleOnChange = (e) => {
+    e.preventDefault()
+    let input = e.target.value
+    ingredientArr.push(input.split(','))
+    updateIngredients(ingredientArr[(ingredientArr.length - 1)])
+  };
+
+  // const handleUpdate = (recipe) => {
+  //   axios.patch(`${config.API_URL}/api/recipe/${recipe._id}`, {
+  //     name: recipe.name,
+  //     description: recipe.description,
+  //     completed: recipe.completed,
+  //   }, { withCredentials: true })
+  //     .then(() => {
+  //       let newRecipes = recipes.map((singleRecipe) => {
+  //         if (recipe._id === singleRecipe._id) {
+  //           singleRecipe.name = recipe.name
+  //           singleRecipe.description = recipe.description
+  //         }
+  //         return singleRecipe
+  //       })
+  //       updateRecipes(newRecipes)
+  //     })
+  //     .catch((err) => {
+  //       console.log('Edit failed', err)
+  //     })
+
+  // }
+
+  // -------------------------------------------------**********************------------------------------------
+  // -------------------------------------------------**********************------------------------------------
   if (fetching) {
     return <p>Loading . . .</p>;
   }
-
   return (
     <div className="App">
       <NavBar
@@ -237,13 +315,14 @@ function App(props) {
           }}
         />
                 <Route exact path='/recipes' render={() => { return <AllRecipes recipes={recipes} /> }} />
-        <Route exact path='/add-a-recipe' render={() => { return <AddForm recipes={recipes} /> }} />
+                <Route exact path='/add-a-recipe' render={() => { return <AddForm onRadio={handleRadio} recipes={recipes} onChange={handleOnChange} onSubmit={handleAddRecipe} /> }} />
         <Route exact path='/recipe-details/:recipeId' render={(routeProps) => {
           return <RecipeDetails recipes={recipes} {...routeProps} />
         }} />
-        <Route exact path='/recipe-detail/:id' render={(routeProps) => {
-          return <RecipeDetails recipes={recipes} {...routeProps} />
+        <Route exact path='/edit-a-recipe/:id' render={(routeProps) => {
+          return <EditForm recipes={recipes} onRadio={handleRadio} onChange={handleOnChange} {...routeProps} />
         }} />
+
       </Switch>
     </div>
   );

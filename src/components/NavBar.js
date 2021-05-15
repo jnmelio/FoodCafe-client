@@ -7,6 +7,8 @@ function NavBar(props) {
   const { user, onLogout, onSignUp, error, onLogIn } = props;
   return (
     <div>
+      <Link to='/recipes'>Recipes</Link>
+      <Link to='/add-a-recipe'>Add recipe</Link>
       {user ? (
         <div>
         <button onClick={onLogout} >Log out</button>
@@ -14,8 +16,8 @@ function NavBar(props) {
         </div>
       ) : (
         <div>
-        <SignUp onSubmit={onSignUp} />
-        <Login error={error} onLogIn={onLogIn} />
+          <SignUp onSubmit={onSignUp} />
+          <Login error={error} onLogIn={onLogIn} />
         </div>
       )}
     </div>
