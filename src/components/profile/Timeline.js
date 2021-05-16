@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Switch, Route, withRouter } from "react-router-dom";
+import { Switch, Route, withRouter, Link } from "react-router-dom";
 import config from "../../config";
 
 
@@ -45,6 +45,7 @@ function Timeline(props) {
           </div>
         );
       })}
+      <Link to='/users'>Access all users</Link>
     </div>
   );
 }

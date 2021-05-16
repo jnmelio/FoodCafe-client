@@ -13,6 +13,7 @@ import Timeline from "./components/profile/Timeline";
 import AddForm from "./components/recipes/AddForm";
 import EditForm from "./components/recipes/EditForm";
 import ChatPage from "./components/chat/ChatPage";
+import Users from "./components/profile/Users";
 
 function App(props) {
   //STATES
@@ -27,6 +28,7 @@ function App(props) {
   const [randomUser, updateRandomUser] = useState([]);
   const [ingredients, updateIngredients] = useState([]);
   const [trueFalse, updateTrueFalse] = useState(null);
+  const [allUsers, updateAllUsers] = useState([])
 
   //FIRST USEEFFECT
   useEffect(() => {
@@ -135,7 +137,7 @@ function App(props) {
       .catch(() => {});
   }, []);
 
-  //ADD A FRIEND AFTER SIGNUP
+  //ADD A FRIEND 
   const handleAddAFriend = () => {
     axios
       .post(
@@ -166,6 +168,18 @@ function App(props) {
       .catch(() => {});
   };
 
+  //SHOW ALL USERS FROM DB
+  useEffect(() => {
+    axios
+      .get(`${config.API_URL}/api/users`, { withCredentials: true })
+      .then((response) => {
+        updateAllUsers(response.data);
+        updateFetching(false);
+      })
+      .catch(() => {
+        console.log("Fetching failed");
+      });
+  }, []);
   // -----------------------------------------------****************************--------------------------
   // RECIPES HANDLERS
   // will run when the recipes are updated
@@ -277,6 +291,7 @@ function App(props) {
         onSignUp={handleSignUp}
         error={error}
         onLogIn={handleLogIn}
+ 
       />
       <Link to="/recipes">Recipes</Link>
       <Link to="/add-a-recipe">Add recipe</Link>
@@ -313,6 +328,11 @@ function App(props) {
             );
           }}
         />
+        <Route path='/users' render={(routeProps)=>{
+          return (
+            <Users allUsers={allUsers} user={user} updateUser={updateUser} onAddaFriend={handleAddAFriend}/>
+          )
+        }}/>
         <Route
           exact
           path="/recipes"

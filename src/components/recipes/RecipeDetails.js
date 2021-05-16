@@ -10,6 +10,7 @@ function RecipeDetails(props) {
   const { recipes, user, updateUser } = props;
   let random = Math.floor(Math.random() * props.recipes.length);
   let recipeId = recipes[random]._id;
+  
   useEffect(() => {
     let recipeId = props.match.params.recipeId;
     if (recipeId) {
@@ -41,10 +42,13 @@ function RecipeDetails(props) {
   }, [props.match.params.recipeId]);
 
   const handleAddRecipeToList = () => {
-    let recipeId = props.match.params.id;
+    let id = props.match.params.recipeId
+    console.log("props", props.match)
+    console.log('id', id)
+    console.log('recipeId', props.match.params.recipeId)
     axios
       .post(
-        `${config.API_URL}/api/recipe/${recipeId}`,
+        `${config.API_URL}/api/recipe/${id}`,
         {},
         { withCredentials: true }
       )
