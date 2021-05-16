@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -17,9 +17,10 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import { Avatar, Paper } from '@material-ui/core';
-import { Fastfood, FastfoodOutlined, FastfoodRounded, FastfoodSharp } from '@material-ui/icons';
-import NavBar from '../NavBar';
+import { Avatar, Button, Card, CardActions, CardContent, CardMedia, GridList, GridListTile, TextField } from '@material-ui/core';
+import { AccountCircle, AccountCircleOutlined, FastfoodSharp, Home, HomeRounded, People, Settings } from '@material-ui/icons';
+import { Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -84,6 +85,7 @@ export default function Profile(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    const [myrecipe, updateMyRecipe] = useState(false)
     const { user, onLogout, onSignUp, error, onLogIn, recipes } = props;
     console.log(props)
 
@@ -94,7 +96,10 @@ export default function Profile(props) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-
+    const handleRecipe = () => {
+        console.log('changing to true', user.recipe)
+        updateMyRecipe(true)
+    }
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -102,19 +107,16 @@ export default function Profile(props) {
                 position="fixed"
                 className={clsx(classes.appBar, {
                     [classes.appBarShift]: open,
-                })}
-            >
+                })}>
                 <Toolbar>
                     <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        className={clsx(classes.menuButton, open && classes.hide)}
-                    >
-
+                        color="inherit" aria-label="open drawer" onClick={handleDrawerOpen} edge="start" className={clsx(classes.menuButton, open && classes.hide)}>
                         <MenuIcon /></IconButton>
-                    <Avatar /> <h3> {user.firstName} {user.lastName}</h3>({user.usertype})
+                    <AccountCircleOutlined /> <h3> {user.firstName} {user.lastName}</h3>({user.usertype})
+                    <Link to={'/'} >
+                        <ListItemIcon> <HomeRounded />  </ListItemIcon>
+                        <ListItemText primary='Home' />
+                    </Link>
 
 
                     <Typography variant="h6" noWrap>
@@ -138,41 +140,44 @@ export default function Profile(props) {
                 </div>
                 <Divider />
                 <List>
-
                     <ListItem button >
-                        <ListItemIcon> <Avatar />  </ListItemIcon>
+                        <ListItemIcon> <People />  </ListItemIcon>
                         <ListItemText primary='Friends' />
                     </ListItem>
                     <Divider />
                     <ListItem button >
                         <ListItemIcon> <FastfoodSharp />  </ListItemIcon>
-                        <ListItemText primary='Recipes' />
+                        <ListItemText onClick={handleRecipe} primary='Recipes' />
+                    </ListItem>
+                    <Divider />
+                    <ListItem button >
+                        <ListItemIcon> <Settings />  </ListItemIcon>
+                        <ListItemText primary='Settings' />
                     </ListItem>
 
                 </List>
-
-
             </Drawer>
             <main
                 className={clsx(classes.content, {
                     [classes.contentShift]: open,
-                })}
-            >
+                })}>
                 <div className={classes.drawerHeader} />
+                {myrecipe ? (<section style={{ width: '100%', display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+                    {user.recipe.map((recipe) => {
+                        return <div style={{ maxWidth: '300px', margin: '20px', border: 'solid', padding: '20px' }} >
+                            <div >
+                                <h3>{recipe.name}</h3>
+                                <img style={{ maxWidth: '260px' }}
+                                    alt={recipe.name} src={recipe.picture} />
+                                <p>{recipe.description}</p>
+
+                            </div>
+                        </div>
+                    })
+                    }
+                </section>) : <p>Hello</p>}
 
             </main>
-            <section>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-                facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-                gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-                donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-                adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-                Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-                imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-                arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-                donec massa sapien faucibus et molestie ac.
-                    </section>
             <aside >
                 <List >
                     <ListItem>

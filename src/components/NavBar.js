@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
 //NAVBAR COMES FROM APP.JS
 function NavBar(props) {
   const classes = useStyles();
-  const { user, onLogout, onSignUp, error, onLogIn, recipes } = props;
-  let recipeId = ''
+  const { user, onLogout, onSignUp, error, onLogIn } = props;
+
 
   return (
     <div>
@@ -32,8 +32,7 @@ function NavBar(props) {
             <Button color="inherit" >  <Link to='/recipes'>Recipes</Link> </Button> </IconButton>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <Button color="inherit" >   <Link to='/add-a-recipe'>Add recipe</Link></Button></IconButton>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <Button color="inherit" >    <Link to={`/recipe-details/${recipeId}`}>Random recipe</Link></Button></IconButton>
+
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <Button color="inherit" >  <Link to="/chatroom">Access the chat room</Link></Button></IconButton>
 

@@ -8,12 +8,12 @@ import { Card, CardHeader, CardMedia } from '@material-ui/core'
 //RECIPE DETAILS COMES FROM A LINK IN ALLRECIPES.JS AND A ROUTE IN APP.JS
 function RecipeDetails(props) {
 
-    const [recipe, updateRecipe] = useState({})
+    const [recipe, updateRecipe] = useState(null)
     const [fetching, updateFetching] = useState(true)
-    const { recipes, onDelete } = props
+    const { recipes, onDelete, user, updateUser } = props
 
 
-    console.log(props.match.params)
+    console.log(recipe)
     useEffect(() => {
         let recipeId = props.match.params.recipeId
         if (recipeId) {
@@ -46,6 +46,27 @@ function RecipeDetails(props) {
         return <p>Loading ...</p>
     }
 
+    const handleAddRecipeToList = () => {
+        let id = props.match.params.recipeId
+        console.log("props", props.match)
+        console.log('id', id)
+        console.log('recipeId', props.match.params.recipeId)
+        axios
+            .post(
+                `${config.API_URL}/api/recipe/${id}`,
+                {},
+                { withCredentials: true }
+            )
+            .then((response) => {
+                console.log("handle add recipe", response.data);
+                updateUser(response.data);
+            })
+            .catch(() => { });
+    };
+    // const { onDelete, user } = props
+    if (fetching) {
+        return <p>Loading ...</p>;
+    }
 
     return (
         <div className='container'>
@@ -84,7 +105,7 @@ function RecipeDetails(props) {
                 <div><b>Dificulty:<i> {recipe.difficulty}</i></b></div>
                 <div>Video Instructions: <a href={recipe.youtube}>Click for video</a></div>
                 <div> <b>Instructions:</b> {recipe.instructions}</div>
-                <div> <b>Created By:</b> {recipe.created_by}</div>
+                <div> {recipe.created_by && <p> <b>Created By:</b> {recipe.created_by.username}</p>}</div>
                 <div> <b>Country :</b> {recipe.country}</div>
                 <div> <b>Category :</b> {recipe.category}</div>
 

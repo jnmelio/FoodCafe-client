@@ -12,8 +12,8 @@ import { FormControl, FormControlLabel, FormLabel, InputLabel, Radio, RadioGroup
 // EDIT FORM COMES FROM A LINK IN RECIPE DETAILS.JS + A ROUTE IN APP.JS
 function EditForm(props) {
     const [fetching, updateFetching] = useState(true);
-    const [recipe, updateRecipe] = useState({})
-    const { onEdit, onChange, onRadio, user, trueFalse } = props;
+    // const [recipe, updateRecipe] = useState({})
+    const { onEdit, updateRecipe, recipe, onChange, onRadio, user, trueFalse } = props;
 
 
     useEffect(() => {
@@ -30,7 +30,7 @@ function EditForm(props) {
             .catch(() => {
                 console.log("Detail fecth failed");
             });
-    }, []);
+    }, [props.match.params.recipeId, updateRecipe]);
 
     const handleNameChange = (event) => {
         console.log(event.target.value)
@@ -40,12 +40,6 @@ function EditForm(props) {
 
         updateRecipe(cloneRecipe)
         console.log(recipe)
-    }
-    const handleIngredients = (event) => {
-        let array = event.target.value
-        let cloneRecipe = JSON.parse(JSON.stringify(recipe))
-        cloneRecipe.ingredients = array
-        updateRecipe(cloneRecipe)
     }
     const handleInstructions = (event) => {
         let text = event.target.value
@@ -77,12 +71,7 @@ function EditForm(props) {
         cloneRecipe.cookingTime = text
         updateRecipe(cloneRecipe)
     }
-    const HandleDifficultyChange = (event) => {
-        let text = event.target.value
-        let cloneRecipe = JSON.parse(JSON.stringify(recipe))
-        cloneRecipe.difficulty = text
-        updateRecipe(cloneRecipe)
-    }
+
     const handleCountryChange = (event) => {
         let text = event.target.value
         let cloneRecipe = JSON.parse(JSON.stringify(recipe))
@@ -90,6 +79,7 @@ function EditForm(props) {
         updateRecipe(cloneRecipe)
     }
     const handleCategoryChange = (event) => {
+        console.log(event.target)
         let text = event.target.value
         let cloneRecipe = JSON.parse(JSON.stringify(recipe))
         cloneRecipe.category = text
@@ -110,14 +100,14 @@ function EditForm(props) {
 
             <div className='forms'>
                 <h1>Edit this Recipe</h1>
-                <TextField id="outlined-basic" label="Name" variant="outlined" name="name" type="text" onChange={handleNameChange} value={recipe.name} />
+                <TextField className='post' label="Name" variant="outlined" name="name" type="text" onChange={handleNameChange} value={recipe.name} />
                 <br />
                 <br />
                 <TextField id="outlined-multiline-static" rows={4} multiline variant="outlined"
                     multiple={true}
                     label="Ingredients"
                     name="ingredient"
-                    onChange={handleIngredients} value={recipe.ingredients}
+                    onChange={props.onType} defaultValue={recipe.ingredients}
                 />
                 <br />
                 <br />
@@ -159,7 +149,6 @@ function EditForm(props) {
                     placeholder="cooking time in minutes, eg.60"
 
                 />
-
                 <br />
                 <br />
                 <FormControl variant="outlined" >
@@ -171,9 +160,9 @@ function EditForm(props) {
                             name: 'age',
                             id: 'outlined-age-native-simple',
                         }}>
-                        <option name="difficulty" onChange={HandleDifficultyChange} value="Easy"> Easy</option>
-                        <option name="difficulty" onChange={HandleDifficultyChange} value="Medium"> Medium </option>
-                        <option name="difficulty" onChange={HandleDifficultyChange} value="Hard"> Hard </option>
+                        <option name="difficulty" onChange={handleCategoryChange} defaultValue="Easy"> Easy</option>
+                        <option name="difficulty" onChange={handleCategoryChange} defaultValue="Medium"> Medium </option>
+                        <option name="difficulty" onClick={handleCategoryChange} defaultValue="Hard"> Hard </option>
                     </Select>
                 </FormControl>
                 <br />
@@ -188,14 +177,14 @@ function EditForm(props) {
                         native
                         label="Category"
                         inputProps={{
-                            name: 'age',
+                            name: 'category',
                             id: 'outlined-age-native-simple',
                         }}>
-                        <option onChange={handleCategoryChange} value="Main Course">Main Course</option>
-                        <option onChange={handleCategoryChange} value="Seafood">Seafood</option>
-                        <option onChange={handleCategoryChange} value="Breakfast">Breakfast</option>
+                        <option onChange={handleCategoryChange} onClick={onRadio} value="Main Course">Main Course</option>
+                        <option onChange={handleCategoryChange} onClick={onRadio} value="Seafood">Seafood</option>
+                        <option onChange={handleCategoryChange} onClick={onRadio} value="Breakfast">Breakfast</option>
                         <option onChange={handleCategoryChange} value="Side dish">Side dish</option>
-                        <option onChange={handleCategoryChange} value="Dessert">Dessert</option>
+                        <option onClick={handleCategoryChange} name='category' defaultValue="Dessert">Dessert</option>
                     </Select>
                 </FormControl>
                 <br />
@@ -208,7 +197,7 @@ function EditForm(props) {
                             control={<Radio color="primary" />}
                             label="Yes"
                             labelPlacement="start"
-
+                            onClick={onRadio}
                             type="radio"
                             name="vegetarian"
                             onChange={handleVegetarianChange}
@@ -216,12 +205,12 @@ function EditForm(props) {
 
                         <FormControlLabel type="radio"
                             name="vegetarian"
-                            onChange={handleVegetarianChange} value="false" control={<Radio color="primary" />}
+                            onChange={handleVegetarianChange} onClick={onRadio} value="false" control={<Radio color="primary" />}
                             labelPlacement="start" label="No" />
                     </RadioGroup>
                 </FormControl>
                 <br />
-                <button onCLick={() => { onEdit(recipe) }} > Update</button>
+                <button onClick={onEdit} > Update</button>
 
             </div>
         </div >
