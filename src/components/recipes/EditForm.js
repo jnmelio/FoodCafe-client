@@ -8,6 +8,8 @@ import { FormControl, FormControlLabel, FormLabel, InputLabel, Radio, RadioGroup
 
 
 
+
+// EDIT FORM COMES FROM A LINK IN RECIPE DETAILS.JS + A ROUTE IN APP.JS
 function EditForm(props) {
     const [fetching, updateFetching] = useState(true);
     const [recipe, updateRecipe] = useState({})
@@ -28,7 +30,7 @@ function EditForm(props) {
             .catch(() => {
                 console.log("Detail fecth failed");
             });
-    }, [props.match.params.recipeId]);
+    }, []);
 
     const handleNameChange = (event) => {
         console.log(event.target.value)

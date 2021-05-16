@@ -3,15 +3,17 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import config from '../../config'
-import { Card, CardHeader, CardMedia, IconButton } from '@material-ui/core'
+import { Card, CardHeader, CardMedia } from '@material-ui/core'
 
+//RECIPE DETAILS COMES FROM A LINK IN ALLRECIPES.JS AND A ROUTE IN APP.JS
 function RecipeDetails(props) {
 
     const [recipe, updateRecipe] = useState({})
     const [fetching, updateFetching] = useState(true)
     const { recipes, onDelete } = props
-    let random = Math.floor(Math.random() * props.recipes.length)
-    let recipeId = recipes[random]._id
+
+
+    console.log(props.match.params)
     useEffect(() => {
         let recipeId = props.match.params.recipeId
         if (recipeId) {
@@ -25,7 +27,9 @@ function RecipeDetails(props) {
                 })
         }
         else {
-            axios.get(`${config.API_URL}/api/recipe/${recipeId}`, { withCredentials: true })
+            let random = Math.floor(Math.random() * props.recipes.length)
+            let recId = recipes[random]._id
+            axios.get(`${config.API_URL}/api/recipe/${recId}`, { withCredentials: true })
                 .then((response) => {
                     console.log(response)
                     updateRecipe(response.data)
@@ -41,6 +45,7 @@ function RecipeDetails(props) {
     if (fetching) {
         return <p>Loading ...</p>
     }
+
 
     return (
         <div className='container'>
@@ -88,5 +93,4 @@ function RecipeDetails(props) {
     )
 }
 
-
-export default RecipeDetails
+export default RecipeDetails;

@@ -12,3 +12,11 @@ a {
 .forms textarea {
   width: 30vmax;
 }
+header {
+  width: fit-content;
+}
+aside {
+  width: 250px;
+  background: skyblue;
+  height: 85ch;
+}

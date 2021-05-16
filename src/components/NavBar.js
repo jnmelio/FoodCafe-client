@@ -18,27 +18,45 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+//NAVBAR COMES FROM APP.JS
 function NavBar(props) {
   const classes = useStyles();
-  const { user, onLogout, onSignUp, error, onLogIn } = props;
+  const { user, onLogout, onSignUp, error, onLogIn, recipes } = props;
+  let recipeId = ''
+
   return (
     <div>
       <AppBar position="static">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <Button color="inherit" >  <Link to='/recipes'>Recipes</Link> </Button>
-            <Button color="inherit" >   <Link to='/add-a-recipe'>Add recipe</Link></Button>
-          </IconButton>
-          <IconButton edge="end" className={classes.grow} color="inherit" >
-            {user ? (
-              <Button color="inherit" onClick={onLogout} >Log out</Button>
-            ) : (
-              <div>
-                <SignUp onSubmit={onSignUp} />
-                <Login error={error} onLogIn={onLogIn} />
-              </div>
-            )}
-          </IconButton>
+            <Button color="inherit" >  <Link to='/recipes'>Recipes</Link> </Button> </IconButton>
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <Button color="inherit" >   <Link to='/add-a-recipe'>Add recipe</Link></Button></IconButton>
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <Button color="inherit" >    <Link to={`/recipe-details/${recipeId}`}>Random recipe</Link></Button></IconButton>
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <Button color="inherit" >  <Link to="/chatroom">Access the chat room</Link></Button></IconButton>
+
+
+          {user ? (
+            <>
+              <IconButton edge="start" className={classes.menuButton} color="inherit" >
+                <Button> <Link to={"/timeline"}>Timeline</Link> </Button>
+              </IconButton>
+              <IconButton edge="end" className={classes.menuButton} color="inherit" >
+                <Button onClick={onLogout} >Log out</Button>
+              </IconButton>
+              <IconButton edge="start" className={classes.menuButton} color="inherit" >
+                <Button ><Link to={`/profile/${user.username}`}>Profile</Link></Button>
+              </IconButton>
+            </>
+          ) : (
+            <div>
+              <SignUp onSubmit={onSignUp} />
+              <Login error={error} onLogIn={onLogIn} />
+            </div>
+          )}
+
         </Toolbar>
       </AppBar>
     </div >
