@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import config from '../../config'
+import { Card, CardHeader, CardMedia, IconButton } from '@material-ui/core'
 
 function RecipeDetails(props) {
 
     const [recipe, updateRecipe] = useState({})
     const [fetching, updateFetching] = useState(true)
-    const { recipes } = props
+    const { recipes, onDelete } = props
     let random = Math.floor(Math.random() * props.recipes.length)
     let recipeId = recipes[random]._id
     useEffect(() => {
@@ -42,37 +43,48 @@ function RecipeDetails(props) {
     }
 
     return (
+        <div className='container'>
+            <Card style={{
+                maxWidth: 700
+            }}>
+                <Link to={`/edit-a-recipe/${recipe._id}`}>
+                    <button>Edit</button>
+                </Link>
+                <button onClick={() => { onDelete(recipe._id) }}>Delete</button>
 
-        <div>
-            <Link to={`/recipe-details/${recipeId}`}>Random recipe</Link>
-            <Link to={`/edit-a-recipe/${recipe._id}`}>
-                <button>Edit</button>
-            </Link>
-            <button >Delete</button>
-            <h4>{recipe.name}</h4>
-            <div><img src={recipe.picture} alt={recipe.name}></img></div>
-            <div><b>Description:</b> {recipe.description}</div> <br></br>
-            <div>{recipe.vegetarian && <b>Vegetarian</b>} </div>
-            <div><b>Ingredients:</b>
-                {
-                    recipe?.ingredients.map((ingredient, i) => {
-                        return <ul key={i}>
-                            <li>{ingredient}</li>
-                        </ul>
-                    })
-                } </div>
-            <div> <b>Cooking Time:</b> {recipe.cookingTime} min</div>
-            <div><b>Dificulty:<i> {recipe.difficulty}</i></b></div>
-            <div>Video Instructions: <a href={recipe.youtube}>Click for video</a></div>
-            <div> <b>Instructions:</b> {recipe.instructions}</div>
-            <div> <b>Created By:</b> {recipe.created_by}</div>
-            <div> <b>Country :</b> {recipe.country}</div>
-            <div> <b>Category :</b> {recipe.category}</div>
-            <Link to={`/edit-a-recipe/${recipe._id}`}>
-                <button>Edit</button>
-            </Link>
-            <button >Delete</button>
-        </div>
+                <CardHeader
+
+                    title={recipe.name}
+                    subheader={recipe.vegetarian && <b>Vegetarian</b>}
+                />
+                <CardMedia
+                    style={{
+                        height: '0',
+                        paddingTop: '56.25%',
+                    }}
+                    image={recipe.picture}
+                    title={recipe.name}
+                />
+                <div><b>Description:</b> {recipe.description}</div> <br></br>
+                <div>{recipe.vegetarian && <b>Vegetarian</b>} </div>
+                <div><b>Ingredients:</b>
+                    {
+                        recipe?.ingredients.map((ingredient, i) => {
+                            return <ul key={i}>
+                                <li>{ingredient}</li>
+                            </ul>
+                        })
+                    } </div>
+                <div> <b>Cooking Time:</b> {recipe.cookingTime} min</div>
+                <div><b>Dificulty:<i> {recipe.difficulty}</i></b></div>
+                <div>Video Instructions: <a href={recipe.youtube}>Click for video</a></div>
+                <div> <b>Instructions:</b> {recipe.instructions}</div>
+                <div> <b>Created By:</b> {recipe.created_by}</div>
+                <div> <b>Country :</b> {recipe.country}</div>
+                <div> <b>Category :</b> {recipe.category}</div>
+
+            </Card>
+        </div >
     )
 }
 

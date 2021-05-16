@@ -1,3 +1,4 @@
+import { TextareaAutosize } from '@material-ui/core'
 import React from 'react'
 
 function AddForm(props) {
@@ -11,8 +12,9 @@ function AddForm(props) {
                 <input name='name' type='text' /><br />
                 <label>Ingredients</label>
                 <input multiple={true} name='ingredient' onChange={onChange} /><br />
-                <label>Instructions</label>
-                <input name='instructions' type='text' /><br />
+                <label>Instructions</label><br />
+                <TextareaAutosize aria-label="maximum height" rowsMin={5} rowsMax={5} placeholder="Instructions" name='instructions' type='text' />
+                <br />
                 <label>Video instruction</label>
                 <input name='youtube' type='text' /><br />
 

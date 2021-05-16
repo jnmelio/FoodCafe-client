@@ -1,73 +1,14 @@
-.App {
-  text-align: center;
+a {
+  text-decoration: none;
+  color: inherit;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
-
-.App-link {
-  color: #61dafb;
+.forms input,
+.forms select,
+.forms textarea {
+  width: 30vmax;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-.modal {
-  font-size: 12px;
- }
- .modal > .header {
-  width: 100%;
-  border-bottom: 1px solid gray;
-  font-size: 18px;
-  text-align: center;
-  padding: 5px;
- }
- .modal > .content {
-  width: 100%;
-  padding: 10px 5px;
- }
- .modal > .actions {
-  margin: auto;
- }
- .modal > .actions {
-  width: 100%;
-  padding: 10px 5px;
-  text-align: center;
- }
- .modal > .close {
-  cursor: pointer;
-  position: absolute;
-  display: block;
-  padding: 2px 5px;
-  line-height: 20px;
-  right: -10px;
-  top: -10px;
-  font-size: 24px;
-  background: #ffffff;
-  border-radius: 18px;
-  border: 1px solid #cfcece;
- }

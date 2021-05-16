@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
-import RecipeDetails from "./RecipeDetails";
 import axios from "axios";
 import config from "../../config";
+import { FormControl, FormControlLabel, FormLabel, InputLabel, Radio, RadioGroup, Select, TextField } from "@material-ui/core";
+
+
+
+
+
 
 function EditForm(props) {
     const [fetching, updateFetching] = useState(true);
+    const [recipe, updateRecipe] = useState({})
+    const { onEdit, onChange, onRadio, user, trueFalse } = props;
 
-    const { onChange, onUpdate, onRadio } = props;
-    const [recipe, updateRecipe] = useState({});
 
     useEffect(() => {
-        let recipeId = props.match.params.id;
+        let recipeId = props.match.params.recipeId;
 
         axios
             .get(`${config.API_URL}/api/recipe/${recipeId}`, {
@@ -23,112 +28,201 @@ function EditForm(props) {
             .catch(() => {
                 console.log("Detail fecth failed");
             });
-    }, []);
+    }, [props.match.params.recipeId]);
 
-    const myInput = () => {
-        return recipe.name
+    const handleNameChange = (event) => {
+        console.log(event.target.value)
+        let text = event.target.value
+        let cloneRecipe = JSON.parse(JSON.stringify(recipe))
+        cloneRecipe.name = text
+
+        updateRecipe(cloneRecipe)
+        console.log(recipe)
     }
+    const handleIngredients = (event) => {
+        let array = event.target.value
+        let cloneRecipe = JSON.parse(JSON.stringify(recipe))
+        cloneRecipe.ingredients = array
+        updateRecipe(cloneRecipe)
+    }
+    const handleInstructions = (event) => {
+        let text = event.target.value
+        let cloneRecipe = JSON.parse(JSON.stringify(recipe))
+        cloneRecipe.instructions = text
+        updateRecipe(cloneRecipe)
+    }
+    const handleVideoChange = (event) => {
+        let text = event.target.value
+        let cloneRecipe = JSON.parse(JSON.stringify(recipe))
+        cloneRecipe.youtube = text
+        updateRecipe(cloneRecipe)
+    }
+    const handlePictureChange = (event) => {
+        let text = event.target.value
+        let cloneRecipe = JSON.parse(JSON.stringify(recipe))
+        cloneRecipe.picture = text
+        updateRecipe(cloneRecipe)
+    }
+    const handleDecriptionChange = (event) => {
+        let text = event.target.value
+        let cloneRecipe = JSON.parse(JSON.stringify(recipe))
+        cloneRecipe.description = text
+        updateRecipe(cloneRecipe)
+    }
+    const handleCookingTime = (event) => {
+        let text = event.target.value
+        let cloneRecipe = JSON.parse(JSON.stringify(recipe))
+        cloneRecipe.cookingTime = text
+        updateRecipe(cloneRecipe)
+    }
+    const HandleDifficultyChange = (event) => {
+        let text = event.target.value
+        let cloneRecipe = JSON.parse(JSON.stringify(recipe))
+        cloneRecipe.difficulty = text
+        updateRecipe(cloneRecipe)
+    }
+    const handleCountryChange = (event) => {
+        let text = event.target.value
+        let cloneRecipe = JSON.parse(JSON.stringify(recipe))
+        cloneRecipe.country = text
+        updateRecipe(cloneRecipe)
+    }
+    const handleCategoryChange = (event) => {
+        let text = event.target.value
+        let cloneRecipe = JSON.parse(JSON.stringify(recipe))
+        cloneRecipe.category = text
+        updateRecipe(cloneRecipe)
+    }
+    const handleVegetarianChange = (event) => {
+        let text = event.target.value
+        let cloneRecipe = JSON.parse(JSON.stringify(recipe))
+        cloneRecipe.vegetarian = text
+        updateRecipe(cloneRecipe)
+    }
+
     if (fetching) {
-        return <p>Loading ...</p>;
+        return <p>Loading</p>
     }
-
     return (
-        <div>
-            <h1>Edit this Recipe</h1>
-            <form onSubmit={onUpdate}>
-                <label>Name</label>
-                <input name="name" type="text" ref={myInput} />
+        <div className='container'>
+
+            <div className='forms'>
+                <h1>Edit this Recipe</h1>
+                <TextField id="outlined-basic" label="Name" variant="outlined" name="name" type="text" onChange={handleNameChange} value={recipe.name} />
                 <br />
-                <label>Ingredients</label>
-                <input
+                <br />
+                <TextField id="outlined-multiline-static" rows={4} multiline variant="outlined"
                     multiple={true}
+                    label="Ingredients"
                     name="ingredient"
-                    onChange={onChange}
-                    value={recipe.ingredients}
+                    onChange={handleIngredients} value={recipe.ingredients}
                 />
                 <br />
-                <label>Instructions</label>
-                <input name="instructions" value={recipe.instructions} type="text" />
                 <br />
-                <label>Video instruction</label>
-                <input name="youtube" value={recipe.youtube} type="text" />
+                <TextField id="outlined-multiline-static" rows={4} multiline variant="outlined" label="Instructions" name="instructions" onChange={handleInstructions} value={recipe.instructions} type="text" />
+                <br />
+                <br />
+                <TextField id="outlined-basic" label="Video instruction" variant="outlined" name="youtube" onChange={handleVideoChange} value={recipe.youtube} type="text" />
                 <br />
                 <label>Recipe Picture</label>
                 <br />
                 <input
                     type="file"
-                    value={recipe.imageUrl}
+                    onChange={handlePictureChange} value={recipe.imageUrl}
                     name="imageUrl"
                     accept="image/png, image/jpg"
                 />{" "}
                 <br />
-                <label>Decription</label>
-                <input
+                <br />
+                <TextField id="outlined-multiline-static" rows={4} multiline variant="outlined"
+                    label="description"
                     name="description"
                     type="textarea"
                     multiple={true}
-                    value={recipe.description}
+                    onChange={handleDecriptionChange} value={recipe.description}
                 />
                 <br />
-                <label>Cooking Time</label>
-                <input
+                <br />
+
+                <TextField
+                    id="outlined-number"
+                    label="Cooking Time in minutes, eg.60"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
                     name="cookingTime"
-                    value={recipe.cookingTime}
+                    onChange={handleCookingTime} value={recipe.cookingTime}
                     type="number"
                     placeholder="cooking time in minutes, eg.60"
+
                 />
-                <span>min</span>
+
                 <br />
-                <label>Difficulty</label>
-                <select name="difficulty">
-                    <option name="difficulty" value="Easy">
-                        Easy
-          </option>
-                    <option name="difficulty" value="Medium">
-                        Medium
-          </option>
-                    <option name="difficulty" value="Hard">
-                        Hard
-          </option>
-                </select>
                 <br />
-                <label>Country</label>
-                <input name="country" value={recipe.country} type="text" />
+                <FormControl variant="outlined" >
+                    <InputLabel htmlFor="outlined-age-native-simple">Difficulty</InputLabel>
+                    <Select
+                        native
+                        label="Difficulty"
+                        inputProps={{
+                            name: 'age',
+                            id: 'outlined-age-native-simple',
+                        }}>
+                        <option name="difficulty" onChange={HandleDifficultyChange} value="Easy"> Easy</option>
+                        <option name="difficulty" onChange={HandleDifficultyChange} value="Medium"> Medium </option>
+                        <option name="difficulty" onChange={HandleDifficultyChange} value="Hard"> Hard </option>
+                    </Select>
+                </FormControl>
                 <br />
-                <label>Category</label>
-                <select name="category">
-                    <option value="Main Course">Main Course</option>
-                    <option value="Seafood">Seafood</option>
-                    <option value="Breakfast">Breakfast</option>
-                    <option value="Side dish">Side dish</option>
-                    <option value="Dessert">Dessert</option>
-                </select>
                 <br />
-                <label>Vegetarian ? </label>
-                <label>
-                    {" "}
-                    <input
-                        type="radio"
-                        name="vegetarian"
-                        value="true"
-                        onChange={onRadio}
-                    />
-          Yes
-        </label>
-                <label>
-                    <input
-                        type="radio"
-                        name="vegetarian"
-                        value="false"
-                        onChange={onRadio}
-                    />
-          No
-        </label>
+
+                <TextField id="outlined-basic" label="Country" variant="outlined" name="country" onChange={handleCountryChange} value={recipe.country} type="text" />
                 <br />
-                <button type="submit"> submit</button>
-            </form>
-        </div>
+                <br />
+                <FormControl variant="outlined" >
+                    <InputLabel htmlFor="outlined-age-native-simple">Category</InputLabel>
+                    <Select
+                        native
+                        label="Category"
+                        inputProps={{
+                            name: 'age',
+                            id: 'outlined-age-native-simple',
+                        }}>
+                        <option onChange={handleCategoryChange} value="Main Course">Main Course</option>
+                        <option onChange={handleCategoryChange} value="Seafood">Seafood</option>
+                        <option onChange={handleCategoryChange} value="Breakfast">Breakfast</option>
+                        <option onChange={handleCategoryChange} value="Side dish">Side dish</option>
+                        <option onChange={handleCategoryChange} value="Dessert">Dessert</option>
+                    </Select>
+                </FormControl>
+                <br />
+
+                <FormControl component="fieldset">
+                    <FormLabel component="legend">Vegetarian</FormLabel>
+                    <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                        <FormControlLabel
+                            value="true"
+                            control={<Radio color="primary" />}
+                            label="Yes"
+                            labelPlacement="start"
+
+                            type="radio"
+                            name="vegetarian"
+                            onChange={handleVegetarianChange}
+                        />
+
+                        <FormControlLabel type="radio"
+                            name="vegetarian"
+                            onChange={handleVegetarianChange} value="false" control={<Radio color="primary" />}
+                            labelPlacement="start" label="No" />
+                    </RadioGroup>
+                </FormControl>
+                <br />
+                <button onCLick={() => { onEdit(recipe) }} > Update</button>
+
+            </div>
+        </div >
     );
 }
-
 export default EditForm;
