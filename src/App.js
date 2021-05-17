@@ -175,7 +175,6 @@ function App(props) {
     axios
       .get(`${config.API_URL}/api/users`, { withCredentials: true })
       .then((response) => {
-        console.log(response)
         updateAllUsers(response.data);
         updateFetching(false);
       })
@@ -202,7 +201,7 @@ function App(props) {
   //CREATE A RECIPE
   let ingredientArr = [];
   const handleRadio = (event) => {
-    let value = true;
+    let value = event;
     if (typeof event.currentTarget.value === "string") {
       event.currentTarget.value === "true" ? (value = true) : (value = false);
     }
@@ -215,7 +214,7 @@ function App(props) {
     formData.append('imageUrl', picture)
     axios.post(`${config.API_URL}/api/upload`, formData)
       .then((response) => {
-        console.log(response.data);
+
         return axios.post(
           `${config.API_URL}/api/recipe/add`,
           {
@@ -249,8 +248,10 @@ function App(props) {
   const handleOnChange = (e) => {
     e.preventDefault();
     let input = e.target.value;
-    ingredientArr.push(input.split(","));
-    updateIngredients(ingredientArr[ingredientArr.length - 1]);
+    if (input) {
+      ingredientArr.push(input.split(","));
+      updateIngredients(ingredientArr[ingredientArr.length - 1]);
+    }
   };
   // edit the damn recipe 
   // will run when the recipes are updated
@@ -258,7 +259,7 @@ function App(props) {
 
 
   const handleUpdate = () => {
-
+    console.log(recipe.difficulty)
     axios.patch(`${config.API_URL}/api/recipe/${recipe._id}`, {
       name: recipe.name,
       ingredients,
@@ -283,7 +284,7 @@ function App(props) {
           return singleRecipe
         })
         updateRecipes(newRecipes)
-        props.history.push(`/recipes`)
+        props.history.push(`/recipe-details/${recipe._id}`)
       })
       .catch((err) => {
         console.log('Edit failed', err)

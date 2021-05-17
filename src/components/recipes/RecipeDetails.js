@@ -13,7 +13,6 @@ function RecipeDetails(props) {
     const { recipes, onDelete, user, updateUser } = props
 
 
-    console.log(recipe)
     useEffect(() => {
         let recipeId = props.match.params.recipeId
         if (recipeId) {
