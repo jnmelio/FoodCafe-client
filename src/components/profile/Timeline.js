@@ -1,3 +1,4 @@
+import { TextField } from "@material-ui/core";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Switch, Route, withRouter, Link } from "react-router-dom";
@@ -26,8 +27,11 @@ function Timeline(props) {
   }
 
   return (
-    <div>
+    <div className='container'>
       <h1>Timeline</h1>
+      <form>
+        <TextField id="outlined-basic" label="Post Something" variant="outlined" name='message' type='text' ></TextField>
+      </form>
       <p>{user.username}</p>
       {user.myFriends.map((singleFriend) => {
         return (
