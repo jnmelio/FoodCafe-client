@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -21,6 +21,8 @@ import { Avatar, Button, Card, CardActions, CardContent, CardMedia, GridList, Gr
 import { AccountCircle, AccountCircleOutlined, FastfoodSharp, Home, HomeRounded, People, Settings } from '@material-ui/icons';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import config from '../../config'
 
 const drawerWidth = 240;
 
@@ -85,10 +87,25 @@ export default function Profile(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    const [user, updateUser,] = React.useState(null);
     const [myrecipe, updateMyRecipe] = useState(false)
-    const { user, onLogout, onSignUp, error, onLogIn, recipes } = props;
-    console.log(props)
+    const [friends, updateMyFriends] = useState(false)
+    const [fetching, updateFetching] = useState(true);
 
+
+
+    useEffect(() => {
+        axios
+            .get(`${config.API_URL}/api/timeline`, { withCredentials: true })
+            .then((response) => {
+
+                updateUser(response.data);
+                updateFetching(false);
+            })
+            .catch(() => {
+                console.log("Fetching failed");
+            });
+    }, [updateFetching, updateUser]);
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -97,8 +114,19 @@ export default function Profile(props) {
         setOpen(false);
     };
     const handleRecipe = () => {
-        console.log('changing to true', user.recipe)
-        updateMyRecipe(true)
+        myrecipe ? updateMyRecipe(false) : updateMyRecipe(true)
+
+    }
+    const handleFriends = () => {
+        friends ? updateMyFriends(false) : updateMyFriends(true)
+    }
+    if (fetching) {
+        return <p>Loading . . .</p>;
+    }
+    if (user.myFriends[0].myFriends.includes(user._id)) {
+        console.log("we're pals")
+    } else {
+        console.log('send request')
     }
     return (
         <div className={classes.root}>
@@ -117,7 +145,11 @@ export default function Profile(props) {
                         <ListItemIcon> <HomeRounded />  </ListItemIcon>
                         <ListItemText primary='Home' />
                     </Link>
-
+                    <Link to='/users'>
+                        <ListItemIcon><People />
+                            <ListItemText primary='All Users' />
+                        </ListItemIcon>
+                    </Link>
 
                     <Typography variant="h6" noWrap>
 
@@ -142,7 +174,7 @@ export default function Profile(props) {
                 <List>
                     <ListItem button >
                         <ListItemIcon> <People />  </ListItemIcon>
-                        <ListItemText primary='Friends' />
+                        <ListItemText onClick={handleFriends} primary='Friends' />
                     </ListItem>
                     <Divider />
                     <ListItem button >
@@ -166,9 +198,11 @@ export default function Profile(props) {
                     {user.recipe.map((recipe) => {
                         return <div style={{ maxWidth: '300px', margin: '20px', border: 'solid', padding: '20px' }} >
                             <div >
-                                <h3>{recipe.name}</h3>
-                                <img style={{ maxWidth: '260px' }}
-                                    alt={recipe.name} src={recipe.picture} />
+                                <Link key={recipe._id} to={`/recipe-details/${recipe._id}`}>
+                                    <h3>{recipe.name}</h3>
+                                    <img style={{ maxWidth: '260px' }}
+                                        alt={recipe.name} src={recipe.picture} />
+                                </Link>
                                 <p>{recipe.description}</p>
 
                             </div>
@@ -176,6 +210,22 @@ export default function Profile(props) {
                     })
                     }
                 </section>) : <p>Hello</p>}
+                {friends ? (<section style={{ width: '100%', display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+                    {user.myFriends.map((friend) => {
+                        return <div style={{ maxWidth: '300px', margin: '20px', border: 'inset', padding: '20px' }} >
+                            <div >
+                                <h3>  Name:  {friend.firstName} {friend.lastName}</h3>
+                                {friend.recipe.map((singleRecipe) => {
+                                    return <p>{singleRecipe}</p>
+                                })}
+
+                                <p></p>
+
+                            </div>
+                        </div>
+                    })
+                    }
+                </section>) : <p>My Posts</p>}
 
             </main>
             <aside >

@@ -365,8 +365,11 @@ function App(props) {
         <Route
           exact path="/profile/:username"
           render={(routeProps) => {
-            return (<Profile user={user} updateUser={updateUser} recipes={recipes}
-              {...routeProps} updateRecipe={updateRecipes} />);
+            return (<Profile user={user}
+              updateUser={updateUser}
+              recipes={recipes}
+              {...routeProps}
+              updateRecipe={updateRecipes} />);
           }} />
         <Route exact path="/chatroom"
           render={(routeProps) => {
