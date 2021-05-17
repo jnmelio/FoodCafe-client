@@ -101,10 +101,10 @@ class ChatPage extends Component {
                 <div
                   key={val._id}
                   className="messageContainer"
-                  id={val.sender.name == user.name ? "You" : "Other"}
+                  id={val.sender.username == user.username ? "You" : "Other"}
                 >
                   <div className="messageIndividual">
-                    {val.sender.name}: {val.message}
+                    {val.sender.username}: {val.message}
                   </div>
                 </div>
               );

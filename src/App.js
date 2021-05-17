@@ -14,6 +14,7 @@ import AddForm from "./components/recipes/AddForm";
 import EditForm from "./components/recipes/EditForm";
 import ChatPage from "./components/chat/ChatPage";
 import Users from "./components/profile/Users";
+import UserList from "./components/chat/UserList"
 
 function App(props) {
   //STATES
@@ -29,6 +30,7 @@ function App(props) {
   const [ingredients, updateIngredients] = useState([]);
   const [trueFalse, updateTrueFalse] = useState(null);
   const [allUsers, updateAllUsers] = useState([])
+  const [users, updateUsers] = useState([])
 
   //FIRST USEEFFECT
   useEffect(() => {
@@ -37,6 +39,7 @@ function App(props) {
       .then((response) => {
         updateUser(response.data);
         updateFetching(false);
+        fetchUsers()
       })
       .catch(() => {});
   }, []);
@@ -152,6 +155,18 @@ function App(props) {
       })
       .catch(() => {});
   };
+  //talk to a friend
+  const fetchUsers = () =>{
+    axios.get(`${config.API_URL}/api/users`, {withCredentials: true})
+      .then((response) => {
+          console.log(response.data)
+          updateUsers(response.data)
+      })
+      .catch((err) => {
+        console.log("user not logged in")
+      });
+  }
+
   //ADD A RECIPE AFTER SIGN UP
   const handleAddMyRecipe = () => {
     axios
@@ -293,6 +308,7 @@ function App(props) {
         onLogIn={handleLogIn}
  
       />
+      <Link to="/userList">Users list</Link>
       <Link to="/recipes">Recipes</Link>
       <Link to="/add-a-recipe">Add recipe</Link>
       <Switch>
@@ -405,9 +421,16 @@ function App(props) {
         />
         <Route
           exact
-          path="/chatroom"
+          path="/chat/:chatId"
           render={(routeProps) => {
-            return <ChatPage {...routeProps} />;
+            return <ChatPage user={user} {...routeProps} />;
+          }}
+        />
+        <Route
+          exact
+          path="/userList"
+          render={(routeProps) => {
+            return <UserList user={user} users={users} {...routeProps} />;
           }}
         />
       </Switch>

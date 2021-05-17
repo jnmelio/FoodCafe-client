@@ -11,7 +11,6 @@ function NavBar(props) {
     <div>
       <Link to="/recipes">Recipes</Link>
       <Link to="/add-a-recipe">Add recipe</Link>
-      <Link to="/chatroom">Access the chat room</Link>
       {user ? (
         <div>
           <button onClick={onLogout}>Log out</button>
