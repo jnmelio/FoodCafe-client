@@ -21,3 +21,10 @@ aside {
   background: skyblue;
   height: 85ch;
 }
+.logo {
+  width: 900px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+}

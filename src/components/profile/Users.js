@@ -9,7 +9,7 @@ function Users(props) {
  
   return (
     <div>
-      {allUsers.map((singleUser) => {
+      {/* {allUsers.map((singleUser) => {
         return (
           <div>
             <p>{singleUser.username}</p>
@@ -22,7 +22,7 @@ function Users(props) {
             </button>
           </div>
         );
-      })}
+      })} */}
     </div>
   );
 }

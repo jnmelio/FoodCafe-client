@@ -3,7 +3,6 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Switch, Route, withRouter, Link } from "react-router-dom";
 import Login from "./components/auth/Login";
-import HomePage from "./components/Home";
 import config from "./config";
 import SignUp from "./components/auth/SignUp";
 import SignUpRandom from "./components/auth/SignUpRandom";
@@ -18,6 +17,8 @@ import './App.css'
 import Profile from "./components/profile/Profile";
 import Users from "./components/profile/Users";
 import UserList from "./components/chat/UserList"
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import Home from "./components/home/Home";
 
 function App(props) {
   //STATES
@@ -35,10 +36,12 @@ function App(props) {
   const [allUsers, updateAllUsers] = useState([])
   const [users, updateUsers] = useState([])
 
-  //FIRST USEEFFECT
+
+  //FIRST USE EFFECT
   useEffect(() => {
     axios.get(`${config.API_URL}/api/user`, { withCredentials: true })
       .then((response) => {
+        console.log('response', response.data)
         updateUser(response.data);
         updateFetching(false);
         fetchUsers()
@@ -69,6 +72,7 @@ function App(props) {
     axios
       .post(`${config.API_URL}/api/login`, newUser, { withCredentials: true })
       .then((response) => {
+        console.log(response.data)
         updateUser(response.data);
         updateError(null);
         updateRedirection("timeline");
@@ -142,7 +146,7 @@ function App(props) {
       .catch(() => { });
   }, []);
 
-  //ADD A FRIEND 
+  //ADD A FRIEND AFTER SIGN UP
   const handleAddAFriend = () => {
     axios
       .post(
@@ -157,6 +161,23 @@ function App(props) {
       })
       .catch(() => { });
   };
+    //ADD A FRIEND ANYTIME
+    const handleAddAnotherFriend = (singleUser) => {
+      axios
+        .post(
+          `${config.API_URL}/api/addFriend/${singleUser._id}`,
+          {},
+          { withCredentials: true }
+        )
+        .then((response) => {
+          let updatedUser = response.data
+          console.log("yay", singleUser._id);
+          console.log('user', user)
+          // updateFriend(true);
+          updateUser(updatedUser);
+        })
+        .catch(() => { });
+    };
   //talk to a friend
   const fetchUsers = () =>{
     axios.get(`${config.API_URL}/api/users`, {withCredentials: true})
@@ -332,7 +353,7 @@ function App(props) {
     return <p>Loading . . .</p>;
   }
   return (
-    <div className="App">
+<div className="App">
       <NavBar
         onLogout={handleLogout}
         user={user}
@@ -341,10 +362,14 @@ function App(props) {
         onLogIn={handleLogIn}
         recipes={recipes}
       />
-      <Link to="/userList">Users list</Link>
-      <Link to="/recipes">Recipes</Link>
-      <Link to="/add-a-recipe">Add recipe</Link>
+      <div>
+        <img src="/logo-without-background.png" class="logo"></img>
+      </div>
       <Switch>
+      <Route exact path='/' render={(routeProps) => {
+            return (<Home user={user} {...routeProps}
+              recipes={recipes}  />);
+          }} />
         <Route
           path="/signup"
           render={(routeProps) => {
@@ -366,11 +391,6 @@ function App(props) {
             );
           }}
         />
-        <Route path='/users' render={(routeProps) => {
-          return (
-            <Users allUsers={allUsers} user={user} updateUser={updateUser} onAddaFriend={handleAddAFriend} />
-          )
-        }} />
         <Route
           exact
           path="/recipes"
@@ -403,7 +423,7 @@ function App(props) {
           exact
           path="/userList"
           render={(routeProps) => {
-            return <UserList user={user} users={users} {...routeProps} />;
+            return <UserList user={user} users={users} updateUser={updateUser} onAddaFriend={handleAddAnotherFriend} {...routeProps} />;
           }}
         />
                 <Route exact path='/add-a-recipe' render={() => {
@@ -412,6 +432,7 @@ function App(props) {
         }} />
       </Switch>
     </div>
+    
   );
 }
 

@@ -33,10 +33,11 @@ function Timeline(props) {
         <TextField id="outlined-basic" label="Post Something" variant="outlined" name='message' type='text' ></TextField>
       </form>
       <p>{user.username}</p>
+      <h3>My Friends</h3>
       {user.myFriends.map((singleFriend) => {
         return (
           <div>
-            <h3>My Friends</h3>
+
             <p>{singleFriend.username}</p>
           </div>
         );

@@ -34,7 +34,7 @@ function NavBar(props) {
             <Button color="inherit" >   <Link to='/add-a-recipe'>Add recipe</Link></Button></IconButton>
 
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <Button color="inherit" >  <Link to="/chatroom">Access the chat room</Link></Button></IconButton>
+            <Button color="inherit" >  <Link to="/userList">Check all users</Link></Button></IconButton>
 
 
           {user ? (

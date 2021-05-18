@@ -11,7 +11,10 @@ function RecipeDetails(props) {
     const [recipe, updateRecipe] = useState(null)
     const [fetching, updateFetching] = useState(true)
     const { recipes, onDelete, user, updateUser } = props
-
+    let newRecipe = []
+    user.recipe.map((singleRecipe)=>{
+        newRecipe.push(singleRecipe)
+    })
 
     console.log(recipe)
     useEffect(() => {
@@ -48,6 +51,7 @@ function RecipeDetails(props) {
 
     const handleAddRecipeToList = () => {
         let id = props.match.params.recipeId
+
         console.log("props", props.match)
         console.log('id', id)
         console.log('recipeId', props.match.params.recipeId)
@@ -63,16 +67,20 @@ function RecipeDetails(props) {
             })
             .catch(() => { });
     };
-    // const { onDelete, user } = props
-    if (fetching) {
-        return <p>Loading ...</p>;
-    }
+
 
     return (
         <div className='container'>
             <Card style={{
                 maxWidth: 700
             }}>
+            {
+                newRecipe.includes(recipe._id) ? (
+                    <p>You already have this recipe in your list</p>
+                ) : (
+                    <button onClick={handleAddRecipeToList}>Add this recipe to my Recipes</button>
+                )
+            }
                 <Link to={`/edit-a-recipe/${recipe._id}`}>
                     <button>Edit</button>
                 </Link>
@@ -110,7 +118,7 @@ function RecipeDetails(props) {
                 <div> <b>Category :</b> {recipe.category}</div>
 
             </Card>
-        </div >
+        </div>
     )
 }
 
