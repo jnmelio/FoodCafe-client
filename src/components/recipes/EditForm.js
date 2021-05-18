@@ -33,11 +33,17 @@ function EditForm(props) {
     }, [props.match.params.recipeId, updateRecipe]);
 
     const handleNameChange = (event) => {
-        console.log(event.target.value)
         let text = event.target.value
         let cloneRecipe = JSON.parse(JSON.stringify(recipe))
         cloneRecipe.name = text
-
+        updateRecipe(cloneRecipe)
+        console.log(recipe)
+    }
+    const handleIngredients = (event) => {
+        let text = event.target.value
+        props.onType(event)
+        let cloneRecipe = JSON.parse(JSON.stringify(recipe))
+        cloneRecipe.ingredients = text
         updateRecipe(cloneRecipe)
         console.log(recipe)
     }
@@ -79,21 +85,23 @@ function EditForm(props) {
         updateRecipe(cloneRecipe)
     }
     const handleCategoryChange = (event) => {
-        console.log(event.target)
+        console.log(event.target.value)
         let text = event.target.value
         let cloneRecipe = JSON.parse(JSON.stringify(recipe))
         cloneRecipe.category = text
         updateRecipe(cloneRecipe)
     }
-    const handleVegetarianChange = (event) => {
+    const handleDifficulty = (event) => {
+        console.log(event.target.value)
         let text = event.target.value
         let cloneRecipe = JSON.parse(JSON.stringify(recipe))
-        cloneRecipe.vegetarian = text
+        cloneRecipe.difficulty = text
         updateRecipe(cloneRecipe)
     }
 
+
     if (fetching) {
-        return <p>Loading</p>
+        return <p>Loading ....</p>
     }
     return (
         <div className='container'>
@@ -107,7 +115,7 @@ function EditForm(props) {
                     multiple={true}
                     label="Ingredients"
                     name="ingredient"
-                    onChange={props.onType} defaultValue={recipe.ingredients}
+                    onChange={handleIngredients} value={recipe.ingredients}
                 />
                 <br />
                 <br />
@@ -154,37 +162,43 @@ function EditForm(props) {
                 <FormControl variant="outlined" >
                     <InputLabel htmlFor="outlined-age-native-simple">Difficulty</InputLabel>
                     <Select
+                        value={recipe.difficulty}
                         native
+                        onChange={handleDifficulty}
                         label="Difficulty"
                         inputProps={{
-                            name: 'age',
+                            name: 'difficulty',
                             id: 'outlined-age-native-simple',
                         }}>
-                        <option name="difficulty" onChange={handleCategoryChange} defaultValue="Easy"> Easy</option>
-                        <option name="difficulty" onChange={handleCategoryChange} defaultValue="Medium"> Medium </option>
-                        <option name="difficulty" onClick={handleCategoryChange} defaultValue="Hard"> Hard </option>
+                        <option value="Easy"> Easy</option>
+                        <option value="Medium"> Medium </option>
+                        <option value="Hard"> Hard </option>
                     </Select>
                 </FormControl>
                 <br />
                 <br />
 
-                <TextField id="outlined-basic" label="Country" variant="outlined" name="country" onChange={handleCountryChange} value={recipe.country} type="text" />
+                <TextField id="outlined-basic"
+                    label="Country" variant="outlined"
+                    name="country" onChange={handleCountryChange}
+                    value={recipe.country} type="text" />
                 <br />
                 <br />
                 <FormControl variant="outlined" >
                     <InputLabel htmlFor="outlined-age-native-simple">Category</InputLabel>
-                    <Select
+                    <Select onChange={handleCategoryChange}
                         native
+                        value={recipe.category}
                         label="Category"
                         inputProps={{
                             name: 'category',
                             id: 'outlined-age-native-simple',
                         }}>
-                        <option onChange={handleCategoryChange} onClick={onRadio} value="Main Course">Main Course</option>
-                        <option onChange={handleCategoryChange} onClick={onRadio} value="Seafood">Seafood</option>
-                        <option onChange={handleCategoryChange} onClick={onRadio} value="Breakfast">Breakfast</option>
-                        <option onChange={handleCategoryChange} value="Side dish">Side dish</option>
-                        <option onClick={handleCategoryChange} name='category' defaultValue="Dessert">Dessert</option>
+                        <option value="Main Course">Main Course</option>
+                        <option value="Seafood">Seafood</option>
+                        <option value="Breakfast">Breakfast</option>
+                        <option value="Side dish">Side dish</option>
+                        <option value="Dessert">Dessert</option>
                     </Select>
                 </FormControl>
                 <br />
@@ -197,15 +211,14 @@ function EditForm(props) {
                             control={<Radio color="primary" />}
                             label="Yes"
                             labelPlacement="start"
-                            onClick={onRadio}
                             type="radio"
                             name="vegetarian"
-                            onChange={handleVegetarianChange}
+                            onChange={onRadio}
                         />
 
                         <FormControlLabel type="radio"
                             name="vegetarian"
-                            onChange={handleVegetarianChange} onClick={onRadio} value="false" control={<Radio color="primary" />}
+                            onChange={onRadio} value="false" control={<Radio color="primary" />}
                             labelPlacement="start" label="No" />
                     </RadioGroup>
                 </FormControl>

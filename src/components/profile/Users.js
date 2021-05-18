@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+// eslint-disable-next-line no-unused-vars
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Switch, Route, withRouter, Link } from "react-router-dom";
@@ -6,7 +8,7 @@ import config from "../../config";
 function Users(props) {
   const { allUsers, onAddaFriend } = props;
 
- 
+
   return (
     <div>
       {/* {allUsers.map((singleUser) => {

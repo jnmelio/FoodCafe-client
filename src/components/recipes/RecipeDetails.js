@@ -16,7 +16,6 @@ function RecipeDetails(props) {
         newRecipe.push(singleRecipe)
     })
 
-    console.log(recipe)
     useEffect(() => {
         let recipeId = props.match.params.recipeId
         if (recipeId) {
