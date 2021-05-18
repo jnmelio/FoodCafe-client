@@ -26,13 +26,12 @@ function NavBar(props) {
 
   return (
     <div>
-      <AppBar position="static">
-        <Toolbar>
+      <AppBar position="static" >
+        <Toolbar style={{ flexDirection: 'row' }}>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <Button color="inherit" >  <Link to='/recipes'>Recipes</Link> </Button> </IconButton>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <Button color="inherit" >   <Link to='/add-a-recipe'>Add recipe</Link></Button></IconButton>
-
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <Button color="inherit" >  <Link to="/chatroom">Access the chat room</Link></Button></IconButton>
 

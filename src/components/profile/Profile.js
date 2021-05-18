@@ -15,11 +15,9 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import { Avatar, Button, Card, CardActions, CardContent, CardMedia, GridList, GridListTile, TextField } from '@material-ui/core';
-import { AccountCircle, AccountCircleOutlined, FastfoodSharp, Home, HomeRounded, People, Settings } from '@material-ui/icons';
-import { Redirect } from 'react-router';
+// import InboxIcon from '@material-ui/icons/MoveToInbox';
+// import { Avatar, Button, Card, CardActions, CardContent, CardMedia, GridList, GridListTile, TextField } from '@material-ui/core';
+import { AccountCircleOutlined, FastfoodSharp, HomeRounded, People, Settings } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import config from '../../config'
@@ -91,6 +89,7 @@ export default function Profile(props) {
     const [myrecipe, updateMyRecipe] = useState(false)
     const [friends, updateMyFriends] = useState(false)
     const [fetching, updateFetching] = useState(true);
+    const [posts, updatePosts] = useState(null);
 
 
 
@@ -106,6 +105,21 @@ export default function Profile(props) {
                 console.log("Fetching failed");
             });
     }, [updateFetching, updateUser]);
+    useEffect(() => {
+        axios
+            .get(`${config.API_URL}/api/timeline`, { withCredentials: true })
+            .then((response) => {
+                updateUser(response.data);
+                return axios.get(`${config.API_URL}/api/posts`, { withCredentials: true })
+            })
+            .then((response) => {
+                updatePosts(response.data.reverse());
+                updateFetching(false);
+            })
+            .catch(() => {
+                console.log("Fetching failed");
+            });
+    }, [updateUser]);
     const handleDrawerOpen = () => {
         setOpen(true);
     };
