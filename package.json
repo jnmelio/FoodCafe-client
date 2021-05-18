@@ -13,6 +13,7 @@
     "react-linkedin-login-oauth2": "^1.0.9",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
+    "react-swipeable-views": "^0.13.9",
     "reactjs-popup": "^2.0.4",
     "socket.io-client": "^4.1.1"
   },

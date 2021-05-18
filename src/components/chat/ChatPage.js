@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import config from "../../config";
 import "./ChatPage.css";
 import io from "socket.io-client";
+import { Button } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 let socket = "";
 
@@ -86,14 +88,14 @@ class ChatPage extends Component {
   render() {
     const { loading, messageList } = this.state;
     const { user } = this.props;
-
+    console.log(user.username)
     if (loading) {
       <p>Loading all messages . . .</p>;
     }
 
     return (
       <div>
-        <h3>You're in the Chat Page </h3>
+        <h3>You're in the Chat Page </h3><Link to={`/profile/${user.username}/friends`}><Button>Back to Friend List</Button></Link>
         <div className="chatContainer">
           <div className="messages">
             {messageList.map((val) => {
@@ -101,10 +103,10 @@ class ChatPage extends Component {
                 <div
                   key={val._id}
                   className="messageContainer"
-                  id={val.sender.name == user.name ? "You" : "Other"}
+                  id={val.sender.username == user.username ? "You" : "Other"}
                 >
                   <div className="messageIndividual">
-                    {val.sender.name}: {val.message}
+                    {val.sender.username}: {val.message}
                   </div>
                 </div>
               );

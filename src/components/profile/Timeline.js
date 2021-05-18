@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 //TIMELINE COMES FROM THE ROUTE IN APP.JS AND THE LINK AFTER SIGNUP IS IN SIGNUPRANDOM.JS // AFTER LOGIN ITS A REDIRECTION IN APP.JS
 function Timeline(props) {
   const classes = useStyles();
-  const { user, updateUser } = props;
+  const { user, updateUser, recipes } = props;
   const [fetching, updateFetching] = useState(true);
   const [posts, updatePosts] = useState([]);
 
@@ -31,12 +31,16 @@ function Timeline(props) {
       })
       .then((response) => {
         updatePosts(response.data.reverse());
-        updateFetching(false);
+        if (response.data[0].user) {
+          updateFetching(false);
+          props.history.push('/timeline')
+        }
+
       })
       .catch(() => {
         console.log("Fetching failed");
       });
-  }, [updateUser]);
+  }, []);
 
   const handleAddPost = (e) => {
     e.preventDefault()
@@ -61,6 +65,7 @@ function Timeline(props) {
         .then((result) => {
           console.log(result.data)
           updatePosts([result.data, ...posts])
+          props.history.push('/')
           props.history.push('/timeline')
         })
         .catch((err) => {
@@ -70,7 +75,7 @@ function Timeline(props) {
       axios.post(`${config.API_URL}/api/new-post`,
         {
           user: user._id,
-          picture: 'https://res.cloudinary.com/silsin/image/upload/v1621247551/t2uj6bnbt6egkkkah874.png',
+          picture: null,
           description: e.target.description.value,
           recipe: e.target.recipe.value
         },
@@ -78,7 +83,9 @@ function Timeline(props) {
       )
         .then((result) => {
           updatePosts([result.data, ...posts])
+          props.history.push('/')
           props.history.push('/timeline')
+
         })
         .catch((err) => {
           console.log(err)
@@ -86,6 +93,7 @@ function Timeline(props) {
     }
 
   };
+
 
   if (fetching) {
     return <p>Loading . . .</p>;
@@ -108,25 +116,25 @@ function Timeline(props) {
         <br />
         <select name='recipe'>
           <option selected value='60a2492bcac81d0e78b8918c'>Choose one of your recipes</option>
-          {user.recipe.map((rec) => {
-            return <option value={rec._id}>{rec.name}</option>
+          {recipes.map((rec) => {
+            return <option key={rec._id} value={rec._id}>{rec.name}</option>
           })}
         </select>
       </form>
+
       {
         posts.map((post) => {
           return (
-            <div className='post '>
-              <Avatar /><b>{post.user.username}</b> <p>{post.description}</p><br />
-              <img src={post.picture} alt='recipe.png' />
+            <div key={post._id} className='post '>
+              <Avatar key={post._id} /><b>{post.user.username}</b> <p>{post.description}</p><br />
+              {post.picture && <img src={post.picture} alt='recipe.png' />}
 
-              {
-                post.recipe &&
-                <p id='recipe-link' >check out this recipe:
+              {post.recipe._id !== "60a2492bcac81d0e78b8918c" ?
+                (post.recipe &&
+                  <p id='recipe-link' >check out this recipe:
                 <Link key={post.recipe._id} to={`/recipe-details/${post.recipe._id}`}>
-                    <h3>{post.recipe.name}</h3>
-                  </Link></p>
-
+                      <h3>{post.recipe.name}</h3>
+                    </Link></p>) : <p>find your recipe here <Link to="/recipes"><b>Recipes</b></Link></p>
               }
             </div>
           );
@@ -136,7 +144,7 @@ function Timeline(props) {
       {
         user.myFriends.map((singleFriend) => {
           return (
-            <div>
+            <div key={singleFriend._id}>
               <p>{singleFriend.username}</p>
             </div>
           );

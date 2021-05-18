@@ -25,13 +25,20 @@ aside {
   background: skyblue;
   height: 85ch;
 }
+.logo {
+  width: 900px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+}
 .post {
   background: #ffffff;
-
+  border: white !important;
   box-shadow: 0px 10px 1px #9bb1d68f, 0 10px 20px #6985c0;
   padding: 10px;
   margin: 10px;
-  border-radius: 5%;
+  border-radius: 8%;
   max-width: 600px;
   width: 100%;
 }
@@ -63,7 +70,7 @@ aside {
   background-color: white;
   max-width: 300px;
   margin: 20px;
-  box-shadow: 0px 10px 1px #9bb1d68f, 0 10px 20px #6985c0;
+  box-shadow: 0px 10px 1px #9bb1d6, 0 10px 20px #9bb1d6;
   border-radius: 6%;
   padding: 20px;
 }
@@ -75,7 +82,7 @@ aside {
   padding: 1%;
 }
 .nav header {
-  background-image: linear-gradient(to bottom, #366feb, #9bb1d6, #6985c0);
+  background-image: linear-gradient(to bottom left, #366feb, #6985c0);
 }
 header a {
   color: #ffffff;
