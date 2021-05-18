@@ -67,8 +67,10 @@ aside {
 .recipeCard {
   max-width: 300px;
   margin: 20px;
-  box-shadow: 0px 10px 1px rgba(78, 135, 173, 0.39),
-    0 10px 20px rgb(1, 126, 105);
+  box-shadow: 0px 10px 1px #9BB1D6
+  ,
+    0 10px 20px #9BB1D6
+    ;
   border-radius: 6%;
   padding: 20px;
 }

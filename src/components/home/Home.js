@@ -8,14 +8,14 @@ function Home(props){
     return (
 <div>
     <p>Description</p>
-    <section style={{ width: '100%', display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+    <section className='allRecipes'>
         {recipes.map((recipe) => {
-          return <div style={{ maxWidth: '300px', margin: '20px', border: 'solid', padding: '20px' }} >
+          return <div className='recipeCard'>
             <div >
               <Link key={recipe._id} to={`/recipe-details/${recipe._id}`}>
-                <h3>{recipe.vegetarian && <span><EcoTwoToneIcon /></span>}{recipe.name}</h3>
+                <h3>{recipe.vegetarian && <span><EcoTwoToneIcon  style={{ color: 'green' }}/></span>}{recipe.name}</h3>
 
-                <img style={{ maxWidth: '260px' }}
+                <img style={{ maxWidth: '260px', maxHeight: '260px', height: '100%' }}
                   alt={recipe.name} src={recipe.picture} />
               </Link>
 
