@@ -108,21 +108,12 @@ function Timeline(props) {
         <br />
         <select name='recipe'>
           <option selected value='60a2492bcac81d0e78b8918c'>Choose one of your recipes</option>
+
           {user.recipe.map((rec) => {
             return <option value={rec._id}>{rec.name}</option>
           })}
         </select>
       </form>
-      <p>{user.username}</p>
-      <h3>My Friends</h3>
-      {user.myFriends.map((singleFriend) => {
-        return (
-          <div>
-
-            <p>{singleFriend.username}</p>
-          </div>
-        );
-      })}
       {user.recipe.map((singleRecipe) => {
         return (
           <div>
@@ -160,17 +151,17 @@ function Timeline(props) {
           );
         })
       }
+      <h3>My Recipes</h3>
       {
         user.recipe.map((singleRecipe) => {
           return (
             <div>
-              <h3>My Recipes</h3>
               <p>{singleRecipe.name}</p>
             </div>
           );
         })
       }
-      <Link to='/users'>Access all users</Link>
+      <Link to='/userList'>Access all users</Link>
     </div >
   );
 }

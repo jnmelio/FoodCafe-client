@@ -14,6 +14,7 @@ function SignUpRandom(props) {
     randomRecipe,
   } = props;
 
+
   return (
     <div>
       <div>

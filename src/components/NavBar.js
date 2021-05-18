@@ -81,7 +81,7 @@ function NavBar(props) {
   const { user, onLogout, onSignUp, error, onLogIn } = props;
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(0);
-
+console.log(user)
   const handleOpen = () => {
     setOpen(true);
   };

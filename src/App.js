@@ -28,7 +28,7 @@ function App(props) {
   const [recipes, updateRecipes] = useState([]);
   const [fetching, updateFetching] = useState(true);
   const [friend, updateFriend] = useState(null);
-  const [recipe, updateRecipe] = useState({});
+  const [recipe, updateRecipe] = useState([]);
   const [randomRecipe, updateRandomRecipe] = useState([]);
   const [randomUser, updateRandomUser] = useState([]);
   const [ingredients, updateIngredients] = useState([]);
@@ -376,7 +376,7 @@ function App(props) {
           render={(routeProps) => {
             return (<SignUpRandom user={user} {...routeProps} onHandleFriend={handleAddAFriend}
               randomUser={randomUser} friend={friend} updateUser={updateUser} onHandleRecipe={handleAddMyRecipe}
-              recipe={recipe} randomRecipe={randomRecipe} />);
+              recipe={recipe} randomRecipe={randomRecipe} fetching={fetching} updateFetching={updateFetching} />);
           }} />
         <Route
           exact path="/timeline"
@@ -396,7 +396,7 @@ function App(props) {
           exact
           path="/recipes"
           render={() => {
-            return <AllRecipes recipes={recipes} />;
+            return <AllRecipes recipes={recipes} user={user}/>;
           }}
         />
         <Route
@@ -409,7 +409,8 @@ function App(props) {
               updateRecipe={updateRecipes} />);
           }} />
           <Route exact path='/recipe-details/:recipeId' render={(routeProps) => {
-          return <RecipeDetails recipes={recipes} updateUser={updateUser} user={user} onDelete={handleDelete}{...routeProps} />
+          return <RecipeDetails recipes={recipes} updateUser={updateUser} user={user} onDelete={handleDelete} redirection={redirection} 
+          updateRedirection={updateRedirection} {...routeProps} />
         }} />
                      <Route exact path='/edit-a-recipe/:recipeId' render={(routeProps) => {
           return <EditForm recipe={recipe} updateRecipe={updateRecipe} onRadio={handleRadio} user={user} ingredients={ingredients}
@@ -427,7 +428,7 @@ function App(props) {
           exact
           path="/userList"
           render={(routeProps) => {
-            return <UserList user={user} users={users} updateUser={updateUser} onAddaFriend={handleAddAnotherFriend} {...routeProps} />;
+            return <UserList user={user} users={users} updateUser={updateUser} onAddaFriend={handleAddAnotherFriend}  fetching={fetching} updateFetching={updateFetching} {...routeProps} />;
           }}
         />
                 <Route exact path='/add-a-recipe' render={() => {

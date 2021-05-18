@@ -159,7 +159,7 @@ export default function Profile(props) {
                         <ListItemIcon> <HomeRounded />  </ListItemIcon>
                         <ListItemText primary='Home' />
                     </Link>
-                    <Link to='/users'>
+                    <Link to='/userList'>
                         <ListItemIcon><People />
                             <ListItemText primary='All Users' />
                         </ListItemIcon>

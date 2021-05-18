@@ -4,7 +4,7 @@ import config from "../../config";
 
 class UserList extends Component {
   handleChatClick = (chatUserId) => {
-    const { user, onAddaFriend } = this.props;
+    const { user} = this.props;
     if (!user) {
       this.props.history.push("/signin");
     } else {
@@ -22,7 +22,7 @@ class UserList extends Component {
   };
 
   render() {
-    const { users, user, onAddaFriend } = this.props;
+    const { users, user, onAddaFriend,fetching, updateFetching } = this.props;
     let newFriend = []
     user.myFriends.map((friend)=>{
         newFriend.push(friend)
@@ -33,6 +33,7 @@ class UserList extends Component {
     if (user) {
       allUsers = users.filter((u) => u._id !== user._id);
     }
+
     return (
       <div>
         {allUsers.map((singleUser) => {
