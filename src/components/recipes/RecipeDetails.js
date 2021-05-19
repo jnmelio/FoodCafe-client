@@ -16,11 +16,15 @@ function RecipeDetails(props) {
     updateUser,
     redirection,
     updateRedirection,
+    userRecipes, updateUserRecipes
   } = props;
-  let newRecipe = [];
+
+  /*let newRecipe = [];
   user.recipe.map((singleRecipe) => {
     newRecipe.push(singleRecipe);
-  });
+  });*/
+
+  console.log(userRecipes)
 
   useEffect(() => {
     let recipeId = props.match.params.recipeId;
@@ -73,6 +77,7 @@ function RecipeDetails(props) {
       .then((response) => {
         console.log("handle add recipe", response.data);
         updateUser(response.data);
+        updateUserRecipes(response.data.recipe)
       })
       .catch(() => {});
   };
@@ -84,7 +89,7 @@ function RecipeDetails(props) {
               maxWidth: 700,
             }}
           >
-            {newRecipe.includes(recipe._id) ? (
+            {userRecipes.includes(recipe._id) ? (
               <p>You already have this recipe in your list</p>
             ) : (
               <button onClick={handleAddRecipeToList}>

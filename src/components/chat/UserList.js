@@ -25,7 +25,7 @@ class UserList extends Component {
     const { users, user, onAddaFriend,fetching, updateFetching } = this.props;
     let newFriend = []
     user.myFriends.map((friend)=>{
-        newFriend.push(friend)
+        newFriend.push(friend._id)
     })
     console.log('newFriend', newFriend);
     // remove yourself if you're signed in
@@ -33,10 +33,11 @@ class UserList extends Component {
     if (user) {
       allUsers = users.filter((u) => u._id !== user._id);
     }
-
+console.log(newFriend)
     return (
       <div>
         {allUsers.map((singleUser) => {
+          console.log('singleuser', singleUser)
           if (newFriend.includes(singleUser._id)) {
             return (
               <div>

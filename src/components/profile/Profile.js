@@ -6,6 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -16,11 +17,11 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 // import InboxIcon from '@material-ui/icons/MoveToInbox';
 // import { Avatar, Button, Card, CardActions, CardContent, CardMedia, GridList, GridListTile, TextField } from '@material-ui/core';
-import { AccountCircleOutlined, FastfoodSharp, People, Settings } from '@material-ui/icons';
+import { AccountCircleOutlined, FastfoodSharp, HomeRounded, People, Settings } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import config from '../../config'
-import { Avatar, Button } from '@material-ui/core';
+import { Avatar, Button, ButtonBase } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -81,34 +82,54 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Profile() {
+export default function MyRecipes(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const [user, updateUser,] = useState(null);
+    const [myrecipe, updateMyRecipe] = useState(false)
+    const [friends, updateMyFriends] = useState(false)
     const [fetching, updateFetching] = useState(true);
-    const [posts, updateMyPosts] = useState([]);
+    const [posts, updatePosts] = useState(null);
+
+    const handleChatClick = (chatUserId) => {
+        const { user, onAddaFriend } = props;
+        if (!user) {
+            props.history.push("/signin");
+        } else {
+            let data = {
+                participants: [chatUserId, user._id],
+            };
+            axios
+                .post(`${config.API_URL}/api/conversation`, data, {
+                    withCredentials: true,
+                })
+                .then((response) => {
+                    props.history.push(`/chat/${response.data._id}`);
+                });
+        }
+    };
 
     useEffect(() => {
         axios
             .get(`${config.API_URL}/api/timeline`, { withCredentials: true })
             .then((response) => {
                 updateUser(response.data);
-
+                updateMyFriends(response.data.myFriends)
                 return axios.get(`${config.API_URL}/api/posts`, { withCredentials: true })
             })
             .then((response) => {
-                updateMyPosts(response.data.reverse())
+                updatePosts(response.data.reverse());
                 updateFetching(false);
             })
             .catch(() => {
                 console.log("Fetching failed");
             });
-    }, []);
-
+    }, [updateUser]);
     const handleDrawerOpen = () => {
         setOpen(true);
     };
+
     const handleDrawerClose = () => {
         setOpen(false);
     };
@@ -116,9 +137,8 @@ export default function Profile() {
     if (fetching) {
         return <p>Loading . . .</p>;
     }
-
     return (
-        <div >
+        <div className={` container`}>
             <CssBaseline />
             <AppBar
                 position="fixed"
@@ -130,10 +150,6 @@ export default function Profile() {
                         color="inherit" aria-label="open drawer" onClick={handleDrawerOpen} edge="start" className={clsx(classes.menuButton, open && classes.hide)}>
                         <MenuIcon /></IconButton>
                     <AccountCircleOutlined /> <h3> {user.firstName} {user.lastName}</h3>({user.usertype})
-                    <Button>
-                        {" "}
-                        <Link to={"/timeline"}>Timeline</Link>{" "}
-                    </Button>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -174,28 +190,31 @@ export default function Profile() {
                     </Link>
                 </List>
             </Drawer>
-            <div className='container'>
-                <h3>My Posts</h3>
-                {
-                    posts.map((post) => {
-                        return (
-                            post.user._id === user._id &&
-                            <div key={post._id} className='post '>
-                                <Avatar key={post._id} /><b>{post.user.username}</b> <p>{post.description}</p><br />
-                                {post.picture && <img src={post.picture} alt='recipe.png' />}
 
-                                {post.recipe._id !== "60a2492bcac81d0e78b8918c" ?
-                                    (post.recipe &&
-                                        <p id='recipe-link' >check out this recipe:
-            <Link key={post.recipe._id} to={`/recipe-details/${post.recipe._id}`}>
-                                                <h3>{post.recipe.name}</h3>
-                                            </Link></p>) : <p>find your recipe here <Link to="/recipes"><b>Recipes</b></Link></p>
-                                }
+            <main
+                className={clsx(classes.content, {
+                    [classes.contentShift]: open,
+                })}>
+                <div className={classes.drawerHeader} />
+                <section style={{ width: '100%', display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+                    {user.recipe.map((recipe) => {
+                        return <div className='recipeCard' >
+                            <div >
+                                <Link key={recipe._id} to={`/recipe-details/${recipe._id}`}>
+                                    <h3>{recipe.name}</h3>
+                                    <img style={{ maxWidth: '260px' }}
+                                        alt={recipe.name} src={recipe.picture} />
+                                </Link>
+                                <p>{recipe.description}</p>
+
                             </div>
-                        );
+                        </div>
                     })
-                }
-            </div>
-        </div >
+                    }
+                </section>
+
+            </main>
+
+        </div>
     );
 }

@@ -26,6 +26,7 @@ function App(props) {
   //STATES
   const [error, updateError] = useState(null);
   const [user, updateUser] = useState(null);
+  const [userRecipes, updateUserRecipes] = useState([])
   const [redirection, updateRedirection] = useState(null);
   const [recipes, updateRecipes] = useState([]);
   const [fetching, updateFetching] = useState(true);
@@ -405,6 +406,7 @@ function App(props) {
             return (
               <Timeline
                 user={user}
+                updateUserRecipes={updateUserRecipes}
                 updateUser={updateUser}
                 recipes={recipes}
                 {...routeProps}
@@ -477,6 +479,8 @@ function App(props) {
                 onDelete={handleDelete}
                 redirection={redirection}
                 updateRedirection={updateRedirection}
+                userRecipes={userRecipes}
+                updateUserRecipes={updateUserRecipes}
                 {...routeProps}
               />
             );
