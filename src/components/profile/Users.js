@@ -11,20 +11,22 @@ function Users(props) {
 
   return (
     <div>
-      {/* {allUsers.map((singleUser) => {
-        return (
-          <div>
-            <p>{singleUser.username}</p>
-            <button
-              onClick={() => {
-                onAddaFriend(singleUser);
-              }}
-            >
-              Add this user as a friend
+      {
+        allUsers.map((singleUser) => {
+          return (
+            <div>
+              <p>{singleUser.username}</p>
+              <button
+                onClick={() => {
+                  onAddaFriend(singleUser);
+                }}
+              >
+                Add this user as a friend
             </button>
-          </div>
-        );
-      })} */}
+            </div>
+          );
+        })
+      }
     </div>
   );
 }

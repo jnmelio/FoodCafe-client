@@ -1,5 +1,6 @@
-#root a {
+.App {
   width: 100%;
+  background-color: #f6f6f6;
 }
 a {
   text-decoration: none;
@@ -32,11 +33,12 @@ aside {
   margin-top: 50px;
 }
 .post {
-  border: outset rgb(177, 231, 252);
-  box-shadow: 5px 5px 10px grey;
+  background: #ffffff;
+  border: white !important;
+  box-shadow: 0px 10px 1px #9bb1d68f, 0 10px 20px #6985c0;
   padding: 10px;
   margin: 10px;
-  border-radius: 5%;
+  border-radius: 8%;
   max-width: 600px;
   width: 100%;
 }
@@ -44,7 +46,7 @@ aside {
   max-width: 600px;
   max-height: 400px;
   width: 100%;
-  border: solid rgb(198, 247, 243);
+  border: solid #6985c0;
 }
 #recipe-link {
   border-left: 6px solid rgb(44, 167, 130);
@@ -65,12 +67,35 @@ aside {
   flex-wrap: wrap;
 }
 .recipeCard {
+  background-color: white;
   max-width: 300px;
   margin: 20px;
-  box-shadow: 0px 10px 1px #9BB1D6
-  ,
-    0 10px 20px #9BB1D6
-    ;
+  box-shadow: 0px 10px 1px #9bb1d6, 0 10px 20px #9bb1d6;
   border-radius: 6%;
   padding: 20px;
+}
+.MuiInputBase-root {
+  background: white;
+}
+.forms {
+  border-radius: 2%;
+  padding: 1%;
+}
+.nav header {
+  background-image: linear-gradient(to bottom left, #366feb, #6985c0);
+}
+header a {
+  color: #ffffff;
+  text-shadow: 1px 1px 1px#000000;
+}
+.nav {
+  display: flex;
+}
+@media (max-width: 800px) {
+  .nav {
+    visibility: hidden;
+  }
+  .phone {
+    visibility: collapse;
+  }
 }

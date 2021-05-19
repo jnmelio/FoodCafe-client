@@ -48,11 +48,10 @@ function a11yProps(index) {
 }
 
 const useStyles = makeStyles((theme) => ({
+
   root: {
     backgroundColor: theme.palette.background.paper,
     width: 500,
-  },
-  root: {
     flexGrow: 1,
   },
   menuButton: {
@@ -98,7 +97,7 @@ console.log(user)
   };
 
   return (
-    <div>
+    <div className='nav phone'>
       <AppBar position="static">
         <Toolbar style={{ flexDirection: "row" }}>
           <IconButton

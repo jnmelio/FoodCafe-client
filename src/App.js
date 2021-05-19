@@ -13,12 +13,14 @@ import Timeline from "./components/profile/Timeline";
 import AddForm from "./components/recipes/AddForm";
 import EditForm from "./components/recipes/EditForm";
 import ChatPage from "./components/chat/ChatPage";
-import './App.css'
+import "./App.css";
 import Profile from "./components/profile/Profile";
 import Users from "./components/profile/Users";
-import UserList from "./components/chat/UserList"
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import UserList from "./components/chat/UserList";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import Home from "./components/home/Home";
+import FriendsList from "./components/profile/FriendsList";
+import MyRecipes from "./components/profile/MyRecipes";
 
 function App(props) {
   //STATES
@@ -33,20 +35,19 @@ function App(props) {
   const [randomUser, updateRandomUser] = useState([]);
   const [ingredients, updateIngredients] = useState([]);
   const [trueFalse, updateTrueFalse] = useState(null);
-  const [allUsers, updateAllUsers] = useState([])
-  const [users, updateUsers] = useState([])
-
+  const [allUsers, updateAllUsers] = useState([]);
+  const [users, updateUsers] = useState([]);
 
   //FIRST USE EFFECT
   useEffect(() => {
-    axios.get(`${config.API_URL}/api/user`, { withCredentials: true })
+    axios
+      .get(`${config.API_URL}/api/user`, { withCredentials: true })
       .then((response) => {
-        console.log('response', response.data)
         updateUser(response.data);
         updateFetching(false);
-        fetchUsers()
+        fetchUsers();
       })
-      .catch(() => { });
+      .catch(() => {});
   }, []);
 
   //USE EFFECT FOR REDIRECTION
@@ -72,7 +73,7 @@ function App(props) {
     axios
       .post(`${config.API_URL}/api/login`, newUser, { withCredentials: true })
       .then((response) => {
-        console.log(response.data)
+        console.log(response.data);
         updateUser(response.data);
         updateError(null);
         updateRedirection("timeline");
@@ -143,7 +144,7 @@ function App(props) {
         updateRandomUser(response.data.randomUser);
         updateFetching(false);
       })
-      .catch(() => { });
+      .catch(() => {});
   }, []);
 
   //ADD A FRIEND AFTER SIGN UP
@@ -159,36 +160,36 @@ function App(props) {
         updateFriend(true);
         updateUser(response.data);
       })
-      .catch(() => { });
+      .catch(() => {});
   };
-    //ADD A FRIEND ANYTIME
-    const handleAddAnotherFriend = (singleUser) => {
-      axios
-        .post(
-          `${config.API_URL}/api/addFriend/${singleUser._id}`,
-          {},
-          { withCredentials: true }
-        )
-        .then((response) => {
-          let updatedUser = response.data
-          console.log("yay", singleUser._id);
-          console.log('user', user)
-          // updateFriend(true);
-          updateUser(updatedUser);
-        })
-        .catch(() => { });
-    };
-  //talk to a friend
-  const fetchUsers = () =>{
-    axios.get(`${config.API_URL}/api/users`, {withCredentials: true})
+  //ADD A FRIEND ANYTIME
+  const handleAddAnotherFriend = (singleUser) => {
+    axios
+      .post(
+        `${config.API_URL}/api/addFriend/${singleUser._id}`,
+        {},
+        { withCredentials: true }
+      )
       .then((response) => {
-          console.log(response.data)
-          updateUsers(response.data)
+        let updatedUser = response.data;
+        console.log("yay", singleUser._id);
+        console.log("user", user);
+        // updateFriend(true);
+        updateUser(updatedUser);
+      })
+      .catch(() => {});
+  };
+  //talk to a friend
+  const fetchUsers = () => {
+    axios
+      .get(`${config.API_URL}/api/users`, { withCredentials: true })
+      .then((response) => {
+        updateUsers(response.data);
       })
       .catch((err) => {
-        console.log("user not logged in")
+        console.log("user not logged in");
       });
-  }
+  };
 
   //ADD A RECIPE AFTER SIGN UP
   const handleAddMyRecipe = () => {
@@ -203,7 +204,7 @@ function App(props) {
         updateRecipe(true);
         updateUser(response.data);
       })
-      .catch(() => { });
+      .catch(() => {});
   };
 
   //SHOW ALL USERS FROM DB
@@ -242,15 +243,15 @@ function App(props) {
       event.currentTarget.value === "true" ? (value = true) : (value = false);
     }
     updateTrueFalse(value);
-  }
+  };
   const handleAddRecipe = (e) => {
-    e.preventDefault()
-    let picture = e.target.imageUrl.files[0]
-    let formData = new FormData()
-    formData.append('imageUrl', picture)
-    axios.post(`${config.API_URL}/api/upload`, formData)
+    e.preventDefault();
+    let picture = e.target.imageUrl.files[0];
+    let formData = new FormData();
+    formData.append("imageUrl", picture);
+    axios
+      .post(`${config.API_URL}/api/upload`, formData)
       .then((response) => {
-
         return axios.post(
           `${config.API_URL}/api/recipe/add`,
           {
@@ -272,12 +273,12 @@ function App(props) {
       })
 
       .then((result) => {
-        console.log(result.data)
-        updateRecipes([result.data, ...recipes])
-        props.history.push("/recipes")
-
-      }).catch((err) => {
-        console.log(err)
+        console.log(result.data);
+        updateRecipes([result.data, ...recipes]);
+        props.history.push("/recipes");
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -289,72 +290,77 @@ function App(props) {
       updateIngredients(ingredientArr[ingredientArr.length - 1]);
     }
   };
-  // edit the damn recipe 
+  // edit the damn recipe
   // will run when the recipes are updated
 
-
-
   const handleUpdate = () => {
-    console.log(recipe.difficulty)
-    axios.patch(`${config.API_URL}/api/recipe/${recipe._id}`, {
-      name: recipe.name,
-      ingredients,
-      instructions: recipe.instructions,
-      youtube: recipe.youtube,
-      picture: recipe.picture,
-      description: recipe.description,
-      cookingTime: Number(recipe.cookingTime),
-      difficulty: recipe.difficulty,
-      country: recipe.country,
-      category: recipe.category,
-      vegetarian: trueFalse,
-      created_by: user._id
-    }, { withCredentials: true })
+    console.log(recipe.difficulty);
+    axios
+      .patch(
+        `${config.API_URL}/api/recipe/${recipe._id}`,
+        {
+          name: recipe.name,
+          ingredients,
+          instructions: recipe.instructions,
+          youtube: recipe.youtube,
+          picture: recipe.picture,
+          description: recipe.description,
+          cookingTime: Number(recipe.cookingTime),
+          difficulty: recipe.difficulty,
+          country: recipe.country,
+          category: recipe.category,
+          vegetarian: trueFalse,
+          created_by: user._id,
+        },
+        { withCredentials: true }
+      )
       .then(() => {
-        console.log(recipe.difficulty)
+        console.log(recipe.difficulty);
         let newRecipes = recipes.map((singleRecipe) => {
           if (recipe._id === singleRecipe._id) {
-            singleRecipe.name = recipe.name
-            singleRecipe.description = recipe.description
+            singleRecipe.name = recipe.name;
+            singleRecipe.description = recipe.description;
           }
-          return singleRecipe
-        })
-        updateRecipes(newRecipes)
-        props.history.push(`/recipe-details/${recipe._id}`)
+          return singleRecipe;
+        });
+        updateRecipes(newRecipes);
+        props.history.push(`/recipe-details/${recipe._id}`);
       })
       .catch((err) => {
-        console.log('Edit failed', err)
-      })
-
-  }
+        console.log("Edit failed", err);
+      });
+  };
   //  --------------------------delete recipe
   const handleDelete = (recipeId) => {
-
     //1. Make an API call to the server side Route to delete that specific todo
-    axios.delete(`${config.API_URL}/api/recipe/${recipeId}`, {}, { withCredentials: true })
+    axios
+      .delete(
+        `${config.API_URL}/api/recipe/${recipeId}`,
+        {},
+        { withCredentials: true }
+      )
       .then(() => {
         // 2. Once the server has successfully created a new todo, update your state that is visible to the user
-        console.log('inside then', recipes)
+        console.log("inside then", recipes);
         let filteredRecipes = recipes.filter((recipe) => {
-          return recipe._id !== recipeId
-        })
-        updateRecipes(filteredRecipes)
-        props.history.push('/recipes')
+          return recipe._id !== recipeId;
+        });
+        updateRecipes(filteredRecipes);
+        props.history.push("/recipes");
       })
       .catch((err) => {
-        console.log('Delete failed', err)
-      })
-  }
+        console.log("Delete failed", err);
+      });
+  };
 
   // -------------------------------------------------**********************------------------------------------
   // -------------------------------------------------**********************------------------------------------
   //LOADING SCREEN
   if (fetching) {
-
     return <p>Loading . . .</p>;
   }
   return (
-<div className="App">
+    <div className="App">
       <NavBar
         onLogout={handleLogout}
         user={user}
@@ -367,19 +373,36 @@ function App(props) {
         <img src="/logo-without-background.png" class="logo"></img>
       </div>
       <Switch>
-      <Route exact path='/' render={(routeProps) => {
-            return (<Home user={user} {...routeProps}
-              recipes={recipes}  />);
-          }} />
+        <Route
+          exact
+          path="/"
+          render={(routeProps) => {
+            return <Home user={user} {...routeProps} recipes={recipes} />;
+          }}
+        />
         <Route
           path="/signup"
           render={(routeProps) => {
-            return (<SignUpRandom user={user} {...routeProps} onHandleFriend={handleAddAFriend}
-              randomUser={randomUser} friend={friend} updateUser={updateUser} onHandleRecipe={handleAddMyRecipe}
-              recipe={recipe} randomRecipe={randomRecipe} fetching={fetching} updateFetching={updateFetching} />);
-          }} />
+            return (
+              <SignUpRandom
+                user={user}
+                {...routeProps}
+                onHandleFriend={handleAddAFriend}
+                randomUser={randomUser}
+                friend={friend}
+                updateUser={updateUser}
+                onHandleRecipe={handleAddMyRecipe}
+                recipe={recipe}
+                randomRecipe={randomRecipe}
+                fetching={fetching}
+                updateFetching={updateFetching}
+              />
+            );
+          }}
+        />
         <Route
-          exact path="/timeline"
+          exact
+          path="/timeline"
           render={(routeProps) => {
             return (
               <Timeline
@@ -396,48 +419,132 @@ function App(props) {
           exact
           path="/recipes"
           render={() => {
-            return <AllRecipes recipes={recipes} user={user}/>;
+            return <AllRecipes recipes={recipes} user={user} />;
           }}
         />
         <Route
-          exact path="/profile/:username"
+          exact
+          path="/profile/:username"
           render={(routeProps) => {
-            return (<Profile user={user}
-              updateUser={updateUser}
-              recipes={recipes}
-              {...routeProps}
-              updateRecipe={updateRecipes} />);
-          }} />
-          <Route exact path='/recipe-details/:recipeId' render={(routeProps) => {
-          return <RecipeDetails recipes={recipes} updateUser={updateUser} user={user} onDelete={handleDelete} redirection={redirection} 
-          updateRedirection={updateRedirection} {...routeProps} />
-        }} />
-                     <Route exact path='/edit-a-recipe/:recipeId' render={(routeProps) => {
-          return <EditForm recipe={recipe} updateRecipe={updateRecipe} onRadio={handleRadio} user={user} ingredients={ingredients}
-            updateIngredients={updateIngredients} onEdit={handleUpdate} onType={handleOnChange}
-            sredirection={redirection} updateRedirection={updateRedirection} {...routeProps} />
-        }} />
-                <Route
+            return (
+              <Profile
+                user={user}
+                updateUser={updateUser}
+                recipes={recipes}
+                {...routeProps}
+                updateRecipe={updateRecipes}
+              />
+            );
+          }}
+        />
+        <Route
+          exact
+          path="/profile/:username/friends"
+          render={(routeProps) => {
+            return (
+              <FriendsList
+                user={user}
+                updateUser={updateUser}
+                recipes={recipes}
+                {...routeProps}
+                updateRecipe={updateRecipes}
+              />
+            );
+          }}
+        />
+        <Route
+          exact
+          path="/profile/:username/recipes"
+          render={(routeProps) => {
+            return (
+              <MyRecipes
+                user={user}
+                updateUser={updateUser}
+                recipes={recipes}
+                {...routeProps}
+                updateRecipe={updateRecipes}
+              />
+            );
+          }}
+        />
+        <Route
+          exact
+          path="/recipe-details/:recipeId"
+          render={(routeProps) => {
+            return (
+              <RecipeDetails
+                recipes={recipes}
+                updateUser={updateUser}
+                user={user}
+                onDelete={handleDelete}
+                redirection={redirection}
+                updateRedirection={updateRedirection}
+                {...routeProps}
+              />
+            );
+          }}
+        />
+        <Route
+          exact
+          path="/edit-a-recipe/:recipeId"
+          render={(routeProps) => {
+            return (
+              <EditForm
+                recipe={recipe}
+                updateRecipe={updateRecipe}
+                onRadio={handleRadio}
+                user={user}
+                ingredients={ingredients}
+                updateIngredients={updateIngredients}
+                onEdit={handleUpdate}
+                onType={handleOnChange}
+                sredirection={redirection}
+                updateRedirection={updateRedirection}
+                {...routeProps}
+              />
+            );
+          }}
+        />
+        <Route
           exact
           path="/chat/:chatId"
           render={(routeProps) => {
             return <ChatPage user={user} {...routeProps} />;
           }}
         />
-                <Route
+        <Route
           exact
           path="/userList"
           render={(routeProps) => {
-            return <UserList user={user} users={users} updateUser={updateUser} onAddaFriend={handleAddAnotherFriend}  fetching={fetching} updateFetching={updateFetching} {...routeProps} />;
+            return (
+              <UserList
+                user={user}
+                users={users}
+                updateUser={updateUser}
+                onAddaFriend={handleAddAnotherFriend}
+                fetching={fetching}
+                updateFetching={updateFetching}
+                {...routeProps}
+              />
+            );
           }}
         />
-                <Route exact path='/add-a-recipe' render={() => {
-          return <AddForm onRadio={handleRadio}
-            recipes={recipes} onChange={handleOnChange} onSubmit={handleAddRecipe} />
-        }} />
+        <Route
+          exact
+          path="/add-a-recipe"
+          render={() => {
+            return (
+              <AddForm
+                onRadio={handleRadio}
+                recipes={recipes}
+                onChange={handleOnChange}
+                onSubmit={handleAddRecipe}
+              />
+            );
+          }}
+        />
       </Switch>
     </div>
-    
   );
 }
 
