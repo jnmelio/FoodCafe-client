@@ -135,7 +135,6 @@ function Timeline(props) {
           </IconButton>
           <Button type="submit">Post</Button>
         </label>
-
         <br />
         <select name="recipe">
           <option selected value="609d02193f52c6553c206e8c">

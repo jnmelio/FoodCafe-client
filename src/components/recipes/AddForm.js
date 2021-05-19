@@ -21,7 +21,7 @@ function AddForm(props) {
         <input name='youtube' type='text' /><br />
 
         <label>Recipe Picture</label><br />
-        <input type="file" name="imageUrl" accept="image/png, image/jpg" />
+        <input type="file" name="imageUrl" accept="image/png, image/jpeg" />
 
         <label>Decription</label>
         <input name='description' type='textarea' multiple={true} /><br />

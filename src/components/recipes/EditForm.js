@@ -130,7 +130,7 @@ function EditForm(props) {
                     type="file"
                     onChange={handlePictureChange} value={recipe.imageUrl}
                     name="imageUrl"
-                    accept="image/png, image/jpg"
+                    accept="image/png, image/jpeg"
                 />{" "}
                 <br />
                 <br />

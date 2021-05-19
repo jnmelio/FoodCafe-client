@@ -86,14 +86,12 @@ export default function FriendsList(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-    const [user, updateUser,] = useState(null);
-    const [myrecipe, updateMyRecipe] = useState(false)
     const [friends, updateMyFriends] = useState(false)
     const [fetching, updateFetching] = useState(true);
-    const [posts, updatePosts] = useState(null);
+    const { user, recipes } = props
 
     const handleChatClick = (chatUserId) => {
-        const { user, onAddaFriend } = props;
+        const { user } = props;
         if (!user) {
             props.history.push("/signin");
         } else {
@@ -114,18 +112,13 @@ export default function FriendsList(props) {
         axios
             .get(`${config.API_URL}/api/timeline`, { withCredentials: true })
             .then((response) => {
-                updateUser(response.data);
                 updateMyFriends(response.data.myFriends)
-                return axios.get(`${config.API_URL}/api/posts`, { withCredentials: true })
-            })
-            .then((response) => {
-                updatePosts(response.data.reverse());
                 updateFetching(false);
             })
             .catch(() => {
                 console.log("Fetching failed");
             });
-    }, [updateUser]);
+    }, []);
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -193,17 +186,24 @@ export default function FriendsList(props) {
 
             <main className='allRecipes'>
                 {friends.map((friend) => {
-                    return <div className='recipeCard allRecipes' >
+                    return <div className='recipeCard ' >
+                        <Button style={{ background: 'lightgreen', }}
+                            onClick={() => { handleChatClick(friend._id); }}>
+                            Chat
+                     </Button>
                         <div >
-                            <h3>  <Avatar /> {friend.firstName} {friend.lastName}</h3>
+                            <h3> <Avatar /> <>{friend.firstName}</><> {friend.lastName}</> </h3>
+                            <h4>{friend.username} recipes:</h4>
                             {friend.recipe.map((singleRecipe) => {
-                                return <p>{singleRecipe}</p>
+                                return recipes.map((rec) => {
+                                    if (rec._id === singleRecipe) {
+                                        return <Link to={`/recipe-details/${rec._id}`}><p style={{ color: '#6985c0' }}>{rec.name}</p></Link>
+                                    }
+                                })
                             })}
                             <div >
 
-                                <Button onClick={() => { handleChatClick(friend._id); }}>
-                                    Chat
-                            </Button>
+
                             </div>
                             <p></p>
 
@@ -213,6 +213,6 @@ export default function FriendsList(props) {
                 }
             </main>
 
-        </div>
+        </div >
     );
 }
