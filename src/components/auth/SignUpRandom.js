@@ -31,7 +31,7 @@ function SignUpRandom(props) {
           <p>You added {randomRecipe.name} to your profile</p>
         )}
 
-        {!friend ? (
+        {!friend? (
           <div>
             <h3>{randomUser.username}</h3>
             <button onClick={onHandleFriend}>

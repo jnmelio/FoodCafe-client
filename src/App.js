@@ -30,7 +30,7 @@ function App(props) {
   const [recipes, updateRecipes] = useState([]);
   const [fetching, updateFetching] = useState(true);
   const [friend, updateFriend] = useState(null);
-  const [recipe, updateRecipe] = useState([]);
+  const [recipe, updateRecipe] = useState(null);
   const [randomRecipe, updateRandomRecipe] = useState([]);
   const [randomUser, updateRandomUser] = useState([]);
   const [ingredients, updateIngredients] = useState([]);
