@@ -1,6 +1,5 @@
 import React from "react";
 
-
 //LOGIN COMES FROM NAVBAR.JS AND THE HANDLE IS IN APP.JS
 function Login(props) {
   const { onLogIn, onError } = props;

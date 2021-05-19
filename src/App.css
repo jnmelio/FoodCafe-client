@@ -21,11 +21,7 @@ a {
 header {
   width: fit-content;
 }
-aside {
-  width: 250px;
-  background: skyblue;
-  height: 85ch;
-}
+
 .logo {
   width: 900px;
   display: block;
@@ -45,9 +41,11 @@ aside {
 }
 .post img {
   max-width: 600px;
-  max-height: 400px;
+  max-height: 350px;
   width: 100%;
+  height: 100%;
   border: solid #6985c0;
+  margin-bottom: 20px;
 }
 #recipe-link {
   border-left: 6px solid rgb(44, 167, 130);
@@ -58,9 +56,7 @@ aside {
 .attach-doc {
   cursor: cell;
 }
-.MuiOutlinedInput-input {
-  width: 500px;
-}
+
 .allRecipes {
   width: 100%;
   display: flex;
@@ -76,6 +72,9 @@ aside {
   padding: 20px;
   width: 100%;
 }
+.MuiOutlinedInput-input {
+  width: 500px;
+}
 .MuiInputBase-root {
   background: white;
 }
@@ -83,23 +82,48 @@ aside {
   border-radius: 2%;
   padding: 1%;
 }
-.nav header {
-  background-image: linear-gradient(to bottom left, #366feb, #6985c0);
-}
-header a {
-  color: #ffffff;
-  text-shadow: 1px 1px 1px#000000;
-}
 .nav {
+  background-image: repeating-linear-gradient(
+    to bottom right,
+    #6985c0,
+    #366feb,
+    #6985c0
+  );
+  text-shadow: 1px 1px 1px#000000;
+  color: #ffffff;
   display: flex;
+  justify-content: space-between;
 }
-@media (max-width: 800px) {
+.phone {
+  width: 100%;
+  background-image: repeating-linear-gradient(
+    to bottom right,
+    #6985c0,
+    #366feb,
+    #6985c0
+  );
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 850px) {
   .nav {
-    visibility: hidden;
+    display: none;
   }
+}
+@media (min-width: 850px) {
   .phone {
-    visibility: collapse;
+    display: none;
   }
+}
+
+.phone a,
+.phone button {
+  color: #ffffff;
+
+  padding: 0;
+  width: 15%;
+  max-height: 55px;
 }
 
 .logo {

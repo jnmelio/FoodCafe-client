@@ -4,7 +4,6 @@ import EcoTwoToneIcon from '@material-ui/icons/EcoTwoTone';
 
 function Home(props) {
   const { recipes } = props
-  console.log(recipes)
   return (
     <div>
 
