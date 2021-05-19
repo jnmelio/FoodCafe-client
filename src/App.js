@@ -289,10 +289,6 @@ function App(props) {
       updateIngredients(ingredientArr[ingredientArr.length - 1]);
     }
   };
-  // edit the damn recipe 
-  // will run when the recipes are updated
-
-
 
   const handleUpdate = () => {
     console.log(recipe.difficulty)
@@ -364,7 +360,7 @@ function App(props) {
         recipes={recipes}
       />
       <div>
-        <img src="/logo-without-background.png" class="logo"></img>
+        <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
       </div>
       <Switch>
         <Route exact path='/' render={(routeProps) => {

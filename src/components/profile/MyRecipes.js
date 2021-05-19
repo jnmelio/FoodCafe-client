@@ -198,7 +198,7 @@ export default function MyRecipes(props) {
                 <div className={classes.drawerHeader} />
                 <section style={{ width: '100%', display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
                     {user.recipe.map((recipe) => {
-                        return <div style={{ maxWidth: '300px', margin: '20px', border: 'solid', padding: '20px' }} >
+                        return <div className='recipeCard' >
                             <div >
                                 <Link key={recipe._id} to={`/recipe-details/${recipe._id}`}>
                                     <h3>{recipe.name}</h3>

@@ -15,7 +15,8 @@ a {
 .forms input,
 .forms select,
 .forms textarea {
-  width: 30vmax;
+  width: 100%;
+  max-width: 800px;
 }
 header {
   width: fit-content;
@@ -73,6 +74,7 @@ aside {
   box-shadow: 0px 10px 1px #9bb1d6, 0 10px 20px #9bb1d6;
   border-radius: 6%;
   padding: 20px;
+  width: 100%;
 }
 .MuiInputBase-root {
   background: white;
@@ -98,4 +100,12 @@ header a {
   .phone {
     visibility: collapse;
   }
+}
+
+.logo {
+  height: auto;
+  margin-top: 0;
+  max-height: 70px;
+  max-width: 350px;
+  width: 100%;
 }

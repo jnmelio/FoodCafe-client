@@ -112,7 +112,6 @@ function Timeline(props) {
             <PhotoCamera />
           </IconButton><Button type='submit'>Post</Button>
         </label>
-
         <br />
         <select name='recipe'>
           <option selected value='60a2492bcac81d0e78b8918c'>Choose one of your recipes</option>
