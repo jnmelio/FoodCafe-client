@@ -139,85 +139,30 @@ export default function Profile(props) {
     }
     return (
         <div>
+            <div id='profileInfo'>
+                <img className='profilePicture' src={user.picture} alt={user.username}></img>
+                <div> <h3>{user.firstName} {user.lastName}</h3><br /><p>e-mail address : {user.email} </p></div>
+            </div>
+            <div className='container'>
+                <h3>My Posts</h3>
+                {
+                    posts.map((post) => {
+                        return (
+                            post?.user?._id === user._id &&
+                            <div key={post?._id} className='post'>
+                                <span></span><b><Avatar />{post.user.username}</b> <p>{post.description}</p><br />
+                                {post.picture && <img src={post.picture} alt='recipe.png' />}
 
-        <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
-        <div className={` container`}>
-            <CssBaseline />
-            <AppBar
-                position="fixed"
-                className={clsx(classes.appBar, {
-                    [classes.appBarShift]: open,
-                })}>
-                <Toolbar>
-                    <IconButton
-                        color="inherit" aria-label="open drawer" onClick={handleDrawerOpen} edge="start" className={clsx(classes.menuButton, open && classes.hide)}>
-                        <MenuIcon /></IconButton>
-                    <AccountCircleOutlined /> <h3> {user.firstName} {user.lastName}</h3>({user.usertype})
-                </Toolbar>
-            </AppBar>
-            <Drawer
-                className={classes.drawer}
-                variant="persistent"
-                anchor="left"
-                open={open}
-                classes={{
-                    paper: classes.drawerPaper,
-                }}
-            >
-                <div className={classes.drawerHeader}>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                    </IconButton>
-                </div>
-                <Divider />
-                <List>
-                    <Link to={`/profile/${user.username}/friends`} >
-                        <ListItem button >
-                            <ListItemIcon>  <People />  </ListItemIcon>
-                            <ListItemText primary='Friends' />
-                        </ListItem>
-                    </Link>
-                    <Divider />
-                    <Link to={`/profile/${user.username}/recipes`} >
-                        <ListItem button >
-                            <ListItemIcon>  <FastfoodSharp />  </ListItemIcon>
-                            <ListItemText primary='Recipes' />
-                        </ListItem>
-                    </Link>
-                    <Divider />
-                    <Link to={`/profile/${user.username}/settings`} >
-                        <ListItem button >
-                            <ListItemIcon> <Settings />  </ListItemIcon>
-                            <ListItemText primary='Settings' />
-                        </ListItem>
-                    </Link>
-                </List>
-            </Drawer>
-
-            <main
-                className={clsx(classes.content, {
-                    [classes.contentShift]: open,
-                })}>
-                <div className={classes.drawerHeader} />
-                <section style={{ width: '100%', display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-                    {user.recipe.map((recipe) => {
-                        return <div className='recipeCard' >
-                            <div >
-                                <Link key={recipe._id} to={`/recipe-details/${recipe._id}`}>
-                                    <h3>{recipe.name}</h3>
-                                    <img style={{ maxWidth: '260px' }}
-                                        alt={recipe.name} src={recipe.picture} />
-                                </Link>
-                                <p>{recipe.description}</p>
-
-                            </div>
-                        </div>
+                                {post.recipe ?
+                                    (post.recipe &&
+                                        <p id='recipe-link' >I used:<Link key={post.recipe._id}
+                                            to={`/recipe-details/${post.recipe._id}`}>
+                                            <b>{' >> '}{post.recipe.name}{' << '}</b></Link> recipe</p>) : (<p>Find you recipe:
+                                                <Link to="/recipes"><b>{' >> '}Recipes{' << '}</b></Link></p>)
+                                } </div>
+                        );
                     })
                     }
-                </section>
-
-            </main>
-
         </div>
         </div>
     );

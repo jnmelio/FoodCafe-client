@@ -2,8 +2,8 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Switch, Route, withRouter, Link } from "react-router-dom";
-import Login from "./components/auth/Login";
 import config from "./config";
+import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
 import SignUpRandom from "./components/auth/SignUpRandom";
 import NavBar from "./components/NavBar";
@@ -39,7 +39,7 @@ function App(props) {
   const [trueFalse, updateTrueFalse] = useState(null);
   const [allUsers, updateAllUsers] = useState([]);
   const [users, updateUsers] = useState([]);
-  const[showLoading, updateShowLoading] = useState(true)
+  const [showLoading, updateShowLoading] = useState(true)
 
   //FIRST USE EFFECT
   useEffect(() => {
@@ -76,7 +76,6 @@ function App(props) {
     axios
       .post(`${config.API_URL}/api/login`, newUser, { withCredentials: true })
       .then((response) => {
-        console.log(response.data);
         updateUser(response.data);
         fetchUsers();
         updateError(null);
@@ -90,29 +89,49 @@ function App(props) {
   //SIGNUP LOGIC AND AXIOS
   const handleSignUp = (event) => {
     event.preventDefault();
-    console.log(event);
-    const {
-      username,
-      firstName,
-      lastName,
-      email,
-      password,
-      usertype,
-      picture,
-    } = event.target;
+    console.log(event.target.imageUrl.files[0])
+    let picture = null
+    const { username, firstName, lastName, email, password, usertype, } = event.target;
 
-    let newUser = {
-      username: username.value,
-      firstName: firstName.value,
-      lastName: lastName.value,
-      email: email.value,
-      password: password.value,
-      usertype: usertype.value,
-      picture: picture.value,
-    };
-
-    axios
-      .post(`${config.API_URL}/api/signup`, newUser, { withCredentials: true })
+    if (event.target.imageUrl.files[0]) {
+      picture = event.target.imageUrl.files[0];
+      let formData = new FormData();
+      formData.append("imageUrl", picture);
+      axios.post(`${config.API_URL}/api/upload`, formData)
+        .then((response) => {
+          return axios.post(`${config.API_URL}/api/signup`,
+            {
+              username: username.value,
+              firstName: firstName.value,
+              lastName: lastName.value,
+              email: email.value,
+              password: password.value,
+              usertype: usertype.value,
+              picture: response.data.picture,
+            }, { withCredentials: true })
+        })
+        .then((response) => {
+          updateFriend(false);
+          updateUser(response.data);
+          updateError(null);
+          updateRedirection("signup");
+        })
+        .catch(() => {
+          console.log("SignUp failed");
+        });
+    }
+    else {
+      picture = 'https://res.cloudinary.com/foodcafe/image/upload/v1621522073/wxwrhxypbk95guknlxt3.png'
+      return axios.post(`${config.API_URL}/api/signup`,
+        {
+          username: username.value,
+          firstName: firstName.value,
+          lastName: lastName.value,
+          email: email.value,
+          password: password.value,
+          usertype: usertype.value,
+          picture,
+        }, { withCredentials: true })
       .then((response) => {
         updateUser(response.data);
         fetchUsers();
@@ -124,7 +143,7 @@ function App(props) {
       .catch(() => {
         console.log("SignUp failed");
       });
-  };
+  }};
 
   //LOGOUT LOGIC
   const handleLogout = () => {
@@ -292,14 +311,14 @@ const handleGoogleFailure = (error) => {
   };
   const handleAddRecipe = (e) => {
     e.preventDefault();
+    console.log(e)
     let picture = e.target.imageUrl.files[0];
     let formData = new FormData();
     formData.append("imageUrl", picture);
     axios
       .post(`${config.API_URL}/api/upload`, formData)
       .then((response) => {
-        return axios.post(
-          `${config.API_URL}/api/recipe/add`,
+        return axios.post(`${config.API_URL}/api/recipe/add`,
           {
             name: e.target.name.value,
             ingredients,
@@ -322,6 +341,7 @@ const handleGoogleFailure = (error) => {
         console.log(result.data);
         updateRecipes([result.data, ...recipes]);
         props.history.push("/recipes");
+
       })
       .catch((err) => {
         console.log(err);
@@ -403,6 +423,7 @@ const handleGoogleFailure = (error) => {
   if (fetching) {
     return <p>Loading . . .</p>;
   }
+  console.log(user)
   return (
     <div className="App">
       <NavBar
@@ -412,10 +433,11 @@ const handleGoogleFailure = (error) => {
         error={error}
         onLogIn={handleLogIn}
         recipes={recipes}
-        // facebook={handleFacebookReponse}
-        // onGoogleSuccess={handleGoogleSuccess}
-        // onGoogleFailure={handleGoogleFailure}
+        facebook={handleFacebookReponse}
+        onGoogleSuccess={handleGoogleSuccess}
+        onGoogleFailure={handleGoogleFailure}
       />
+
 
       <Switch>
         <Route
@@ -597,4 +619,5 @@ const handleGoogleFailure = (error) => {
   );
 }
 
-export default withRouter(App);
+
+export default withRouter(App)
