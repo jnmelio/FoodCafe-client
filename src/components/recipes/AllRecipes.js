@@ -12,7 +12,7 @@ function AllRecipes(props) {
 
   return (
     <div>
-      <ToastContainer />
+    <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
       <section className="allRecipes">
         {recipes.map((recipe) => {
           return (

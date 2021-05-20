@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import config from "../../config";
 import { Button, FormControl, FormControlLabel, FormLabel, InputLabel, Radio, RadioGroup, Select, TextField } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 
 
@@ -104,6 +105,8 @@ function EditForm(props) {
         return <p>Loading ....</p>
     }
     return (
+        <div>
+        <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
         <div className='allRecipes'>
 
             <div style={{ maxWidth: '600px', fontSize: 'smaller' }} className='recipeCard'>
@@ -235,6 +238,8 @@ function EditForm(props) {
 
             </div>
         </div >
+        </div>
+        
     );
 }
 export default EditForm;

@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 //TIMELINE COMES FROM THE ROUTE IN APP.JS AND THE LINK AFTER SIGNUP IS IN SIGNUPRANDOM.JS // AFTER LOGIN ITS A REDIRECTION IN APP.JS
 function Timeline(props) {
   const classes = useStyles();
-  const { recipes, updateUserRecipes } = props;
+  const { recipes,updateUserRecipes  } = props;
   const [fetching, updateFetching] = useState(true);
   const [posts, updatePosts] = useState(null);
   const [user, updateUser,] = useState(null);
@@ -125,6 +125,7 @@ function Timeline(props) {
 
   return (
     <div className=' allRecipes'>
+    <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
       <div className='container'>
         <CssBaseline />
         <h1>WELCOME {user.username}</h1>

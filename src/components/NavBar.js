@@ -8,11 +8,13 @@ import SwipeableViews from "react-swipeable-views";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { Tab, Tabs, Fade } from '@material-ui/core'
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import { Tab, Tabs, Fade } from '@material-ui/core'
+import FacebookButton from "./auth/FacebookButton";
+import GoogleButton from "./auth/GoogleButton";
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import clsx from 'clsx';
 import MenuIcon from '@material-ui/icons/Menu';
 import { FastfoodSharp, Home, Lock, LockOpen, People, Person, Settings } from '@material-ui/icons'
@@ -54,6 +56,7 @@ function a11yProps(index) {
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+
   root: {
     display: 'flex',
     backgroundColor: theme.palette.background.paper,
@@ -132,10 +135,11 @@ const useStyles = makeStyles((theme) => ({
 function NavBar(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const { user, onLogout, onSignUp, error, onLogIn } = props;
+  const { user, onLogout, onSignUp, error, onLogIn, facebook, onGoogleSuccess, onGoogleFailure } = props;
   const [open, setOpen] = React.useState(false);
   const [sideOpen, updateSideOpen] = React.useState(false);
   const [value, setValue] = React.useState(0);
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -143,6 +147,7 @@ function NavBar(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -254,9 +259,12 @@ function NavBar(props) {
                         indicatorColor="primary"
                         textColor="primary"
                         variant="fullWidth"
-                        aria-label="full width tabs example">
-                        <Tab label="Sign Up" {...a11yProps(1)} />
-                        <Tab label="Log In" {...a11yProps(0)} />
+                        aria-label="full width tabs example"
+                      >
+                        <Tab label="Sign Up" {...a11yProps(0)} />
+                        <Tab label="Log In" {...a11yProps(1)} />
+                        {/* <Tab label="Sign Up with Facebook" {...a11yProps(2)} />
+                        <Tab label="Sign Up with Google" {...a11yProps(3)} /> */}
                       </Tabs>
                     </AppBar>
                     <SwipeableViews
@@ -266,6 +274,10 @@ function NavBar(props) {
                     >
                       <TabPanel value={value} index={0} dir={theme.direction}>
                         <SignUp onSubmit={onSignUp} />
+                        <div className="authThird">
+                        <FacebookButton facebook={facebook} />
+                        <GoogleButton onSuccess={onGoogleSuccess} onFailure={onGoogleFailure}/>
+                        </div>
                       </TabPanel>
                       <TabPanel value={value} index={1} dir={theme.direction}>
                         <Login error={error} onLogIn={onLogIn} />

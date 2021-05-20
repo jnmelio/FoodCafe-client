@@ -21,6 +21,7 @@ function MyRecipes(props) {
         return <p>Loading . . .</p>;
     }
     return (
+        <div> <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
         <div className={` container`}>
             <section style={{ width: '100%', display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
                 {user.recipe.map((recipe) => {
@@ -39,6 +40,9 @@ function MyRecipes(props) {
                 }
             </section>
         </div>
+
+        </div>
+       
     );
 }
 export default MyRecipes

@@ -3,6 +3,8 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Switch, Route, withRouter, Link } from "react-router-dom";
 import config from "./config";
+import Login from "./components/auth/Login";
+import SignUp from "./components/auth/SignUp";
 import SignUpRandom from "./components/auth/SignUpRandom";
 import NavBar from "./components/NavBar";
 import AllRecipes from "./components/recipes/AllRecipes";
@@ -19,13 +21,13 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import Home from "./components/home/Home";
 import FriendsList from "./components/profile/FriendsList";
 import MyRecipes from "./components/profile/MyRecipes";
-import { ToastContainer, toast } from 'react-toastify';
+import NotFound from './components/Lottie/NotFound'
 
 function App(props) {
   //STATES
   const [error, updateError] = useState(null);
   const [user, updateUser] = useState(null);
-  const [userRecipes, updateUserRecipes] = useState([]);
+  const [userRecipes, updateUserRecipes] = useState([])
   const [redirection, updateRedirection] = useState(null);
   const [recipes, updateRecipes] = useState([]);
   const [fetching, updateFetching] = useState(true);
@@ -37,6 +39,7 @@ function App(props) {
   const [trueFalse, updateTrueFalse] = useState(null);
   const [allUsers, updateAllUsers] = useState([]);
   const [users, updateUsers] = useState([]);
+  const [showLoading, updateShowLoading] = useState(true)
 
   //FIRST USE EFFECT
   useEffect(() => {
@@ -44,10 +47,10 @@ function App(props) {
       .get(`${config.API_URL}/api/user`, { withCredentials: true })
       .then((response) => {
         updateUser(response.data);
-        updateFetching(false);
         fetchUsers();
+        updateFetching(false);
       })
-      .catch(() => { });
+      .catch(() => {});
   }, []);
 
   //USE EFFECT FOR REDIRECTION
@@ -74,6 +77,7 @@ function App(props) {
       .post(`${config.API_URL}/api/login`, newUser, { withCredentials: true })
       .then((response) => {
         updateUser(response.data);
+        fetchUsers();
         updateError(null);
         updateRedirection("timeline");
       })
@@ -128,18 +132,18 @@ function App(props) {
           usertype: usertype.value,
           picture,
         }, { withCredentials: true })
-
-        .then((response) => {
-          updateFriend(false);
-          updateUser(response.data);
-          updateError(null);
-          updateRedirection("signup");
-        })
-        .catch(() => {
-          console.log("SignUp failed");
-        });
-    }
-  };
+      .then((response) => {
+        updateUser(response.data);
+        fetchUsers();
+        handleRandom()
+        updateRedirection("signup");
+        updateFriend(false);
+        updateError(null);
+      })
+      .catch(() => {
+        console.log("SignUp failed");
+      });
+  }};
 
   //LOGOUT LOGIC
   const handleLogout = () => {
@@ -155,8 +159,49 @@ function App(props) {
       });
   };
 
+// //FACEBOOK LOGIN
+const handleFacebookReponse = (data) => {
+
+	const {name, email, picture: {data: {url}}, userID} = data
+	let newUser = {name, email, picture: url, facebookId: userID}
+
+	axios.post(`${config.API_URL}/api/facebook/info`, newUser , {withCredentials: true})
+		.then((response) => {
+      updateError(null)
+      updateShowLoading(false)
+      updateUser(response.data.data)
+      updateRedirection('timeline')
+		})
+}
+
+//GOOGLE AUTH
+const handleGoogleSuccess= (data) => {
+  updateShowLoading(true)
+	const {givenName, familyName, email, imageUrl, googleId} = data.profileObj
+	let newUser = {
+		firstName: givenName,
+		lastName: familyName,
+		email,
+		picture: imageUrl,
+		googleId
+	}
+
+	axios.post(`${config.API_URL}/api/google/info`, newUser , {withCredentials: true})
+		.then((response) => {
+      updateUser(response.data.data)
+      updateError(null)
+      updateShowLoading(false)
+      updateRedirection('timeline')
+		})
+}
+
+const handleGoogleFailure = (error) => {
+  //TODO: Handle these errors yourself the way you want. Currently the state is not in use
+  console.log(error) 
+  updateError(true)
+}
   // USE EFFECT FOR RANDOM USER AND RECIPE AFTER SIGNUP
-  useEffect(() => {
+  const handleRandom = () => {
     axios
       .get(`${config.API_URL}/api/signup`, { withCredentials: true })
       .then((response) => {
@@ -164,8 +209,8 @@ function App(props) {
         updateRandomUser(response.data.randomUser);
         updateFetching(false);
       })
-      .catch(() => { });
-  }, []);
+      .catch(() => {});
+  };
 
   //ADD A FRIEND AFTER SIGN UP
   const handleAddAFriend = () => {
@@ -180,7 +225,7 @@ function App(props) {
         updateFriend(true);
         updateUser(response.data);
       })
-      .catch(() => { });
+      .catch(() => {});
   };
   //ADD A FRIEND ANYTIME
   const handleAddAnotherFriend = (singleUser) => {
@@ -197,7 +242,7 @@ function App(props) {
         // updateFriend(true);
         updateUser(updatedUser);
       })
-      .catch(() => { });
+      .catch(() => {});
   };
   //talk to a friend
   const fetchUsers = () => {
@@ -224,7 +269,7 @@ function App(props) {
         updateRecipe(true);
         updateUser(response.data);
       })
-      .catch(() => { });
+      .catch(() => {});
   };
 
   //SHOW ALL USERS FROM DB
@@ -296,7 +341,6 @@ function App(props) {
         console.log(result.data);
         updateRecipes([result.data, ...recipes]);
         props.history.push("/recipes");
-        const notify = () => toast("Recipe created succefully");
 
       })
       .catch((err) => {
@@ -314,24 +358,28 @@ function App(props) {
   };
   // UPDATE RECIPE
   const handleUpdate = () => {
-    axios.patch(`${config.API_URL}/api/recipe/${recipe._id}`,
-      {
-        name: recipe.name,
-        ingredients,
-        instructions: recipe.instructions,
-        youtube: recipe.youtube,
-        picture: recipe.picture,
-        description: recipe.description,
-        cookingTime: Number(recipe.cookingTime),
-        difficulty: recipe.difficulty,
-        country: recipe.country,
-        category: recipe.category,
-        vegetarian: trueFalse,
-        created_by: user._id,
-      },
-      { withCredentials: true }
-    )
+    console.log(recipe.difficulty);
+    axios
+      .patch(
+        `${config.API_URL}/api/recipe/${recipe._id}`,
+        {
+          name: recipe.name,
+          ingredients,
+          instructions: recipe.instructions,
+          youtube: recipe.youtube,
+          picture: recipe.picture,
+          description: recipe.description,
+          cookingTime: Number(recipe.cookingTime),
+          difficulty: recipe.difficulty,
+          country: recipe.country,
+          category: recipe.category,
+          vegetarian: trueFalse,
+          created_by: user._id,
+        },
+        { withCredentials: true }
+      )
       .then(() => {
+        console.log(recipe.difficulty);
         let newRecipes = recipes.map((singleRecipe) => {
           if (recipe._id === singleRecipe._id) {
             singleRecipe.name = recipe.name;
@@ -348,8 +396,16 @@ function App(props) {
   };
   //  --------------------------delete recipe
   const handleDelete = (recipeId) => {
-    axios.delete(`${config.API_URL}/api/recipe/${recipeId}`, {}, { withCredentials: true })
+    //1. Make an API call to the server side Route to delete that specific todo
+    axios
+      .delete(
+        `${config.API_URL}/api/recipe/${recipeId}`,
+        {},
+        { withCredentials: true }
+      )
       .then(() => {
+        // 2. Once the server has successfully created a new todo, update your state that is visible to the user
+        console.log("inside then", recipes);
         let filteredRecipes = recipes.filter((recipe) => {
           return recipe._id !== recipeId;
         });
@@ -370,15 +426,19 @@ function App(props) {
   console.log(user)
   return (
     <div className="App">
-      <ToastContainer />
-      <NavBar onLogout={handleLogout} user={user} onSignUp={handleSignUp} error={error}
-        onLogIn={handleLogIn} recipes={recipes} />
-      <div>
-        <Link to="/">
-          { /* eslint-disable-next-line jsx-a11y/alt-text*/}
-          <img src="/logo-without-background.png" class="logo"></img>
-        </Link>
-      </div>
+      <NavBar
+        onLogout={handleLogout}
+        user={user}
+        onSignUp={handleSignUp}
+        error={error}
+        onLogIn={handleLogIn}
+        recipes={recipes}
+        facebook={handleFacebookReponse}
+        onGoogleSuccess={handleGoogleSuccess}
+        onGoogleFailure={handleGoogleFailure}
+      />
+
+
       <Switch>
         <Route
           exact
@@ -553,9 +613,11 @@ function App(props) {
             );
           }}
         />
+        <Route component={NotFound} />
       </Switch>
     </div>
   );
 }
 
-export default withRouter(App);
+
+export default withRouter(App)

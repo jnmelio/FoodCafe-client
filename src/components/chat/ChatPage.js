@@ -95,6 +95,9 @@ class ChatPage extends Component {
 
     return (
       <div>
+            <div>
+        <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
+      </div>
         <h3>You're in the Chat Page </h3><Link to={`/profile/${user.username}/friends`}><Button>Back to Friend List</Button></Link>
         <div className="chatContainer">
           <div className="messages">

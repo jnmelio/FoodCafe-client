@@ -59,6 +59,7 @@ header {
 }
 
 .allRecipes {
+  margin-top: 50px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -72,6 +73,7 @@ header {
   border-radius: 6%;
   padding: 20px;
   width: 100%;
+  margin-bottom: 50px;
 }
 
 .MuiInputBase-root {
@@ -128,10 +130,90 @@ header {
 
 .logo {
   height: auto;
-  margin-top: 0;
+  margin-top: 50px;
   max-height: 70px;
   max-width: 350px;
   width: 100%;
+}
+.logoHome {
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+.backgroundCard  {
+  background-color:#F9FEFF ;
+}
+
+.divForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.btn {
+  margin-top: 20px;
+  border: 1px solid black
+}
+.description {
+  font-size: 20px;
+  text-align: center;
+  margin: 50px;
+}
+.recipeDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.recipeHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.recipeInfos {
+display: flex;
+flex-direction: column
+}
+.recipeDescription {
+  text-align: center;
+  font-size: 15px;
+  margin-top: 5px;
+}
+.recipeList {
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+.video {
+  margin-top: 30px;
+}
+
+.btnDetails {
+display: flex;
+justify-content: space-between;
+}
+.authThird {
+  display: flex;
+  justify-content: space-evenly;
+}
+.google {
+  width:100px
+}
+.randomSign {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 150px;
+}
+.signupElement {
+  margin-bottom: 30px;
+ text-align: center;
+ font-size: 25px;
+}
+.buttonProfile {
+  margin-top: 30px;
+}
+.signUpContainer {
+  margin-bottom: 15px;
 }
 .formlabels {
   background: #ffffff;
