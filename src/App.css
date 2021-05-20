@@ -62,6 +62,7 @@ aside {
   width: 500px;
 }
 .allRecipes {
+  margin-top: 50px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -75,6 +76,7 @@ aside {
   border-radius: 6%;
   padding: 20px;
   width: 100%;
+  margin-bottom: 50px;
 }
 .MuiInputBase-root {
   background: white;
@@ -104,8 +106,32 @@ header a {
 
 .logo {
   height: auto;
-  margin-top: 0;
+  margin-top: 50px;
   max-height: 70px;
   max-width: 350px;
   width: 100%;
+}
+.logoHome {
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+.backgroundCard  {
+  background-color:#F9FEFF ;
+}
+
+.divForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.btn {
+  margin-top: 20px;
+  border: 1px solid black
+}
+.description {
+  font-size: 20px;
+  text-align: center;
+  margin: 50px;
 }

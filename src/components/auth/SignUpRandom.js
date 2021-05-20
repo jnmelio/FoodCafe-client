@@ -18,7 +18,9 @@ function SignUpRandom(props) {
   return (
     <div>
       <div>
-        <h1>Random</h1>
+      <div>
+        <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
+      </div>
 
         {!recipe ? (
           <div>

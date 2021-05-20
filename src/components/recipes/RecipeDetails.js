@@ -83,6 +83,8 @@ function RecipeDetails(props) {
   };
 
   return (
+    <div>
+ <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
         <div className="container">
           <Card
             style={{
@@ -168,6 +170,8 @@ function RecipeDetails(props) {
             </div>
           </Card>
         </div>
+    </div>
+   
   );
 }
 

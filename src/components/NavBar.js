@@ -13,6 +13,9 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import FacebookButton from "./auth/FacebookButton";
+import GoogleButton from "./auth/GoogleButton";
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -77,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
 function NavBar(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const { user, onLogout, onSignUp, error, onLogIn } = props;
+  const { user, onLogout, onSignUp, error, onLogIn, facebook, onGoogleSuccess, onGoogleFailure } = props;
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
@@ -191,8 +194,10 @@ function NavBar(props) {
                         variant="fullWidth"
                         aria-label="full width tabs example"
                       >
-                        <Tab label="Item One" {...a11yProps(0)} />
-                        <Tab label="Item Two" {...a11yProps(1)} />
+                        <Tab label="Sign Up" {...a11yProps(0)} />
+                        <Tab label="Log In" {...a11yProps(1)} />
+                        <Tab label="Sign Up with Facebook" {...a11yProps(2)} />
+                        <Tab label="Sign Up with Google" {...a11yProps(3)} />
                       </Tabs>
                     </AppBar>
                     <SwipeableViews
@@ -205,6 +210,12 @@ function NavBar(props) {
                       </TabPanel>
                       <TabPanel value={value} index={1} dir={theme.direction}>
                         <Login error={error} onLogIn={onLogIn} />
+                      </TabPanel>
+                      <TabPanel value={value} index={2} dir={theme.direction}>
+                        <FacebookButton facebook={facebook} />
+                      </TabPanel>
+                      <TabPanel value={value} index={3} dir={theme.direction}>
+                       <GoogleButton onSuccess={onGoogleSuccess} onFailure={onGoogleFailure}/>
                       </TabPanel>
                     </SwipeableViews>
                   </div>

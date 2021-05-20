@@ -21,6 +21,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import Home from "./components/home/Home";
 import FriendsList from "./components/profile/FriendsList";
 import MyRecipes from "./components/profile/MyRecipes";
+import NotFound from './components/Lottie/NotFound'
 
 function App(props) {
   //STATES
@@ -38,6 +39,7 @@ function App(props) {
   const [trueFalse, updateTrueFalse] = useState(null);
   const [allUsers, updateAllUsers] = useState([]);
   const [users, updateUsers] = useState([]);
+  const[showLoading, updateShowLoading] = useState(true)
 
   //FIRST USE EFFECT
   useEffect(() => {
@@ -136,6 +138,47 @@ function App(props) {
       });
   };
 
+// //FACEBOOK LOGIN
+const handleFacebookReponse = (data) => {
+
+	const {name, email, picture: {data: {url}}, userID} = data
+	let newUser = {name, email, picture: url, facebookId: userID}
+
+	axios.post(`${config.API_URL}/api/facebook/info`, newUser , {withCredentials: true})
+		.then((response) => {
+      updateError(null)
+      updateShowLoading(false)
+      updateUser(response.data.data)
+      updateRedirection('timeline')
+		})
+}
+
+//GOOGLE AUTH
+const handleGoogleSuccess= (data) => {
+  updateShowLoading(true)
+	const {givenName, familyName, email, imageUrl, googleId} = data.profileObj
+	let newUser = {
+		firstName: givenName,
+		lastName: familyName,
+		email,
+		picture: imageUrl,
+		googleId
+	}
+
+	axios.post(`${config.API_URL}/api/google/info`, newUser , {withCredentials: true})
+		.then((response) => {
+      updateUser(response.data.data)
+      updateError(null)
+      updateShowLoading(false)
+      updateRedirection('timeline')
+		})
+}
+
+const handleGoogleFailure = (error) => {
+  //TODO: Handle these errors yourself the way you want. Currently the state is not in use
+  console.log(error) 
+  updateError(true)
+}
   // USE EFFECT FOR RANDOM USER AND RECIPE AFTER SIGNUP
   useEffect(() => {
     axios
@@ -367,10 +410,11 @@ function App(props) {
         error={error}
         onLogIn={handleLogIn}
         recipes={recipes}
+        // facebook={handleFacebookReponse}
+        // onGoogleSuccess={handleGoogleSuccess}
+        // onGoogleFailure={handleGoogleFailure}
       />
-      <div>
-        <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
-      </div>
+
       <Switch>
         <Route
           exact
@@ -545,6 +589,7 @@ function App(props) {
             );
           }}
         />
+        <Route component={NotFound} />
       </Switch>
     </div>
   );

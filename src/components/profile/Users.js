@@ -11,6 +11,7 @@ function Users(props) {
 
   return (
     <div>
+    <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
       {
         allUsers.map((singleUser) => {
           return (

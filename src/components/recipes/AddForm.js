@@ -1,6 +1,6 @@
 import { TextareaAutosize } from '@material-ui/core'
 import React from 'react'
-
+import { Switch, Route, withRouter, Link } from "react-router-dom";
 
 // ADDFORM COMES FROM THE LINK ADD A RECIP IN APP.JS AND A ROUTE IN APP.JS
 function AddForm(props) {
@@ -8,6 +8,7 @@ function AddForm(props) {
 
   return (
     <div>
+    <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
       <h1>Add a new Recipe</h1>
       <form onSubmit={onSubmit}>
         <label>Name</label>

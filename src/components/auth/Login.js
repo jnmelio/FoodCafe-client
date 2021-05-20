@@ -6,7 +6,7 @@ function Login(props) {
   const { onLogIn, onError } = props;
   return (
     <form onSubmit={onLogIn}>
-      <div className="form-group">
+      <div className="divForm">
         <label htmlFor="InputEmail">Email address</label>
         <input
           type="email"

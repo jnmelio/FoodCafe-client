@@ -138,6 +138,7 @@ export default function MyRecipes(props) {
         return <p>Loading . . .</p>;
     }
     return (
+        <div> <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
         <div className={` container`}>
             <CssBaseline />
             <AppBar
@@ -216,5 +217,8 @@ export default function MyRecipes(props) {
             </main>
 
         </div>
+
+        </div>
+       
     );
 }

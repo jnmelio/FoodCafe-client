@@ -102,6 +102,8 @@ function Timeline(props) {
   }
 
   return (
+    <div>
+ <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
     <div className=' container'>
       <h1>Timeline</h1>
       <p> WELCOME {user.username}</p>
@@ -130,7 +132,7 @@ function Timeline(props) {
               <Avatar key={post._id} /><b>{post.user.username}</b> <p>{post.description}</p><br />
               {post.picture && <img src={post.picture} alt='recipe.png' />}
 
-              {post.recipe._id !== "609d02193f52c6553c206e8c" ?
+              {post.recipe ?
                 (post.recipe &&
                   <p id='recipe-link' >check out this recipe:
                 <Link key={post.recipe._id} to={`/recipe-details/${post.recipe._id}`}>
@@ -163,6 +165,8 @@ function Timeline(props) {
       }
       <Link to='/users'>Access all users</Link>
     </div >
+    </div>
+   
   );
 }
 
