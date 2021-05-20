@@ -50,7 +50,7 @@ function App(props) {
         fetchUsers();
         updateFetching(false);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   //USE EFFECT FOR REDIRECTION
@@ -132,18 +132,19 @@ function App(props) {
           usertype: usertype.value,
           picture,
         }, { withCredentials: true })
-      .then((response) => {
-        updateUser(response.data);
-        fetchUsers();
-        handleRandom()
-        updateRedirection("signup");
-        updateFriend(false);
-        updateError(null);
-      })
-      .catch(() => {
-        console.log("SignUp failed");
-      });
-  }};
+        .then((response) => {
+          updateUser(response.data);
+          fetchUsers();
+          handleRandom()
+          updateRedirection("signup");
+          updateFriend(false);
+          updateError(null);
+        })
+        .catch(() => {
+          console.log("SignUp failed");
+        });
+    }
+  };
 
   //LOGOUT LOGIC
   const handleLogout = () => {
@@ -159,47 +160,47 @@ function App(props) {
       });
   };
 
-// //FACEBOOK LOGIN
-const handleFacebookReponse = (data) => {
+  // //FACEBOOK LOGIN
+  const handleFacebookReponse = (data) => {
 
-	const {name, email, picture: {data: {url}}, userID} = data
-	let newUser = {name, email, picture: url, facebookId: userID}
+    const { name, email, picture: { data: { url } }, userID } = data
+    let newUser = { name, email, picture: url, facebookId: userID }
 
-	axios.post(`${config.API_URL}/api/facebook/info`, newUser , {withCredentials: true})
-		.then((response) => {
-      updateError(null)
-      updateShowLoading(false)
-      updateUser(response.data.data)
-      updateRedirection('timeline')
-		})
-}
+    axios.post(`${config.API_URL}/api/facebook/info`, newUser, { withCredentials: true })
+      .then((response) => {
+        updateError(null)
+        updateShowLoading(false)
+        updateUser(response.data.data)
+        updateRedirection('timeline')
+      })
+  }
 
-//GOOGLE AUTH
-const handleGoogleSuccess= (data) => {
-  updateShowLoading(true)
-	const {givenName, familyName, email, imageUrl, googleId} = data.profileObj
-	let newUser = {
-		firstName: givenName,
-		lastName: familyName,
-		email,
-		picture: imageUrl,
-		googleId
-	}
+  //GOOGLE AUTH
+  const handleGoogleSuccess = (data) => {
+    updateShowLoading(true)
+    const { givenName, familyName, email, imageUrl, googleId } = data.profileObj
+    let newUser = {
+      firstName: givenName,
+      lastName: familyName,
+      email,
+      picture: imageUrl,
+      googleId
+    }
 
-	axios.post(`${config.API_URL}/api/google/info`, newUser , {withCredentials: true})
-		.then((response) => {
-      updateUser(response.data.data)
-      updateError(null)
-      updateShowLoading(false)
-      updateRedirection('timeline')
-		})
-}
+    axios.post(`${config.API_URL}/api/google/info`, newUser, { withCredentials: true })
+      .then((response) => {
+        updateUser(response.data.data)
+        updateError(null)
+        updateShowLoading(false)
+        updateRedirection('timeline')
+      })
+  }
 
-const handleGoogleFailure = (error) => {
-  //TODO: Handle these errors yourself the way you want. Currently the state is not in use
-  console.log(error) 
-  updateError(true)
-}
+  const handleGoogleFailure = (error) => {
+    //TODO: Handle these errors yourself the way you want. Currently the state is not in use
+    console.log(error)
+    updateError(true)
+  }
   // USE EFFECT FOR RANDOM USER AND RECIPE AFTER SIGNUP
   const handleRandom = () => {
     axios
@@ -209,7 +210,7 @@ const handleGoogleFailure = (error) => {
         updateRandomUser(response.data.randomUser);
         updateFetching(false);
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   //ADD A FRIEND AFTER SIGN UP
@@ -225,7 +226,7 @@ const handleGoogleFailure = (error) => {
         updateFriend(true);
         updateUser(response.data);
       })
-      .catch(() => {});
+      .catch(() => { });
   };
   //ADD A FRIEND ANYTIME
   const handleAddAnotherFriend = (singleUser) => {
@@ -242,7 +243,7 @@ const handleGoogleFailure = (error) => {
         // updateFriend(true);
         updateUser(updatedUser);
       })
-      .catch(() => {});
+      .catch(() => { });
   };
   //talk to a friend
   const fetchUsers = () => {
@@ -269,7 +270,7 @@ const handleGoogleFailure = (error) => {
         updateRecipe(true);
         updateUser(response.data);
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   //SHOW ALL USERS FROM DB

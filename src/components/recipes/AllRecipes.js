@@ -1,18 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import EcoTwoToneIcon from "@material-ui/icons/EcoTwoTone";
-import { ToastContainer } from "react-toastify";
 
 //ALLRECIPES COMES FROM A LINK IN APP.JS AND A ROUTE IN APP.JS
 function AllRecipes(props) {
   const { recipes, user } = props;
-  // let random = Math.floor(Math.random() * props.recipes.length);
-  // // let recipeId = recipes[random].params.id
-  // let recipeId = recipes[random]._id;
 
   return (
     <div>
-    <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
+      {/* eslint-disable-next-line jsx-a11y/alt-text*/}
+      <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
       <section className="allRecipes">
         {recipes.map((recipe) => {
           return (

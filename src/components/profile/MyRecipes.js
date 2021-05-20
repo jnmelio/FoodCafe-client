@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import config from '../../config'
 
-function MyRecipes(props) {
+function MyRecipes(_props) {
     const [user, updateUser] = useState(null)
     const [fetching, updateFetching] = useState(true)
 
@@ -21,28 +21,28 @@ function MyRecipes(props) {
         return <p>Loading . . .</p>;
     }
     return (
-        <div> <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
-        <div className={` container`}>
-            <section style={{ width: '100%', display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-                {user.recipe.map((recipe) => {
-                    return <div className='recipeCard' >
-                        <div >
-                            <Link key={recipe._id} to={`/recipe-details/${recipe._id}`}>
-                                <h3>{recipe.name}</h3>
-                                <img style={{ maxWidth: '260px' }}
-                                    alt={recipe.name} src={recipe.picture} />
-                            </Link>
-                            <p>{recipe.description}</p>
+        <div> <Link to='/'><img src="/logo-without-background.png" class="logo" alt='logo'></img></Link>
+            <div className={` container`}>
+                <section style={{ width: '100%', display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+                    {user.recipe.map((recipe) => {
+                        return <div className='recipeCard' >
+                            <div >
+                                <Link key={recipe._id} to={`/recipe-details/${recipe._id}`}>
+                                    <h3>{recipe.name}</h3>
+                                    <img style={{ maxWidth: '260px' }}
+                                        alt={recipe.name} src={recipe.picture} />
+                                </Link>
+                                <p>{recipe.description}</p>
 
+                            </div>
                         </div>
-                    </div>
-                })
-                }
-            </section>
-        </div>
+                    })
+                    }
+                </section>
+            </div>
 
         </div>
-       
+
     );
 }
 export default MyRecipes
