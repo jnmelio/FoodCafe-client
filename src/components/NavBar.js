@@ -259,8 +259,7 @@ function NavBar(props) {
                         indicatorColor="primary"
                         textColor="primary"
                         variant="fullWidth"
-                        aria-label="full width tabs example"
-                      >
+                        aria-label="full width tabs example" >
                         <Tab label="Sign Up" {...a11yProps(0)} />
                         <Tab label="Log In" {...a11yProps(1)} />
                         {/* <Tab label="Sign Up with Facebook" {...a11yProps(2)} />
@@ -272,11 +271,11 @@ function NavBar(props) {
                       index={value}
                       onChangeIndex={handleChangeIndex}
                     >
-                      <TabPanel value={value} index={0} dir={theme.direction}>
+                      <TabPanel className='singup' value={value} index={0} dir={theme.direction}>
                         <SignUp onSubmit={onSignUp} />
                         <div className="authThird">
-                        <FacebookButton facebook={facebook} />
-                        <GoogleButton onSuccess={onGoogleSuccess} onFailure={onGoogleFailure}/>
+                          <FacebookButton facebook={facebook} />
+                          <GoogleButton onSuccess={onGoogleSuccess} onFailure={onGoogleFailure} />
                         </div>
                       </TabPanel>
                       <TabPanel value={value} index={1} dir={theme.direction}>
@@ -300,20 +299,21 @@ function NavBar(props) {
         }}
       >
         <div className={classes.drawerHeader}>
+
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </div>
         <Divider />
         {user ? (<List>
-          <Link to={`/profile/${user.username}/friends`} >
-            <ListItem button >
+          <Link to={`/profile/${user.username}/friends`} onClick={handleDrawerClose}>
+            <ListItem button  >
               <ListItemIcon>  <People />  </ListItemIcon>
               <ListItemText primary='Friends' />
             </ListItem>
           </Link>
           <Divider />
-          <Link to={`/profile/${user.username}/recipes`} >
+          <Link to={`/profile/${user.username}/recipes`} onClick={handleDrawerClose}>
             <ListItem button >
               <ListItemIcon>  <FastfoodSharp />  </ListItemIcon>
               <ListItemText primary='Recipes' />
@@ -321,7 +321,7 @@ function NavBar(props) {
           </Link>
           <Divider />
           <Link to={`/profile/${user.username}/settings`} >
-            <ListItem button >
+            <ListItem button onClick={handleDrawerClose}>
               <ListItemIcon> <Settings />  </ListItemIcon>
               <ListItemText primary='Settings' />
             </ListItem>

@@ -10,6 +10,10 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+
     display: 'flex',
   },
   appBar: {
@@ -36,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 //TIMELINE COMES FROM THE ROUTE IN APP.JS AND THE LINK AFTER SIGNUP IS IN SIGNUPRANDOM.JS // AFTER LOGIN ITS A REDIRECTION IN APP.JS
 function Timeline(props) {
   const classes = useStyles();
-  const { recipes,updateUserRecipes  } = props;
+  const { recipes, updateUserRecipes } = props;
   const [fetching, updateFetching] = useState(true);
   const [posts, updatePosts] = useState(null);
   const [user, updateUser,] = useState(null);
@@ -124,9 +128,11 @@ function Timeline(props) {
   }
 
   return (
-    <div className=' allRecipes'>
-    <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
+    <div style={{ margin: 0 }} className='allRecipes'>
+
       <div className='container'>
+        {/* eslint-disable-next-line jsx-a11y/alt-text*/}
+        <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
         <CssBaseline />
         <h1>WELCOME {user.username}</h1>
 
@@ -136,10 +142,12 @@ function Timeline(props) {
           <TextField style={{ width: '30em' }} id="outlined-primary" label="Post Something" multiple={true}
             rows={4} multiline variant="outlined" name='description' type='text' ></TextField>
 
+          <input name="imageUrl" accept="image/*" style={{ display: 'none' }} id="icon-button-file" type="file" />
           <label htmlFor="icon-button-file">
             <IconButton color="primary" aria-label="upload picture" component="span">
               <PhotoCamera />
-            </IconButton><Button type='submit'>Post</Button>
+            </IconButton>
+            <Button type='submit'>Post</Button>
           </label>
           <br />
           <br />
