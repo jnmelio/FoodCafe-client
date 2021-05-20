@@ -94,7 +94,7 @@ class ChatPage extends Component {
     }
 
     return (
-      <div>
+      <div className='container'>
         <div>
           <Link to='/'><img src="/logo-without-background.png" class="logo" alt='logo'></img></Link>
         </div>

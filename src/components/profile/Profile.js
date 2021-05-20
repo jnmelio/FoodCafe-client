@@ -36,11 +36,11 @@ export default function Profile(_props) {
   return (
     <div>
       <div id="profileInfo">
-        <img
+        {user.picture ? <img
           className="profilePicture"
           src={user.picture}
           alt={user.username}
-        ></img>
+        ></img> : <Avatar style={{ margin: '20px' }} />}
         <div>
           {" "}
           <h3>

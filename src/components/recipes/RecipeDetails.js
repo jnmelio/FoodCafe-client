@@ -85,16 +85,17 @@ function RecipeDetails(props) {
             maxWidth: 700,
           }}
         >
+
           {userRecipes.includes(recipe._id) ? (
             <p>You already have this recipe in your list</p>
           ) : (
             <Button variant="contained" color="primary" onClick={handleAddRecipeToList}>
-              Add this recipe to my Recipes
+              Add to my Recipes
             </Button>
           )}
-          <Link to={`/edit-a-recipe/${recipe._id}`}>
-            <Button variant="contained">Edit</Button>
-          </Link>
+
+          <Button variant="contained"><Link to={`/edit-a-recipe/${recipe._id}`}>Edit </Link></Button>
+
           <Button variant="contained" color="secondary"
             onClick={() => {
               onDelete(recipe._id);
