@@ -51,54 +51,55 @@ function Login(props) {
   const classes = useStyles();
   return (
     <Container component="main" maxWidth="xs">
-    <CssBaseline />
-    <div className={classes.paper}>
-    <Avatar className={classes.avatar}>
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-         Log in
+          Log in
         </Typography>
-    <form onSubmit={onLogIn}>
-      <div className="divForm signUpContainer" >
-      <TextField
-                autoComplete="email"
-                name="email"
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Enter Email"
-                autoFocus
-              />
-      </div>
-      <div className="form-group signUpContainer">
-      <TextField
-                autoComplete="password"
-                name="password"
-                variant="outlined"
-                required
-                fullWidth
-                id="password"
-                label="Enter Password"
-                autoFocus
-              />
-      </div>
-      <Button
+        <form onSubmit={onLogIn}>
+          <div className="divForm signUpContainer" >
+            <TextField
+              autoComplete="email"
+              name="email"
+              variant="outlined"
+              required
+              fullWidth
+              id="email"
+              label="Enter Email"
+              autoFocus
+            />
+          </div>
+          <div className="form-group signUpContainer">
+            <TextField
+              type='password'
+              autoComplete="password"
+              name="password"
+              variant="outlined"
+              required
+              fullWidth
+              id="password"
+              label="Enter Password"
+              autoFocus
+            />
+          </div>
+          <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
           >
-           Submit
+            Submit
           </Button>
-      {onError && <p>{onError.error}</p>}
-    </form>
-    </div>
+          {onError && <p>{onError.error}</p>}
+        </form>
+      </div>
 
     </Container>
-    
+
   );
 }
 
