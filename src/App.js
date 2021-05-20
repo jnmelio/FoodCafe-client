@@ -47,8 +47,8 @@ function App(props) {
       .get(`${config.API_URL}/api/user`, { withCredentials: true })
       .then((response) => {
         updateUser(response.data);
-        updateFetching(false);
         fetchUsers();
+        updateFetching(false);
       })
       .catch(() => {});
   }, []);
@@ -78,6 +78,7 @@ function App(props) {
       .then((response) => {
         console.log(response.data);
         updateUser(response.data);
+        fetchUsers();
         updateError(null);
         updateRedirection("timeline");
       })
@@ -113,10 +114,12 @@ function App(props) {
     axios
       .post(`${config.API_URL}/api/signup`, newUser, { withCredentials: true })
       .then((response) => {
-        updateFriend(false);
         updateUser(response.data);
-        updateError(null);
+        fetchUsers();
+        handleRandom()
         updateRedirection("signup");
+        updateFriend(false);
+        updateError(null);
       })
       .catch(() => {
         console.log("SignUp failed");
@@ -179,7 +182,7 @@ const handleGoogleFailure = (error) => {
   updateError(true)
 }
   // USE EFFECT FOR RANDOM USER AND RECIPE AFTER SIGNUP
-  useEffect(() => {
+  const handleRandom = () => {
     axios
       .get(`${config.API_URL}/api/signup`, { withCredentials: true })
       .then((response) => {
@@ -188,7 +191,7 @@ const handleGoogleFailure = (error) => {
         updateFetching(false);
       })
       .catch(() => {});
-  }, []);
+  };
 
   //ADD A FRIEND AFTER SIGN UP
   const handleAddAFriend = () => {

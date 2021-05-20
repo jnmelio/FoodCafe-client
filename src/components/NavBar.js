@@ -259,8 +259,8 @@ function NavBar(props) {
                       >
                         <Tab label="Sign Up" {...a11yProps(0)} />
                         <Tab label="Log In" {...a11yProps(1)} />
-                        <Tab label="Sign Up with Facebook" {...a11yProps(2)} />
-                        <Tab label="Sign Up with Google" {...a11yProps(3)} />
+                        {/* <Tab label="Sign Up with Facebook" {...a11yProps(2)} />
+                        <Tab label="Sign Up with Google" {...a11yProps(3)} /> */}
                       </Tabs>
                     </AppBar>
                     <SwipeableViews
@@ -270,15 +270,13 @@ function NavBar(props) {
                     >
                       <TabPanel value={value} index={0} dir={theme.direction}>
                         <SignUp onSubmit={onSignUp} />
+                        <div className="authThird">
+                        <FacebookButton facebook={facebook} />
+                        <GoogleButton onSuccess={onGoogleSuccess} onFailure={onGoogleFailure}/>
+                        </div>
                       </TabPanel>
                       <TabPanel value={value} index={1} dir={theme.direction}>
                         <Login error={error} onLogIn={onLogIn} />
-                      </TabPanel>
-                      <TabPanel value={value} index={2} dir={theme.direction}>
-                        <FacebookButton facebook={facebook} />
-                      </TabPanel>
-                      <TabPanel value={value} index={3} dir={theme.direction}>
-                       <GoogleButton onSuccess={onGoogleSuccess} onFailure={onGoogleFailure}/>
                       </TabPanel>
                     </SwipeableViews>
                   </div>

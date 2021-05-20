@@ -5,7 +5,7 @@ function GoogleButton(props) {
     const {onSuccess, onFailure} = props
    
     return (
-        <div>
+        <div className="google">
             <GoogleLogin
                 clientId="539941157350-la09qnjcelcmisvdjra8kf98q2mqdec9.apps.googleusercontent.com"
                 buttonText="Login"

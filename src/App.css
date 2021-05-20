@@ -191,3 +191,27 @@ flex-direction: column
 display: flex;
 justify-content: space-between;
 }
+.authThird {
+  display: flex;
+  justify-content: space-evenly;
+}
+.google {
+  width:100px
+}
+.randomSign {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 150px;
+}
+.signupElement {
+  margin-bottom: 30px;
+ text-align: center;
+ font-size: 25px;
+}
+.buttonProfile {
+  margin-top: 30px;
+}
+.signUpContainer {
+  margin-bottom: 15px;
+}

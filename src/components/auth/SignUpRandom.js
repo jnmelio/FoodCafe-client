@@ -1,7 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 
-
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+}));
 
 //SIGNUP RANDOM COMES FROM THE ROUTE IN APP.JS
 function SignUpRandom(props) {
@@ -14,20 +22,20 @@ function SignUpRandom(props) {
     randomRecipe,
   } = props;
 
-
+  const classes = useStyles();
   return (
     <div>
       <div>
       <div>
         <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
       </div>
-
-        {!recipe ? (
+<div className="randomSign">
+{!recipe ? (
           <div>
-            <h3>{randomRecipe.name}</h3>
-            <button onClick={onHandleRecipe}>
-              Add {randomRecipe.name} to your profile
-            </button>
+            <h3 className="signupElement">{randomRecipe.name}</h3>
+            <Button variant="contained"  onClick={onHandleRecipe}>
+            Add {randomRecipe.name} to your profile
+      </Button>
           </div>
         ) : (
           <p>You added {randomRecipe.name} to your profile</p>
@@ -35,17 +43,24 @@ function SignUpRandom(props) {
 
         {!friend? (
           <div>
-            <h3>{randomUser.username}</h3>
-            <button onClick={onHandleFriend}>
-              Add {randomUser.username} as a friend
-            </button>
+            <h3 className="signupElement">{randomUser.username}</h3>
+            <Button variant="contained" onClick={onHandleFriend}>
+            Add {randomUser.username} as a friend
+      </Button>
           </div>
         ) : (
           <p>You added {randomUser.username} as a new friend</p>
         )}
+        <div className="buttonProfile">
+        <Button variant="contained" color="primary" >
+        <Link to="/timeline">Discover your timeline</Link>
+      </Button>
+        </div>
+
       </div>
-      <Link to="/timeline">Go to my profile</Link>
     </div>
+</div>
+        
   );
 }
 

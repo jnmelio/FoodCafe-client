@@ -7,7 +7,7 @@ function FacebookButton(props) {
     const {facebook} = props
 
     return (
-        <div>
+        <div className="facebook">
            <FacebookLogin
                 appId="377377326935192"
                 autoLoad={false}
