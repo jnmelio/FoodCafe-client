@@ -1,4 +1,4 @@
-import { AppBar, Button, IconButton, Toolbar } from "@material-ui/core";
+import { AppBar, Button, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
 import SignUp from "../components/auth/SignUp";
@@ -8,14 +8,16 @@ import SwipeableViews from "react-swipeable-views";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import { Tab, Tabs, Fade } from '@material-ui/core'
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import FacebookButton from "./auth/FacebookButton";
 import GoogleButton from "./auth/GoogleButton";
-
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import clsx from 'clsx';
+import MenuIcon from '@material-ui/icons/Menu';
+import { FastfoodSharp, Home, Lock, LockOpen, People, Person, Settings } from '@material-ui/icons'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -50,9 +52,13 @@ function a11yProps(index) {
   };
 }
 
+
+const drawerWidth = 240;
+
 const useStyles = makeStyles((theme) => ({
 
   root: {
+    display: 'flex',
     backgroundColor: theme.palette.background.paper,
     width: 500,
     flexGrow: 1,
@@ -60,13 +66,62 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  title: {
-    flexGrow: 1,
-  },
+
   modal: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+  },
+  appBar: {
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  title: {
+    flexGrow: 1,
+  },
+  hide: {
+    display: 'none',
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: -drawerWidth,
+  },
+  contentShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
@@ -98,11 +153,19 @@ function NavBar(props) {
   const handleChangeIndex = (index) => {
     setValue(index);
   };
-
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
   return (
-    <div className='nav phone'>
-      <AppBar position="static">
+    <div>
+      <nav position="static" className='nav'>
         <Toolbar style={{ flexDirection: "row" }}>
+          <IconButton
+            color="inherit" aria-label="open drawer" onClick={handleDrawerOpen} edge="start" className={clsx(classes.menuButton, open && classes.hide)}>
+            <MenuIcon /></IconButton>
           <IconButton
             edge="start"
             className={classes.menuButton}
@@ -138,7 +201,7 @@ function NavBar(props) {
           </IconButton>
 
           {user ? (
-            <>
+            <div>
               <IconButton
                 edge="start"
                 className={classes.menuButton}
@@ -165,7 +228,7 @@ function NavBar(props) {
                   <Link to={`/profile/${user.username}`}>Profile</Link>
                 </Button>
               </IconButton>
-            </>
+            </div>
           ) : (
             <div>
               <button type="button" onClick={handleOpen}>
@@ -224,7 +287,61 @@ function NavBar(props) {
             </div>
           )}
         </Toolbar>
-      </AppBar>
+      </nav>
+      <Drawer
+        className={classes.drawer}
+        variant="persistent"
+        anchor="left"
+        open={open}
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <div className={classes.drawerHeader}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </IconButton>
+        </div>
+        <Divider />
+        {/*user.username ? (<List>
+          <Link to={`/profile/${user.username}/friends`} >
+            <ListItem button >
+              <ListItemIcon>  <People />  </ListItemIcon>
+              <ListItemText primary='Friends' />
+            </ListItem>
+          </Link>
+          <Divider />
+          <Link to={`/profile/${user.username}/recipes`} >
+            <ListItem button >
+              <ListItemIcon>  <FastfoodSharp />  </ListItemIcon>
+              <ListItemText primary='Recipes' />
+            </ListItem>
+          </Link>
+          <Divider />
+          <Link to={`/profile/${user.username}/settings`} >
+            <ListItem button >
+              <ListItemIcon> <Settings />  </ListItemIcon>
+              <ListItemText primary='Settings' />
+            </ListItem>
+          </Link>
+        </List>) : (<Link to={`/`} />)*/}
+      </Drawer>
+      <div className='phone'>
+
+
+        {user ? (< >
+          <IconButton
+            color="inherit" aria-label="open drawer" onClick={handleDrawerOpen} edge="start" className={clsx(classes.menuButton, open && classes.hide)}>
+            <MenuIcon /></IconButton>
+          <Link to="/recipes"> <Tab icon={<FastfoodSharp />} label="Recipes" /></Link>
+          <Link to={"/timeline"}><Tab icon={<Home />} label="Home" /></Link>
+          <Link to={`/profile/${user.username}`}> <Tab icon={<Person />} label="Profile" /></Link>
+          <Link to="/userList"><Tab icon={<People />} label="Users" /></Link>
+          <Tab icon={<LockOpen />} onClick={onLogout} label="Logout" /></>) : (
+          <><Link to="/recipes"> <Tab icon={<FastfoodSharp />} label="Recipes" /></Link>
+            <Tab icon={<Lock />} onClick={handleOpen} label="Log In" /></>)
+        }
+      </div>
     </div>
   );
 }

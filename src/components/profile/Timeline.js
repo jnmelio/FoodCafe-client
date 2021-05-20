@@ -18,9 +18,10 @@ const useStyles = makeStyles((theme) => ({
 //TIMELINE COMES FROM THE ROUTE IN APP.JS AND THE LINK AFTER SIGNUP IS IN SIGNUPRANDOM.JS // AFTER LOGIN ITS A REDIRECTION IN APP.JS
 function Timeline(props) {
   const classes = useStyles();
-  const { user, updateUser, recipes,updateUserRecipes  } = props;
+  const { recipes,updateUserRecipes  } = props;
   const [fetching, updateFetching] = useState(true);
-  const [posts, updatePosts] = useState([]);
+  const [posts, updatePosts] = useState(null);
+  const [user, updateUser,] = useState(null);
 
   useEffect(() => {
     axios
@@ -32,6 +33,7 @@ function Timeline(props) {
         return axios.get(`${config.API_URL}/api/posts`, { withCredentials: true })
       })
       .then((response) => {
+        console.log(response.data)
         updatePosts(response.data.reverse());
         updateFetching(false);
         if (response.data[0].user) {
@@ -42,24 +44,25 @@ function Timeline(props) {
       .catch(() => {
         console.log("Fetching failed");
       });
-  }, []);
+  }, [props.history, updateUserRecipes]);
 
   const handleAddPost = (e) => {
     e.preventDefault()
-
-    if (e.target.imageUrl) {
+    console.log(e.target.imageUrl)
+    if (e.target.imageUrl.files[0]) {
       let picture = e.target.imageUrl.files[0]
       let formData = new FormData()
       formData.append('imageUrl', picture)
       axios.post(`${config.API_URL}/api/upload`, formData)
         .then((response) => {
+          let recipe = e.target.recipe.value === 'default' ? null : e.target.recipe.value
           return axios.post(
             `${config.API_URL}/api/new-post`,
             {
               user: user._id,
               picture: response.data.picture,
               description: e.target.description.value,
-              recipe: e.target.recipe.value
+              recipe,
             },
             { withCredentials: true }
           );
@@ -74,12 +77,13 @@ function Timeline(props) {
           console.log(err)
         });
     } else {
+      let recipe = e.target.recipe.value === 'default' ? null : e.target.recipe.value
       axios.post(`${config.API_URL}/api/new-post`,
         {
           user: user._id,
           picture: null,
           description: e.target.description.value,
-          recipe: e.target.recipe.value
+          recipe,
         },
         { withCredentials: true }
       )
@@ -105,12 +109,13 @@ function Timeline(props) {
     <div>
  <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
     <div className=' container'>
-      <h1>Timeline</h1>
-      <p> WELCOME {user.username}</p>
+      <h1>WELCOME {user.username}</h1>
+
       <form className='forms' onSubmit={handleAddPost}>
         <TextField id="outlined-primary" label="Post Something"
           variant="outlined" name='description' type='text' ></TextField>
-        <input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
+
+        <input name="imageUrl" accept="image/png, image/jpeg" className={classes.input} id="icon-button-file" type="file" />
         <label htmlFor="icon-button-file">
           <IconButton color="primary" aria-label="upload picture" component="span">
             <PhotoCamera />
@@ -118,7 +123,7 @@ function Timeline(props) {
         </label>
         <br />
         <select name='recipe'>
-          <option selected value='60a2492bcac81d0e78b8918c'>Choose one of your recipes</option>
+          <option value="default" selected >Choose one of your recipes</option>
           {recipes.map((rec) => {
             return <option key={rec._id} value={rec._id}>{rec.name}</option>
           })}
@@ -134,10 +139,10 @@ function Timeline(props) {
 
               {post.recipe ?
                 (post.recipe &&
-                  <p id='recipe-link' >check out this recipe:
-                <Link key={post.recipe._id} to={`/recipe-details/${post.recipe._id}`}>
-                      <h3>{post.recipe.name}</h3>
-                    </Link></p>) : <p>find your recipe here <Link to="/recipes"><b>Recipes</b></Link></p>
+                  <p id='recipe-link' >I used:<Link key={post.recipe._id}
+                    to={`/recipe-details/${post.recipe._id}`}>
+                    <b>{' >> '}{post.recipe.name}{' << '}</b></Link> recipe</p>) : (<p>Find you recipe:
+                      <Link to="/recipes"><b>{' >> '}Recipes{' << '}</b></Link></p>)
               }
             </div>
           );
@@ -152,12 +157,12 @@ function Timeline(props) {
             </div>
           );
         })
-      }
+      }<h3>My Recipes</h3>
       {
         user.recipe.map((singleRecipe) => {
           return (
             <div>
-              <h3>My Recipes</h3>
+
               <p>{singleRecipe.name}</p>
             </div>
           );

@@ -140,6 +140,7 @@ export default function FriendsList(props) {
     <div>
 <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
     <div className={` container`}>
+
       <CssBaseline />
       <AppBar
         position="fixed"

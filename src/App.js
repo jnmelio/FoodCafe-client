@@ -133,8 +133,7 @@ function App(props) {
         updateUser(null);
       })
       .catch((errorObj) => {
-        console.log("logout nay");
-        updateError(errorObj.response.data);
+        updateError(errorObj);
       });
   };
 
@@ -334,7 +333,7 @@ const handleGoogleFailure = (error) => {
       updateIngredients(ingredientArr[ingredientArr.length - 1]);
     }
   };
-
+  // UPDATE RECIPE
   const handleUpdate = () => {
     console.log(recipe.difficulty);
     axios

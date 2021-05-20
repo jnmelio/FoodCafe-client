@@ -22,7 +22,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import config from '../../config'
 import { Avatar, Button, ButtonBase } from '@material-ui/core';
-
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -82,15 +81,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function MyRecipes(props) {
-    const classes = useStyles();
-    const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+
+export default function Profile(props) {
     const [user, updateUser,] = useState(null);
     const [myrecipe, updateMyRecipe] = useState(false)
     const [friends, updateMyFriends] = useState(false)
     const [fetching, updateFetching] = useState(true);
     const [posts, updatePosts] = useState(null);
+    const classes = useStyles();
+    const theme = useTheme();
+    const [open, setOpen] = React.useState(false);
 
     const handleChatClick = (chatUserId) => {
         const { user, onAddaFriend } = props;
