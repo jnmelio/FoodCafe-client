@@ -1,5 +1,6 @@
 import axios from "axios";
-import React, { Component, Link } from "react";
+import React, { Component } from "react";
+import {Link} from 'react-router-dom'
 import config from "../../config";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -103,6 +104,12 @@ class UserList extends Component {
     }
   };
 
+  componentDidUpdate(prevProps){
+    if(prevProps.user !== this.props.user){
+      console.log(prevProps.user.myFriends.length, this.props.user.myFriends.length, 'LENGTH')
+    }
+  }
+
   // handleDelete = (someUser) => {
   //   const { user } = this.props;
   //   let filteredFriends = user.myFriends.filter((singleFriend)=>{
@@ -115,7 +122,7 @@ class UserList extends Component {
     const { users, user, onAddaFriend, fetching, updateFetching } = this.props;
     let newFriend = [];
     user.myFriends.map((friend) => {
-      newFriend.push(friend._id);
+      newFriend.push(friend);
     });
     console.log("newFriend", newFriend);
     // remove yourself if you're signed in
@@ -123,75 +130,75 @@ class UserList extends Component {
     if (user) {
       allUsers = users.filter((u) => u._id !== user._id);
     }
-    console.log(newFriend);
+    console.log(allUsers);
     return (
       <div>
-            <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
- <div>
-        {" "}
-        <main className="allRecipes">
-          {allUsers.map((singleUser) => {
-            console.log("singleuser", singleUser);
-            if (newFriend.includes(singleUser._id)) {
-              return (
-                <div className="recipeCard ">
-                  {singleUser.username == null ? (
-                    <div>
-                      <Avatar /> <h3> {singleUser.firstName} </h3>{" "}
-                    </div>
-                  ) : (
-                    <div>
-                      <Avatar /> <h3> {singleUser.username} </h3>{" "}
-                    </div>
-                  )}
-                  <Button
-                    style={{ background: "lightgreen" }}
-                    onClick={() => {
-                      this.handleChatClick(singleUser._id);
-                    }}
-                  >
-                    Chat
-                  </Button>
-                  <Button
-                    style={{ background: "#EF7A90" }}
-                    onClick={() => {
-                      this.handleDelete(singleUser._id);
-                    }}
-                  >
-                    Delete this friend
-                  </Button>
-                </div>
-              );
-            } else {
-              return (
-                
-                <div className="recipeCard ">
-                  {" "}
-                  {singleUser.username == null ? (
-                    <div>
-                      <Avatar /> <h3> {singleUser.firstName} </h3>{" "}
-                    </div>
-                  ) : (
-                    <div>
-                      <Avatar /> <h3> {singleUser.username} </h3>{" "}
-                    </div>
-                  )}
-                  <Button
-                    style={{ background: "lightblue" }}
-                    onClick={() => {
-                      onAddaFriend(singleUser);
-                    }}
-                  >
-                    Add this user as a friend
-                  </Button>
-                </div>
-              );
-            }
-          })}{" "}
-        </main>
+        <Link to="/">
+          <img src="/logo-without-background.png" class="logo"></img>
+        </Link>
+        <div>
+          {" "}
+          <main className="allRecipes">
+            {allUsers.map((singleUser) => {
+              console.log("singleuser", singleUser);
+              if (newFriend.includes(singleUser._id)) {
+                return (
+                  <div className="recipeCard ">
+                    {singleUser.username == null ? (
+                      <div>
+                        <Avatar /> <h3> {singleUser.firstName} </h3>{" "}
+                      </div>
+                    ) : (
+                      <div>
+                        <Avatar /> <h3> {singleUser.username} </h3>{" "}
+                      </div>
+                    )}
+                    <Button
+                      style={{ background: "lightgreen" }}
+                      onClick={() => {
+                        this.handleChatClick(singleUser._id);
+                      }}
+                    >
+                      Chat
+                    </Button>
+                    <Button
+                      style={{ background: "#EF7A90" }}
+                      onClick={() => {
+                        this.handleDelete(singleUser._id);
+                      }}
+                    >
+                      Delete this friend
+                    </Button>
+                  </div>
+                );
+              } else {
+                return (
+                  <div className="recipeCard ">
+                    {" "}
+                    {singleUser.username == null ? (
+                      <div>
+                        <Avatar /> <h3> {singleUser.firstName} </h3>{" "}
+                      </div>
+                    ) : (
+                      <div>
+                        <Avatar /> <h3> {singleUser.username} </h3>{" "}
+                      </div>
+                    )}
+                    <Button
+                      style={{ background: "lightblue" }}
+                      onClick={() => {
+                        onAddaFriend(singleUser);
+                      }}
+                    >
+                      Add this user as a friend
+                    </Button>
+                  </div>
+                );
+              }
+            })}{" "}
+          </main>
+        </div>
       </div>
-      </div>
-     
     );
   }
 }

@@ -4,7 +4,17 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import config from "../../config";
 import { Card, CardHeader, CardMedia } from "@material-ui/core";
+import ReactPlayer from "react-player";
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+}));
 //RECIPE DETAILS COMES FROM A LINK IN ALLRECIPES.JS AND A ROUTE IN APP.JS
 function RecipeDetails(props) {
   const [recipe, updateRecipe] = useState(null);
@@ -16,7 +26,8 @@ function RecipeDetails(props) {
     updateUser,
     redirection,
     updateRedirection,
-    userRecipes, updateUserRecipes
+    userRecipes,
+    updateUserRecipes,
   } = props;
 
   /*let newRecipe = [];
@@ -24,7 +35,7 @@ function RecipeDetails(props) {
     newRecipe.push(singleRecipe);
   });*/
 
-  console.log(userRecipes)
+  console.log(userRecipes);
 
   useEffect(() => {
     let recipeId = props.match.params.recipeId;
@@ -56,10 +67,9 @@ function RecipeDetails(props) {
     }
   }, [props.match.params.recipeId]);
 
-  if (!user){
+  if (!user) {
     props.history.push("/");
   }
-
 
   // const { onDelete, user } = props
   if (fetching) {
@@ -77,101 +87,106 @@ function RecipeDetails(props) {
       .then((response) => {
         console.log("handle add recipe", response.data);
         updateUser(response.data);
-        updateUserRecipes(response.data.recipe)
+        updateUserRecipes(response.data.recipe);
       })
       .catch(() => {});
   };
 
   return (
     <div>
- <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
-        <div className="container">
-          <Card
-            style={{
-              maxWidth: 700,
+      <Link to="/">
+        <img src="/logo-without-background.png" class="logo"></img>
+      </Link>
+      <div className="container">
+        <Card
+          style={{
+            maxWidth: 700,
+          }}
+        >
+          {userRecipes.includes(recipe._id) ? (
+            <p>You already have this recipe in your list</p>
+          ) : (
+            <Button variant="contained" color="primary" onClick={handleAddRecipeToList}>
+              Add this recipe to my Recipes
+            </Button>
+          )}
+          <Link to={`/edit-a-recipe/${recipe._id}`}>
+            <Button variant="contained">Edit</Button>
+          </Link>
+          <Button variant="contained" color="secondary"
+            onClick={() => {
+              onDelete(recipe._id);
             }}
           >
-            {userRecipes.includes(recipe._id) ? (
-              <p>You already have this recipe in your list</p>
-            ) : (
-              <button onClick={handleAddRecipeToList}>
-                Add this recipe to my Recipes
-              </button>
+            Delete
+          </Button>
+          <CardHeader
+            title={recipe.name}
+            subheader={recipe.vegetarian && <b>Vegetarian</b>}
+          />
+          <CardMedia
+            style={{
+              height: "0",
+              paddingTop: "56.25%",
+            }}
+            image={recipe.picture}
+            title={recipe.name}
+          />
+          <div className="recipeDetails">
+            <h3>Description</h3>{" "}
+            <p className="recipeDescription">{recipe.description}</p>
+          </div>{" "}
+          <div className="recipeHeader">
+            <div className="recipeInfos">
+              <h3>Difficulty</h3>
+              <i className="recipeDescription"> {recipe.difficulty}</i>
+            </div>
+            <div className="recipeInfos">
+              <h3>Category</h3>
+              <i className="recipeDescription">{recipe.category}</i>
+            </div>
+            <div className="recipeInfos">
+              {" "}
+              <h3>Country </h3>{" "}
+              <i className="recipeDescription">{recipe.country}</i>
+            </div>
+            <div className="recipeInfos">
+              {" "}
+              <h3>Cooking Time</h3>{" "}
+              <i className="recipeDescription"> {recipe.cookingTime}min</i>
+            </div>
+          </div>
+          <br></br>
+          <div className="recipeDetails">
+            <h3>Ingredients:</h3>
+            {recipe?.ingredients.map((ingredient, i) => {
+              return (
+                <ul key={i} className="recipeList">
+                  <li>{ingredient}</li>
+                </ul>
+              );
+            })}{" "}
+          </div>
+          <div className="recipeDetails">
+            {" "}
+            <h3>Instructions:</h3>{" "}
+            <p className="recipeDescription">{recipe.instructions}</p>
+          </div>
+          <div className="video">
+            <ReactPlayer url={recipe.youtube} />
+          </div>
+          <div>
+            {" "}
+            {recipe.created_by && (
+              <p>
+                {" "}
+                <b>Created By:</b> {recipe.created_by.username}
+              </p>
             )}
-            <Link to={`/edit-a-recipe/${recipe._id}`}>
-              <button>Edit</button>
-            </Link>
-            <button
-              onClick={() => {
-                onDelete(recipe._id);
-              }}
-            >
-              Delete
-            </button>
-            <CardHeader
-              title={recipe.name}
-              subheader={recipe.vegetarian && <b>Vegetarian</b>}
-            />
-            <CardMedia
-              style={{
-                height: "0",
-                paddingTop: "56.25%",
-              }}
-              image={recipe.picture}
-              title={recipe.name}
-            />
-            <div>
-              <b>Description:</b> {recipe.description}
-            </div>{" "}
-            <br></br>
-            <div>{recipe.vegetarian && <b>Vegetarian</b>} </div>
-            <div>
-              <b>Ingredients:</b>
-              {recipe?.ingredients.map((ingredient, i) => {
-                return (
-                  <ul key={i}>
-                    <li>{ingredient}</li>
-                  </ul>
-                );
-              })}{" "}
-            </div>
-            <div>
-              {" "}
-              <b>Cooking Time:</b> {recipe.cookingTime} min
-            </div>
-            <div>
-              <b>
-                Dificulty:<i> {recipe.difficulty}</i>
-              </b>
-            </div>
-            <div>
-              Video Instructions: <a href={recipe.youtube}>Click for video</a>
-            </div>
-            <div>
-              {" "}
-              <b>Instructions:</b> {recipe.instructions}
-            </div>
-            <div>
-              {" "}
-              {recipe.created_by && (
-                <p>
-                  {" "}
-                  <b>Created By:</b> {recipe.created_by.username}
-                </p>
-              )}
-            </div>
-            <div>
-              {" "}
-              <b>Country :</b> {recipe.country}
-            </div>
-            <div>
-              {" "}
-              <b>Category :</b> {recipe.category}
-            </div>
-          </Card>
-        </div>
+          </div>
+        </Card>
+      </div>
     </div>
-   
   );
 }
 

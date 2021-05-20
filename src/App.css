@@ -159,3 +159,35 @@ header {
   text-align: center;
   margin: 50px;
 }
+.recipeDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.recipeHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.recipeInfos {
+display: flex;
+flex-direction: column
+}
+.recipeDescription {
+  text-align: center;
+  font-size: 15px;
+  margin-top: 5px;
+}
+.recipeList {
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+.video {
+  margin-top: 30px;
+}
+
+.btnDetails {
+display: flex;
+justify-content: space-between;
+}
