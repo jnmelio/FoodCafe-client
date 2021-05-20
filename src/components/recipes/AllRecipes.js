@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import EcoTwoToneIcon from "@material-ui/icons/EcoTwoTone";
+import { ToastContainer } from "react-toastify";
 
 //ALLRECIPES COMES FROM A LINK IN APP.JS AND A ROUTE IN APP.JS
 function AllRecipes(props) {
@@ -11,6 +12,7 @@ function AllRecipes(props) {
 
   return (
     <div>
+      <ToastContainer />
       <section className="allRecipes">
         {recipes.map((recipe) => {
           return (

@@ -2,9 +2,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Switch, Route, withRouter, Link } from "react-router-dom";
-import Login from "./components/auth/Login";
 import config from "./config";
-import SignUp from "./components/auth/SignUp";
 import SignUpRandom from "./components/auth/SignUpRandom";
 import NavBar from "./components/NavBar";
 import AllRecipes from "./components/recipes/AllRecipes";
@@ -21,6 +19,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import Home from "./components/home/Home";
 import FriendsList from "./components/profile/FriendsList";
 import MyRecipes from "./components/profile/MyRecipes";
+import { ToastContainer, toast } from 'react-toastify';
 
 function App(props) {
   //STATES
@@ -74,7 +73,6 @@ function App(props) {
     axios
       .post(`${config.API_URL}/api/login`, newUser, { withCredentials: true })
       .then((response) => {
-        console.log(response.data);
         updateUser(response.data);
         updateError(null);
         updateRedirection("timeline");
@@ -246,14 +244,14 @@ function App(props) {
   };
   const handleAddRecipe = (e) => {
     e.preventDefault();
+    console.log(e)
     let picture = e.target.imageUrl.files[0];
     let formData = new FormData();
     formData.append("imageUrl", picture);
     axios
       .post(`${config.API_URL}/api/upload`, formData)
       .then((response) => {
-        return axios.post(
-          `${config.API_URL}/api/recipe/add`,
+        return axios.post(`${config.API_URL}/api/recipe/add`,
           {
             name: e.target.name.value,
             ingredients,
@@ -276,6 +274,8 @@ function App(props) {
         console.log(result.data);
         updateRecipes([result.data, ...recipes]);
         props.history.push("/recipes");
+        const notify = () => toast("Recipe created succefully");
+
       })
       .catch((err) => {
         console.log(err);
@@ -345,8 +345,10 @@ function App(props) {
   if (fetching) {
     return <p>Loading . . .</p>;
   }
+  console.log(user)
   return (
     <div className="App">
+      <ToastContainer />
       <NavBar onLogout={handleLogout} user={user} onSignUp={handleSignUp} error={error}
         onLogIn={handleLogIn} recipes={recipes} />
       <div>

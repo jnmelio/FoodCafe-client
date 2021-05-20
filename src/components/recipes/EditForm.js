@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import config from "../../config";
-import { FormControl, FormControlLabel, FormLabel, InputLabel, Radio, RadioGroup, Select, TextField } from "@material-ui/core";
+import { Button, FormControl, FormControlLabel, FormLabel, InputLabel, Radio, RadioGroup, Select, TextField } from "@material-ui/core";
 
 
 
@@ -104,14 +104,16 @@ function EditForm(props) {
         return <p>Loading ....</p>
     }
     return (
-        <div className='container'>
+        <div className='allRecipes'>
 
-            <div className='forms'>
+            <div style={{ maxWidth: '600px', fontSize: 'smaller' }} className='recipeCard'>
                 <h1>Edit this Recipe</h1>
-                <TextField className='post' label="Name" variant="outlined" name="name" type="text" onChange={handleNameChange} value={recipe.name} />
+                <TextField className='formlabels' label="Name"
+                    variant="outlined" name="name" type="text"
+                    onChange={handleNameChange} value={recipe.name} />
                 <br />
                 <br />
-                <TextField id="outlined-multiline-static" rows={4} multiline variant="outlined"
+                <TextField className='formlabels' id="outlined-multiline-static" rows={4} multiline variant="outlined"
                     multiple={true}
                     label="Ingredients"
                     name="ingredient"
@@ -119,14 +121,21 @@ function EditForm(props) {
                 />
                 <br />
                 <br />
-                <TextField id="outlined-multiline-static" rows={4} multiline variant="outlined" label="Instructions" name="instructions" onChange={handleInstructions} value={recipe.instructions} type="text" />
+                <TextField className='formlabels'
+                    id="outlined-multiline-static"
+                    rows={4} multiline variant="outlined"
+                    label="Instructions" name="instructions"
+                    onChange={handleInstructions} value={recipe.instructions} type="text" />
                 <br />
                 <br />
-                <TextField id="outlined-basic" label="Video instruction" variant="outlined" name="youtube" onChange={handleVideoChange} value={recipe.youtube} type="text" />
+                <TextField className='formlabels' id="outlined-basic" label="Video instruction"
+                    variant="outlined" name="youtube" onChange={handleVideoChange}
+                    value={recipe.youtube} type="text" />
                 <br />
-                <label>Recipe Picture</label>
                 <br />
-                <input
+                <label >Recipe Picture</label>
+                <br />
+                <input className='formlabels'
                     type="file"
                     onChange={handlePictureChange} value={recipe.imageUrl}
                     name="imageUrl"
@@ -134,7 +143,8 @@ function EditForm(props) {
                 />{" "}
                 <br />
                 <br />
-                <TextField id="outlined-multiline-static" rows={4} multiline variant="outlined"
+                <TextField className='formlabels' id="outlined-multiline-static"
+                    rows={4} multiline variant="outlined"
                     label="description"
                     name="description"
                     type="textarea"
@@ -145,11 +155,10 @@ function EditForm(props) {
                 <br />
 
                 <TextField
+                    className='formlabels'
                     id="outlined-number"
                     label="Cooking Time in minutes, eg.60"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
+                    InputProps={{ inputProps: { min: 1 } }}
                     variant="outlined"
                     name="cookingTime"
                     onChange={handleCookingTime} value={recipe.cookingTime}
@@ -159,7 +168,7 @@ function EditForm(props) {
                 />
                 <br />
                 <br />
-                <FormControl variant="outlined" >
+                <FormControl className='formlabels' variant="outlined" >
                     <InputLabel htmlFor="outlined-age-native-simple">Difficulty</InputLabel>
                     <Select
                         value={recipe.difficulty}
@@ -178,13 +187,13 @@ function EditForm(props) {
                 <br />
                 <br />
 
-                <TextField id="outlined-basic"
+                <TextField className='formlabels' id="outlined-basic"
                     label="Country" variant="outlined"
                     name="country" onChange={handleCountryChange}
                     value={recipe.country} type="text" />
                 <br />
                 <br />
-                <FormControl variant="outlined" >
+                <FormControl className='formlabels' variant="outlined" >
                     <InputLabel htmlFor="outlined-age-native-simple">Category</InputLabel>
                     <Select onChange={handleCategoryChange}
                         native
@@ -203,7 +212,7 @@ function EditForm(props) {
                 </FormControl>
                 <br />
 
-                <FormControl component="fieldset">
+                <FormControl className='formlabels' component="fieldset">
                     <FormLabel component="legend">Vegetarian</FormLabel>
                     <RadioGroup row aria-label="position" name="position" defaultValue="top">
                         <FormControlLabel
@@ -215,7 +224,6 @@ function EditForm(props) {
                             name="vegetarian"
                             onChange={onRadio}
                         />
-
                         <FormControlLabel type="radio"
                             name="vegetarian"
                             onChange={onRadio} value="false" control={<Radio color="primary" />}
@@ -223,7 +231,7 @@ function EditForm(props) {
                     </RadioGroup>
                 </FormControl>
                 <br />
-                <button onClick={onEdit} > Update</button>
+                <div className='formlabels' ><button onClick={onEdit} > Update</button></div>
 
             </div>
         </div >

@@ -16,6 +16,7 @@ import { Tab, Tabs, Fade } from '@material-ui/core'
 import clsx from 'clsx';
 import MenuIcon from '@material-ui/icons/Menu';
 import { FastfoodSharp, Home, Lock, LockOpen, People, Person, Settings } from '@material-ui/icons'
+import Users from "./profile/Users";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -133,6 +134,7 @@ function NavBar(props) {
   const theme = useTheme();
   const { user, onLogout, onSignUp, error, onLogIn } = props;
   const [open, setOpen] = React.useState(false);
+  const [sideOpen, updateSideOpen] = React.useState(false);
   const [value, setValue] = React.useState(0);
   const handleOpen = () => {
     setOpen(true);
@@ -148,18 +150,22 @@ function NavBar(props) {
     setValue(index);
   };
   const handleDrawerOpen = () => {
-    setOpen(true);
+    updateSideOpen(true);
   };
   const handleDrawerClose = () => {
-    setOpen(false);
+    updateSideOpen(false);
   };
+  console.log("inside NavBar", user)
   return (
     <div>
-      <nav position="static" className='nav'>
+      <nav position="static" className='nav' >
+
         <Toolbar style={{ flexDirection: "row" }}>
-          <IconButton
-            color="inherit" aria-label="open drawer" onClick={handleDrawerOpen} edge="start" className={clsx(classes.menuButton, open && classes.hide)}>
-            <MenuIcon /></IconButton>
+          {
+            user ? <IconButton
+              color="inherit" aria-label="open drawer" onClick={handleDrawerOpen} edge="start" className={clsx(classes.menuButton, open && classes.hide)}>
+              <MenuIcon /></IconButton> : null
+          }
           <IconButton
             edge="start"
             className={classes.menuButton}
@@ -171,31 +177,30 @@ function NavBar(props) {
               <Link to="/recipes">Recipes</Link>{" "}
             </Button>{" "}
           </IconButton>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <Button color="inherit">
-              {" "}
-              <Link to="/add-a-recipe">Add recipe</Link>
-            </Button>
-          </IconButton>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <Button color="inherit">
-              {" "}
-              <Link to="/userList">Check all users</Link>
-            </Button>
-          </IconButton>
-
           {user ? (
             <div>
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="menu"
+              >
+                <Button color="inherit">
+                  {" "}
+                  <Link to="/add-a-recipe">Add recipe</Link>
+                </Button>
+              </IconButton>
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="menu"
+              >
+                <Button color="inherit">
+                  {" "}
+                  <Link to="/userList">Check all users</Link>
+                </Button>
+              </IconButton>
               <IconButton
                 edge="start"
                 className={classes.menuButton}
@@ -207,13 +212,6 @@ function NavBar(props) {
                 </Button>
               </IconButton>
               <IconButton
-                edge="end"
-                className={classes.menuButton}
-                color="inherit"
-              >
-                <Button onClick={onLogout}>Log out</Button>
-              </IconButton>
-              <IconButton
                 edge="start"
                 className={classes.menuButton}
                 color="inherit"
@@ -222,12 +220,19 @@ function NavBar(props) {
                   <Link to={`/profile/${user.username}`}>Profile</Link>
                 </Button>
               </IconButton>
+              <IconButton
+                edge="end"
+                className={classes.menuButton}
+                color="inherit">
+                <Button><Link onClick={onLogout}>Log out</Link></Button>
+              </IconButton>
+
             </div>
           ) : (
-            <div>
-              <button type="button" onClick={handleOpen}>
+            <span>
+              <Button type="button" onClick={handleOpen}>
                 Login or Sign Up
-              </button>
+              </Button>
               <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
@@ -269,15 +274,15 @@ function NavBar(props) {
                   </div>
                 </Fade>
               </Modal>
-            </div>
+            </span>
           )}
         </Toolbar>
       </nav>
-      <Drawer
+      <Drawer style={{ background: ' #6985c0' }}
         className={classes.drawer}
         variant="persistent"
         anchor="left"
-        open={open}
+        open={sideOpen}
         classes={{
           paper: classes.drawerPaper,
         }}
@@ -288,7 +293,7 @@ function NavBar(props) {
           </IconButton>
         </div>
         <Divider />
-        {/*user.username ? (<List>
+        {user ? (<List>
           <Link to={`/profile/${user.username}/friends`} >
             <ListItem button >
               <ListItemIcon>  <People />  </ListItemIcon>
@@ -309,12 +314,12 @@ function NavBar(props) {
               <ListItemText primary='Settings' />
             </ListItem>
           </Link>
-        </List>) : (<Link to={`/`} />)*/}
+        </List>) : (<Link to={`/`} />)}
       </Drawer>
       <div className='phone'>
 
 
-        {user ? (< >
+        {user ? (<span className='phone'>
           <IconButton
             color="inherit" aria-label="open drawer" onClick={handleDrawerOpen} edge="start" className={clsx(classes.menuButton, open && classes.hide)}>
             <MenuIcon /></IconButton>
@@ -322,12 +327,14 @@ function NavBar(props) {
           <Link to={"/timeline"}><Tab icon={<Home />} label="Home" /></Link>
           <Link to={`/profile/${user.username}`}> <Tab icon={<Person />} label="Profile" /></Link>
           <Link to="/userList"><Tab icon={<People />} label="Users" /></Link>
-          <Tab icon={<LockOpen />} onClick={onLogout} label="Logout" /></>) : (
-          <><Link to="/recipes"> <Tab icon={<FastfoodSharp />} label="Recipes" /></Link>
-            <Tab icon={<Lock />} onClick={handleOpen} label="Log In" /></>)
+          <Tab icon={<LockOpen />} onClick={onLogout} label="Logout" /></span>) : (
+          <span>
+            <Link to="/recipes"><Tab icon={<FastfoodSharp />} label="Recipes" /></Link>
+            <Tab icon={<Lock />} onClick={handleOpen} label="Log In" />
+          </span>)
         }
       </div>
-    </div>
+    </div >
   );
 }
 export default NavBar;

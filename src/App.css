@@ -6,6 +6,7 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
 .container {
   display: flex;
   flex-direction: column;
@@ -89,21 +90,22 @@ header {
     #366feb,
     #6985c0
   );
-  text-shadow: 1px 1px 1px#000000;
+  text-shadow: 1px 1px 1px #366feb;
   color: #ffffff;
   display: flex;
-  justify-content: space-between;
+  justify-content: stretch;
+}
+.nav button {
+  color: white;
+  text-shadow: 1px 1px 1px#000000;
 }
 .phone {
   width: 100%;
-  background-image: repeating-linear-gradient(
-    to bottom right,
-    #6985c0,
-    #366feb,
-    #6985c0
-  );
+  background-image: linear-gradient(to top right, #6985c0, #366feb);
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+  flex-wrap: nowrap !important;
+  font-size: small;
 }
 
 @media (max-width: 850px) {
@@ -120,7 +122,7 @@ header {
 .phone a,
 .phone button {
   color: #ffffff;
-
+  font-size: smaller;
   padding: 0;
   width: 15%;
   max-height: 55px;
@@ -132,4 +134,23 @@ header {
   max-height: 70px;
   max-width: 350px;
   width: 100%;
+}
+.formlabels {
+  background: #ffffff;
+  border: white !important;
+  padding: 10px;
+  margin: 10px;
+  max-width: 600px;
+  width: 100%;
+}
+.formlabels button {
+  background: #6985c0;
+  color: white;
+  padding: 8px 10px 8px 10px;
+  border-radius: 5px;
+  border: #f6f6f6;
+  justify-content: center;
+}
+.makeStyles-hide-51 {
+  display: block;
 }
