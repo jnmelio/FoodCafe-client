@@ -146,11 +146,15 @@ class UserList extends Component {
                   <div className="recipeCard ">
                     {singleUser.username == null ? (
                       <div>
-                        <Avatar /> <h3> {singleUser.firstName} </h3>{" "}
+                      <Avatar /><h3> {singleUser.firstName} </h3>{" "}
                       </div>
                     ) : (
                       <div>
-                        <Avatar /> <h3> {singleUser.username} </h3>{" "}
+                      {
+                        singleUser.picture == null ? (<div><Avatar /><h3> {singleUser.firstName} </h3></div>)
+                        : (<div><img className='profilePicture' src={singleUser.picture} alt={singleUser.username}></img><h3> {singleUser.username} </h3></div>)
+                      }
+                      {" "}
                       </div>
                     )}
                     <Button
@@ -177,11 +181,15 @@ class UserList extends Component {
                     {" "}
                     {singleUser.username == null ? (
                       <div>
-                        <Avatar /> <h3> {singleUser.firstName} </h3>{" "}
+                      {
+                        singleUser.picture == null ? (<div><Avatar /><h3> {singleUser.firstName} </h3></div>)
+                        : (<div><img className='profilePicture' src={singleUser.picture} alt={singleUser.username}></img><h3> {singleUser.username} </h3></div>)
+                      }
+
                       </div>
                     ) : (
                       <div>
-                        <Avatar /> <h3> {singleUser.username} </h3>{" "}
+                      <img className='profilePicture' src={singleUser.picture} alt={singleUser.username}></img> <h3> {singleUser.username} </h3>{" "}
                       </div>
                     )}
                     <Button
