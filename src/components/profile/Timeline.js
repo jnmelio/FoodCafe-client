@@ -132,15 +132,15 @@ function Timeline(props) {
 
         {/*form for posts */}
         <form className='forms' onSubmit={handleAddPost}>
-          <TextField id="outlined-primary" label="Post Something"
-            variant="outlined" name='description' type='text' ></TextField>
+          <TextField style={{ width: '30em' }} id="outlined-primary" label="Post Something" multiple={true}
+            rows={4} multiline variant="outlined" name='description' type='text' ></TextField>
 
-          <input name="imageUrl" accept="image/png, image/jpeg" className={classes.input} id="icon-button-file" type="file" />
           <label htmlFor="icon-button-file">
             <IconButton color="primary" aria-label="upload picture" component="span">
               <PhotoCamera />
             </IconButton><Button type='submit'>Post</Button>
           </label>
+          <br />
           <br />
           <select name='recipe'>
             <option value="default" selected >Choose one of your recipes</option>
@@ -158,8 +158,11 @@ function Timeline(props) {
             {
               posts.map((post) => {
                 return (
+
                   <div key={post._id} className='post '>
-                    <Avatar key={post._id} /><b>{post.user.username}</b> <p>{post.description}</p><br />
+                    {  console.log(post.user.picture)}
+                    {post.user.picture ? (<span className='picandname'><span><img className='postpic' src={post.user.picture}
+                      alt={post.user.username} /></span><b>{post.user.username}</b></span>) : (<div><Avatar id='avatar' key={post._id} /><b>{post.user.username}</b></div>)} <p>{post.description}</p><br />
                     {post.picture && <img src={post.picture} alt='recipe.png' />}
 
                     {post.recipe ?
@@ -193,7 +196,7 @@ function Timeline(props) {
             );
           })
         }
-        <Link to='/users'><b>Access all users</b></Link>
+        <Link to='/userList'><b>Access all users</b></Link>
       </aside>
 
 

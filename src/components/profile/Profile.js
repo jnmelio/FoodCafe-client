@@ -35,6 +35,10 @@ export default function Profile(props) {
 
     return (
         <div>
+            <div id='profileInfo'>
+                <img className='profilePicture' src={user.picture} alt={user.username}></img>
+                <div> <h3>{user.firstName} {user.lastName}</h3><br /><p>e-mail address : {user.email} </p></div>
+            </div>
             <div className='container'>
                 <h3>My Posts</h3>
                 {

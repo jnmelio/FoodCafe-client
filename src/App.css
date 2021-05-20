@@ -74,7 +74,8 @@ header {
   width: 100%;
 }
 .MuiOutlinedInput-input {
-  width: 500px;
+  max-width: 500px !important;
+  width: 100% !important;
 }
 .MuiInputBase-root {
   background: white;
@@ -153,4 +154,39 @@ header {
 }
 .makeStyles-hide-51 {
   display: block;
+}
+.profilePicture {
+  border-radius: 100%;
+  border: solid #6985c0;
+  margin: 10px;
+  max-width: 100px;
+}
+#profileInfo {
+  display: flex;
+  align-items: center;
+  max-height: 50px;
+  margin: 30px;
+}
+#profileInfo b {
+  margin-top: -10px;
+}
+.postpic {
+  border-radius: 100%;
+  border: solid #6985c0;
+  margin: 0;
+  width: 45px !important;
+  display: inline-flex;
+  align-items: center;
+}
+#avatar {
+  display: inline-flex;
+}
+.picandname {
+  border-radius: 100%;
+  margin: 0;
+  width: 45px !important;
+  display: inline-flex;
+  align-items: center;
+}
+.MuiOutlinedInput-inputMultiline {
 }

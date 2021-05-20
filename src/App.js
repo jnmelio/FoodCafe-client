@@ -85,38 +85,60 @@ function App(props) {
   //SIGNUP LOGIC AND AXIOS
   const handleSignUp = (event) => {
     event.preventDefault();
-    console.log(event);
-    const {
-      username,
-      firstName,
-      lastName,
-      email,
-      password,
-      usertype,
-      picture,
-    } = event.target;
+    console.log(event.target.imageUrl.files[0])
+    let picture = null
+    const { username, firstName, lastName, email, password, usertype, } = event.target;
 
-    let newUser = {
-      username: username.value,
-      firstName: firstName.value,
-      lastName: lastName.value,
-      email: email.value,
-      password: password.value,
-      usertype: usertype.value,
-      picture: picture.value,
-    };
+    if (event.target.imageUrl.files[0]) {
+      picture = event.target.imageUrl.files[0];
+      let formData = new FormData();
+      formData.append("imageUrl", picture);
+      axios.post(`${config.API_URL}/api/upload`, formData)
+        .then((response) => {
+          return axios.post(`${config.API_URL}/api/signup`,
+            {
+              username: username.value,
+              firstName: firstName.value,
+              lastName: lastName.value,
+              email: email.value,
+              password: password.value,
+              usertype: usertype.value,
+              picture: response.data.picture,
+            }, { withCredentials: true })
+        })
+        .then((response) => {
+          updateFriend(false);
+          updateUser(response.data);
+          updateError(null);
+          updateRedirection("signup");
+        })
+        .catch(() => {
+          console.log("SignUp failed");
+        });
+    }
+    else {
+      picture = 'https://res.cloudinary.com/foodcafe/image/upload/v1621522073/wxwrhxypbk95guknlxt3.png'
+      return axios.post(`${config.API_URL}/api/signup`,
+        {
+          username: username.value,
+          firstName: firstName.value,
+          lastName: lastName.value,
+          email: email.value,
+          password: password.value,
+          usertype: usertype.value,
+          picture,
+        }, { withCredentials: true })
 
-    axios
-      .post(`${config.API_URL}/api/signup`, newUser, { withCredentials: true })
-      .then((response) => {
-        updateFriend(false);
-        updateUser(response.data);
-        updateError(null);
-        updateRedirection("signup");
-      })
-      .catch(() => {
-        console.log("SignUp failed");
-      });
+        .then((response) => {
+          updateFriend(false);
+          updateUser(response.data);
+          updateError(null);
+          updateRedirection("signup");
+        })
+        .catch(() => {
+          console.log("SignUp failed");
+        });
+    }
   };
 
   //LOGOUT LOGIC

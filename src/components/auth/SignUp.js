@@ -62,12 +62,8 @@ function SignUp(props) {
       </div>
       <div className="form-group">
         <label htmlFor="inputPicture">Picture</label>
-        <input
-          type="text"
-          className="form-control"
-          id="inputPicture"
-          name="picture"
-        />
+        <input name="imageUrl" accept="image/png, image/jpeg"
+          id="icon-button-file" type="file" />
       </div>
       <button type="submit" className="btn btn-primary">
         Submit
