@@ -73,10 +73,7 @@ header {
   padding: 20px;
   width: 100%;
 }
-.MuiOutlinedInput-input {
-  max-width: 500px !important;
-  width: 100% !important;
-}
+
 .MuiInputBase-root {
   background: white;
 }
@@ -188,5 +185,8 @@ header {
   display: inline-flex;
   align-items: center;
 }
-.MuiOutlinedInput-inputMultiline {
+
+.postinput {
+  max-width: 500px !important;
+  width: 100% !important;
 }

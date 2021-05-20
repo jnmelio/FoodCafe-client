@@ -16,7 +16,7 @@ import { Tab, Tabs, Fade } from '@material-ui/core'
 import clsx from 'clsx';
 import MenuIcon from '@material-ui/icons/Menu';
 import { FastfoodSharp, Home, Lock, LockOpen, People, Person, Settings } from '@material-ui/icons'
-import Users from "./profile/Users";
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
