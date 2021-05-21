@@ -114,6 +114,7 @@ function App(props) {
           updateFriend(false);
           updateUser(response.data);
           updateError(null);
+          handleRandom()
           updateRedirection("signup");
         })
         .catch(() => {
@@ -203,12 +204,15 @@ function App(props) {
   }
   // USE EFFECT FOR RANDOM USER AND RECIPE AFTER SIGNUP
   const handleRandom = () => {
+    console.log('heres')
     axios
       .get(`${config.API_URL}/api/signup`, { withCredentials: true })
       .then((response) => {
         updateRandomRecipe(response.data.randomRecipe);
         updateRandomUser(response.data.randomUser);
+        console.log('here')
         updateFetching(false);
+
       })
       .catch(() => { });
   };
@@ -454,7 +458,6 @@ function App(props) {
             return (
               <SignUpRandom
                 user={user}
-                {...routeProps}
                 onHandleFriend={handleAddAFriend}
                 randomUser={randomUser}
                 friend={friend}
@@ -464,6 +467,7 @@ function App(props) {
                 randomRecipe={randomRecipe}
                 fetching={fetching}
                 updateFetching={updateFetching}
+                {...routeProps}
               />
             );
           }}

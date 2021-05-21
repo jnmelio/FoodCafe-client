@@ -221,7 +221,7 @@ header {
   margin-top: 30px;
 }
 .signUpContainer {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 .formlabels {
   background: #ffffff;
@@ -285,9 +285,6 @@ header {
   max-height: 650px !important;
   width: auto;
   font-size: small !important;
-}
-.singup input {
-  height: 50% !important;
 }
 .four {
   text-align: center;
