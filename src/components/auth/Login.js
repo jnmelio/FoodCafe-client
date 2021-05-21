@@ -79,6 +79,7 @@ function Login(props) {
                 variant="outlined"
                 required
                 fullWidth
+                type="password"
                 id="password"
                 label="Enter Password"
                 autoFocus
