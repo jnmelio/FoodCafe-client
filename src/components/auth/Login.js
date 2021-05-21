@@ -59,33 +59,33 @@ function Login(props) {
         <Typography component="h1" variant="h5">
           Log in
         </Typography>
-        <form onSubmit={onLogIn}>
-          <div className="divForm signUpContainer" >
-            <TextField
-              autoComplete="email"
-              name="email"
-              variant="outlined"
-              required
-              fullWidth
-              id="email"
-              label="Enter Email"
-              autoFocus
-            />
-          </div>
-          <div className="form-group signUpContainer">
-            <TextField
-              type='password'
-              autoComplete="password"
-              name="password"
-              variant="outlined"
-              required
-              fullWidth
-              id="password"
-              label="Enter Password"
-              autoFocus
-            />
-          </div>
-          <Button
+    <form onSubmit={onLogIn}>
+      <div className="divForm signUpContainer" >
+      <TextField
+                autoComplete="email"
+                name="email"
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="Enter Email"
+                autoFocus
+              />
+      </div>
+      <div className="form-group signUpContainer">
+      <TextField
+                autoComplete="password"
+                name="password"
+                variant="outlined"
+                required
+                fullWidth
+                type="password"
+                id="password"
+                label="Enter Password"
+                autoFocus
+              />
+      </div>
+      <Button
             type="submit"
             fullWidth
             variant="contained"
