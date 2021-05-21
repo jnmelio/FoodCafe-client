@@ -43,7 +43,7 @@ function Timeline(props) {
   const { recipes, updateUserRecipes } = props;
   const [fetching, updateFetching] = useState(true);
   const [posts, updatePosts] = useState(null);
-  const [user, updateUser,] = useState(null);
+  const [user, updateUser] = useState(null);
 
   useEffect(() => {
     axios
@@ -66,7 +66,8 @@ function Timeline(props) {
       .catch(() => {
         console.log("Fetching failed");
       });
-  }, [props.history, updateUserRecipes]);
+  }, [props.history, updateUser, updateUserRecipes]);
+
 
   const handleAddPost = (e) => {
     e.preventDefault()

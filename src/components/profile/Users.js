@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
 // eslint-disable-next-line no-unused-vars
-import axios from "axios";
-import React, { useState, useEffect } from "react";
-import { Switch, Route, withRouter, Link } from "react-router-dom";
-import config from "../../config";
+import React from "react";
+import { Link } from "react-router-dom";
 
 function Users(props) {
   const { allUsers, onAddaFriend } = props;
@@ -11,7 +9,8 @@ function Users(props) {
 
   return (
     <div>
-    <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
+      {/* eslint-disable-next-line jsx-a11y/alt-text*/}
+      <Link to='/'><img src="/logo-without-background.png" class="logo"></img></Link>
       {
         allUsers.map((singleUser) => {
           return (
@@ -20,8 +19,7 @@ function Users(props) {
               <button
                 onClick={() => {
                   onAddaFriend(singleUser);
-                }}
-              >
+                }}>
                 Add this user as a friend
             </button>
             </div>

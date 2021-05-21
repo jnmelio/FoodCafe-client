@@ -22,14 +22,11 @@ function SignUpRandom(props) {
     randomRecipe,
   } = props;
 
-  const classes = useStyles();
   return (
     <div>
       <div>
         <div>
-          <Link to="/">
-            <img src="/logo-without-background.png" class="logo"></img>
-          </Link>
+          <Link to='/'><img src="/logo-without-background.png" class="logo" alt='logo'></img></Link>
         </div>
         <div className="randomSign">
           {!recipe ? (

@@ -37,7 +37,7 @@ function SignUp(props) {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div style={{ maxWidth: '800px !important' }} className={`{classes.paper} `}>
+      <div className={`{classes.paper} signup `}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>

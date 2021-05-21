@@ -5,35 +5,16 @@ import axios from "axios";
 import config from "../../config";
 import { Card, CardHeader, CardMedia } from "@material-ui/core";
 import ReactPlayer from "react-player";
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& > *': {
-      margin: theme.spacing(1),
-    },
-  },
-}));
+
 //RECIPE DETAILS COMES FROM A LINK IN ALLRECIPES.JS AND A ROUTE IN APP.JS
 function RecipeDetails(props) {
   const [recipe, updateRecipe] = useState(null);
   const [fetching, updateFetching] = useState(true);
   const {
-    recipes,
-    onDelete,
-    user,
-    updateUser,
-    redirection,
-    updateRedirection,
-    userRecipes,
-    updateUserRecipes,
-  } = props;
+    recipes, onDelete, user, updateUser, userRecipes, updateUserRecipes, } = props;
 
-  /*let newRecipe = [];
-  user.recipe.map((singleRecipe) => {
-    newRecipe.push(singleRecipe);
-  });*/
 
   console.log(userRecipes);
 
@@ -89,12 +70,13 @@ function RecipeDetails(props) {
         updateUser(response.data);
         updateUserRecipes(response.data.recipe);
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   return (
     <div>
       <Link to="/">
+        {/* eslint-disable-next-line jsx-a11y/alt-text*/}
         <img src="/logo-without-background.png" class="logo"></img>
       </Link>
       <div className="container">
@@ -103,16 +85,17 @@ function RecipeDetails(props) {
             maxWidth: 700,
           }}
         >
+
           {userRecipes.includes(recipe._id) ? (
             <p>You already have this recipe in your list</p>
           ) : (
             <Button variant="contained" color="primary" onClick={handleAddRecipeToList}>
-              Add this recipe to my Recipes
+              Add to my Recipes
             </Button>
           )}
-          <Link to={`/edit-a-recipe/${recipe._id}`}>
-            <Button variant="contained">Edit</Button>
-          </Link>
+
+          <Button variant="contained"><Link to={`/edit-a-recipe/${recipe._id}`}>Edit </Link></Button>
+
           <Button variant="contained" color="secondary"
             onClick={() => {
               onDelete(recipe._id);

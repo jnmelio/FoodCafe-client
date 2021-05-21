@@ -166,6 +166,12 @@ header {
   flex-direction: column;
   align-items: center;
 }
+.recipeDetails li,
+.recipeDetails ul {
+  max-width: 180px;
+  width: 100%;
+  text-align: left;
+}
 .recipeHeader {
   display: flex;
   flex-direction: row;
@@ -186,7 +192,7 @@ header {
   margin-bottom: 0;
 }
 .video {
-  margin-top: 30px;
+  margin: 30px;
 }
 
 .btnDetails {
@@ -278,6 +284,10 @@ header {
 .singup {
   max-height: 650px !important;
   width: auto;
+  font-size: small !important;
+}
+.singup input {
+  height: 50% !important;
 }
 .four {
   text-align: center;
